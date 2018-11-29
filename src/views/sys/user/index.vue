@@ -2,20 +2,20 @@
   <Layout>
     <Row>
       <Col span="8">
-        <Button type="primary">新增</Button>
+        <Button type="primary" @click="raiseHandle">新增</Button>
         <Button type="success">导入</Button>
         <Button type="warning">导出</Button>
       </Col>
       <Col span="16">
-        <Form ref="userSearchForm" :model="userSearchForm" :label-width="80" inline style="float: right">
+        <Form ref="userSearchForm" :model="userSearchForm" :label-width="80" inline style="float: right" @submit.native.prevent>
           <FormItem label="用户名称">
             <Input type="text" v-model="userSearchForm.userName" />
           </FormItem>
 
           <FormItem :label-width="0">
             <ButtonGroup>
-              <Button icon="ios-search" ></Button>
-              <Button icon="ios-trash-outline" ></Button>
+              <Button icon="ios-search" @click="search"></Button>
+              <Button icon="ios-trash-outline" @click="restSearch"></Button>
             </ButtonGroup>
           </FormItem>
         </Form>
@@ -27,12 +27,20 @@
     <Row>
       <Page :total="100" show-sizer show-elevator show-total></Page>
     </Row>
+
+    <CModifyPassword v-model="showModifyPassword" :userId="currenUser.id" :userName="currenUser.name"></CModifyPassword>
+    <CUserForm v-model="showForm" :userInfo="currenUser" :type="formType" @refresh="restSearch" ></CUserForm>
   </Layout>
 </template>
 <script>
+import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
+import CUserForm from '@/views/sys/user/form'
 
 export default {
   name: 'SysUser',
+  components: {
+    CModifyPassword, CUserForm
+  },
   data: function () {
     return {
       userSearchForm: {
@@ -52,10 +60,12 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('Button', {
-                props: { type: 'primary', ghost: true }
+                props: { type: 'primary', ghost: true },
+                on: { click: () => { this.viewHandle(params.row) } }
               }, '查看'),
               h('Button', {
-                props: { type: 'warning', ghost: true }
+                props: { type: 'warning', ghost: true },
+                on: { click: () => { this.modifyHandle(params.row) } }
               }, '编辑'),
               h('Button', {
                 props: { type: 'error', ghost: true },
@@ -63,7 +73,7 @@ export default {
               }, '删除'),
               h('Button', {
                 props: {},
-                on: { click: () => { this.modifyPasswordHandle(params.row.id) } }
+                on: { click: () => { this.modifyPasswordHandle(params.row) } }
               }, '修改密码')
             ])
           }
@@ -80,7 +90,11 @@ export default {
         {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
         {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'}
       ],
-      userTableHeight: 200
+      userTableHeight: 200,
+      showModifyPassword: false,
+      showForm: false,
+      currenUser: {},
+      formType: ''
     }
   },
   mounted () {
@@ -97,8 +111,24 @@ export default {
         }
       })
     },
-    modifyPasswordHandle (userId) {
-
+    modifyPasswordHandle (userInfo) {
+      this.currenUser = userInfo
+      this.showModifyPassword = true
+    },
+    modifyHandle (userInfo) {
+      this.currenUser = userInfo; this.formType = 'Modify'; this.showForm = true
+    },
+    viewHandle (userInfo) {
+      this.currenUser = userInfo; this.formType = 'View'; this.showForm = true
+    },
+    raiseHandle () {
+      this.formType = 'Raise'; this.showForm = true
+    },
+    restSearch () {
+      console.info('restSearch')
+    },
+    search () {
+      console.info('search')
     }
   }
 }

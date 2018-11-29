@@ -17,7 +17,7 @@
  * @Date: 2018/11/29
  */
 
-import CDeleteComponent from '@/components/deleteModal'
+import CDeleteComponent from '@/plugins/deleteModal/component'
 
 let $vm
 

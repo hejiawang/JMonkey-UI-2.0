@@ -63,14 +63,13 @@
   font-size: 17px;
 }
 
-/* 列表文字大小 */
-.ivu-table-large {
+/* 列表样式 */
+.ivu-table{
   font-size: 17px;
-}
-/* 列表头颜色 */
-.ivu-table th{
-  background-color: #5cadff;
-  color: white;
+  th{
+    background-color: #5cadff;
+    color: white;
+  }
 }
 /* 分页组件样式 */
 .ivu-page{
@@ -81,7 +80,31 @@
 .ivu-btn{
   margin-right: 10px;
 }
+.ivu-btn-group{
+  .ivu-btn{
+    margin-right: 0px;
+  }
+}
 /* 消息提示组件 */
 .ivu-message{
   top: 64px !important;
 }
+/* 弹出框样式 */
+.ivu-modal{
+  .ivu-modal-header-inner{
+    font-size: 17px;
+  }
+  .ivu-modal-body{
+    padding: 30px;
+  }
+  .ivu-modal-footer{
+    .ivu-btn{
+      margin-right: 0px;
+      span{
+        letter-spacing: 5px;
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
