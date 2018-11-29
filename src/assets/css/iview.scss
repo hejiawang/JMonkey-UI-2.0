@@ -1,0 +1,87 @@
+.ivu-layout{
+  height: 100%;
+  overflow: hidden;
+  background: white;
+}
+
+.ivu-layout-header{
+  background-image: url(../images/layout/title.jpg);
+  background-size: cover;
+}
+
+.ivu-layout-footer{
+  padding: 5px 50px;
+  text-align: center;
+}
+
+.ivu-layout-sider{
+  background: #2a56ae !important;
+}
+
+.ivu-menu-submenu{
+  background: #2a56ae;
+  color: white;
+  font-size: 17px;
+}
+
+.ivu-menu-item{
+  font-size: 17px;
+  background: #2a56ae;
+}
+
+.ivu-menu-submenu .ivu-menu-item{
+  background: #3b71c9;
+}
+
+.ivu-menu{
+  background: #3b71c9;
+  color: white;
+  font-size: 17px;
+}
+
+.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+  color: white;
+  background: #2b85e4;
+}
+
+.ivu-menu-vertical.ivu-menu-light:after{
+  width: 0px;
+}
+
+.ivu-breadcrumb{
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+}
+
+.ivu-layout-content{
+  padding: 20px;
+  background: #fff;
+}
+
+/* iview 表单中的lable文字大小 */
+.ivu-form .ivu-form-item-label{
+  font-size: 17px;
+}
+
+/* 列表文字大小 */
+.ivu-table-large {
+  font-size: 17px;
+}
+/* 列表头颜色 */
+.ivu-table th{
+  background-color: #5cadff;
+  color: white;
+}
+/* 分页组件样式 */
+.ivu-page{
+  margin-top: 10px;
+  float: right;
+}
+/* 按钮组件 */
+.ivu-btn{
+  margin-right: 10px;
+}
+/* 消息提示组件 */
+.ivu-message{
+  top: 64px !important;
+}
