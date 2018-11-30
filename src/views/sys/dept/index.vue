@@ -1,5 +1,5 @@
 <template>
-  <Layout>Dept</Layout>
+  <Layout class="animated fadeIn">Dept</Layout>
 </template>
 <script>
 export default {

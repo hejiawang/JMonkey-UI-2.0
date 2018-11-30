@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import LayoutMain from '@/views/layout'
+import LayoutGuide from '@/views/layout/guide'
 import DefaultHome from '@/views/home'
 import SysUser from '@/views/sys/user'
 import SysRole from '@/views/sys/role'
@@ -20,6 +21,11 @@ export default new Router({
         { path: '/sys/role', name: '用户管理', component: SysRole },
         { path: '/sys/dept', name: '用户管理', component: SysDept }
       ]
+    },
+    {
+      path: '/guide',
+      name: '引导页',
+      component: LayoutGuide
     }
   ]
 })

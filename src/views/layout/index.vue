@@ -28,13 +28,20 @@
         </Menu>
       </Sider>
       <Layout>
-        <Breadcrumb>
+        <!--<Breadcrumb>
           <BreadcrumbItem>Home</BreadcrumbItem>
           <BreadcrumbItem>Components</BreadcrumbItem>
           <BreadcrumbItem>Layout</BreadcrumbItem>
-        </Breadcrumb>
+        </Breadcrumb>-->
+
+        <Tabs  type="card" closable class="app-layout-tabs">
+          <TabPane label="用户管理" icon="logo-apple" :closable="false"></TabPane>
+          <TabPane label="角色管理" icon="logo-windows"></TabPane>
+          <TabPane label="部门管理" icon="logo-tux"></TabPane>
+        </Tabs>
+
         <Content>
-            <router-view />
+          <router-view />
         </Content>
         <Footer> 2011-2016 &copy; TalkingData </Footer >
       </Layout>

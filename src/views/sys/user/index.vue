@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout class="animated fadeIn">
     <Row>
       <Col span="8">
         <Button type="primary" @click="raiseHandle">新增</Button>
