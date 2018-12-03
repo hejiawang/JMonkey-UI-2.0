@@ -18,6 +18,8 @@
   </Layout>
 </template>
 <script>
+import store from '@/store'
+
 export default {
   name: 'SysButton',
   data: function () {
@@ -90,12 +92,13 @@ export default {
       buttonTableData: [
         {id: 'id1', name: '新增', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'},
         {id: 'id2', name: '修改', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'}
-      ],
-      buttonTableHeight: 0
+      ]
     }
   },
-  mounted () {
-    this.buttonTableHeight = document.body.clientHeight - 230
+  computed: {
+    buttonTableHeight: function () {
+      return store.getters.windowHeight - 230
+    }
   },
   methods: {
     renderTreeContent (h, { root, node, data }) {

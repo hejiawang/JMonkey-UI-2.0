@@ -9,6 +9,7 @@ import animated from 'animate.css'
 import '@/assets/css/app.scss'
 import '@/assets/css/iview.scss'
 import 'babel-polyfill'
+import store from './store'
 
 import CDelete from './plugins/deleteModal/index'
 import CViladate from './plugins/validate/index'
@@ -27,6 +28,7 @@ Vue.use(CViladate)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

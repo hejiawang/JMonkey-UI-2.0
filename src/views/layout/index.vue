@@ -3,8 +3,8 @@
     <Header> </Header>
     <Layout>
       <Sider hide-trigger >
-        <Menu active-name="0" theme="light" width="auto" accordion :open-names="['0']">
-          <MenuItem name="0" to="/home">
+        <Menu :active-name="activeMenu" theme="light" width="auto" accordion :open-names="['1']" @on-select="selectMenu">
+          <MenuItem name="/home" to="/home">
             <icon type="ios-navigate"></icon>
             首页
           </MenuItem>
@@ -13,10 +13,10 @@
               <Icon type="ios-navigate"></Icon>
               系统设置
             </template>
-            <MenuItem name="1-1" to="/sys/user">用户管理</MenuItem>
-            <MenuItem name="1-2" to="/sys/role">角色管理</MenuItem>
-            <MenuItem name="1-3" to="/sys/dept">部门管理</MenuItem>
-            <MenuItem name="1-4" to="/sys/button">按钮管理</MenuItem>
+            <MenuItem name="/sys/user" to="/sys/user">用户管理</MenuItem>
+            <MenuItem name="/sys/role" to="/sys/role">角色管理</MenuItem>
+            <MenuItem name="/sys/dept" to="/sys/dept">部门管理</MenuItem>
+            <MenuItem name="/sys/button" to="/sys/button">按钮管理</MenuItem>
           </Submenu>
           <Submenu name="2">
             <template slot="title">
@@ -35,7 +35,7 @@
           <BreadcrumbItem>Layout</BreadcrumbItem>
         </Breadcrumb>-->
 
-        <Tabs  type="card" closable class="app-layout-tabs">
+        <Tabs  type="card" closable class="app-layout-tabs" @on-click="tabsClick" @on-tab-remove="tabsRemove">
           <TabPane label="首页" icon="logo-apple" :closable="false" />
           <TabPane label="用户管理" icon="logo-windows" />
           <TabPane label="部门管理" icon="logo-tux" />
@@ -51,10 +51,49 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   name: 'LayoutMain',
   created () {
-    this.$router.push('/home')
+    this.activeMenu = store.getters.currentMenu
+    this.$router.push(store.getters.currentMenu)
+  },
+  data: function () {
+    return {
+      activeMenu: ''
+    }
+  },
+  mounted () {
+    /**
+     * 将当前窗口高度保存至store，并当窗口大小变化时更新store中的窗口高度
+     */
+    store.commit('SET_WINDOWHEIGHT', document.body.clientHeight)
+    window.onresize = () => {
+      return (() => {
+        store.commit('SET_WINDOWHEIGHT', document.body.clientHeight)
+      })()
+    }
+  },
+  methods: {
+    /**
+     * 标签页点击事件
+     * @param tabsIndex 标签页索引
+     */
+    tabsClick (tabsIndex) {
+      console.info(tabsIndex)
+    },
+    /**
+     * 移除标签页事件
+     * @param tabsIndex 标签页索引
+     */
+    tabsRemove (tabsIndex) {
+      console.info(tabsIndex)
+    },
+    selectMenu (name) {
+      this.activeMenu = name
+      store.commit('SET_CURRENTMENU', name)
+    }
   }
 }
 </script>

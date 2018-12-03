@@ -35,6 +35,7 @@
 <script>
 import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
+import store from '@/store'
 
 export default {
   name: 'SysUser',
@@ -90,15 +91,16 @@ export default {
         {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
         {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'}
       ],
-      userTableHeight: 0,
       showModifyPassword: false,
       showForm: false,
       currenUser: {},
       formType: ''
     }
   },
-  mounted () {
-    this.userTableHeight = document.body.clientHeight - 280
+  computed: {
+    userTableHeight: function () {
+      return store.getters.windowHeight - 280
+    }
   },
   created () {
   },
