@@ -16,6 +16,7 @@
             <MenuItem name="1-1" to="/sys/user">用户管理</MenuItem>
             <MenuItem name="1-2" to="/sys/role">角色管理</MenuItem>
             <MenuItem name="1-3" to="/sys/dept">部门管理</MenuItem>
+            <MenuItem name="1-4" to="/sys/button">按钮管理</MenuItem>
           </Submenu>
           <Submenu name="2">
             <template slot="title">
@@ -35,9 +36,9 @@
         </Breadcrumb>-->
 
         <Tabs  type="card" closable class="app-layout-tabs">
-          <TabPane label="用户管理" icon="logo-apple" :closable="false"></TabPane>
-          <TabPane label="角色管理" icon="logo-windows"></TabPane>
-          <TabPane label="部门管理" icon="logo-tux"></TabPane>
+          <TabPane label="首页" icon="logo-apple" :closable="false" />
+          <TabPane label="用户管理" icon="logo-windows" />
+          <TabPane label="部门管理" icon="logo-tux" />
         </Tabs>
 
         <Content>

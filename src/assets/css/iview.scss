@@ -54,6 +54,7 @@
 }
 
 .ivu-layout-content{
+  height: calc(100% - 72px);
   padding: 20px;
   background: #fff;
 }
@@ -107,4 +108,21 @@
     }
   }
 }
+/* 树形组件样式 */
+.ivu-tree{
+  ul{
+    font-size: 17px;
+  }
+}
+/* 卡片组件样式 */
+.ivu-card{
+  .ivu-card-head{
+    padding: 12px 16px;
+    p{
+      height: 26px;
+      font-size: 17px;
+    }
+  }
+}
+
 

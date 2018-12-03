@@ -90,7 +90,7 @@ export default {
         {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
         {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'}
       ],
-      userTableHeight: 200,
+      userTableHeight: 0,
       showModifyPassword: false,
       showForm: false,
       currenUser: {},
