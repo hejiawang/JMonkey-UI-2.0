@@ -1,5 +1,5 @@
 <template>
-  <Layout class="animated fadeIn">Dept</Layout>
+  <Layout v-layoutIn>Dept</Layout>
 </template>
 <script>
 export default {

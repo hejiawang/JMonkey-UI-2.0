@@ -1,5 +1,5 @@
 <template>
-  <Layout class="animated fadeIn">
+  <Layout v-layoutIn>
     <Row :gutter="32" style="height: 100%;">
       <Col span="5" style="height: 100%;">
         <Card style="height: 100%;">
@@ -73,7 +73,7 @@ export default {
           title: '操作',
           key: 'action',
           fixed: 'right',
-          width: 350,
+          width: 250,
           render: (h, params) => {
             return h('div', [
               h('Button', {

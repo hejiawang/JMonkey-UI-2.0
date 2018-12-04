@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from '@/views/login'
 import LayoutMain from '@/views/layout'
 import LayoutGuide from '@/views/layout/guide'
 import DefaultHome from '@/views/home'
@@ -12,6 +13,11 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/login',
+      name: '登陆页',
+      component: Login
+    },
     {
       path: '/',
       name: '系统主页',
