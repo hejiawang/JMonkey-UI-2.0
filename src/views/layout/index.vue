@@ -2,10 +2,10 @@
   <Layout>
     <CHeader> </CHeader>
     <Layout>
-      <Sider hide-trigger >
+      <Sider hide-trigger class="app-layout-sider">
         <Menu :active-name="activeMenu" theme="light" width="auto" accordion :open-names="['1']" @on-select="selectMenu">
           <MenuItem name="/home" to="/home">
-            <icon type="ios-navigate"></icon>
+            <icon type="md-home"></icon>
             首页
           </MenuItem>
           <Submenu name="1">
@@ -30,9 +30,10 @@
       </Sider>
       <Layout>
         <!--<Breadcrumb>
-          <BreadcrumbItem>Home</BreadcrumbItem>
-          <BreadcrumbItem>Components</BreadcrumbItem>
-          <BreadcrumbItem>Layout</BreadcrumbItem>
+          <BreadcrumbItem to="/guide"><Icon type="md-pin" size="20" color="#19be6b"/></BreadcrumbItem>
+          <BreadcrumbItem>系统设置</BreadcrumbItem>
+          <BreadcrumbItem>资源管理</BreadcrumbItem>
+          <BreadcrumbItem>菜单管理</BreadcrumbItem>
         </Breadcrumb>-->
 
         <Tabs  type="card" closable class="app-layout-tabs" @on-click="tabsClick" @on-tab-remove="tabsRemove">

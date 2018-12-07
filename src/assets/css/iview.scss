@@ -15,40 +15,6 @@
   text-align: center;
 }
 
-.ivu-layout-sider{
-  background: #2a56ae !important;
-}
-
-.ivu-menu-submenu{
-  background: #2a56ae;
-  color: white;
-  font-size: 17px;
-}
-
-.ivu-menu-item{
-  font-size: 17px;
-  background: #2a56ae;
-}
-
-.ivu-menu-submenu .ivu-menu-item{
-  background: #3b71c9;
-}
-
-.ivu-menu{
-  background: #3b71c9;
-  color: white;
-  font-size: 17px;
-}
-
-.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
-  color: white;
-  background: #2b85e4;
-}
-
-.ivu-menu-vertical.ivu-menu-light:after{
-  width: 0px;
-}
-
 .ivu-breadcrumb{
   padding: 10px 20px;
   background-color: #f5f5f5;

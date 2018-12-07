@@ -5,6 +5,36 @@ html, body{
   width: 100%;
 }
 
+/* 主页左侧菜单样式 start */
+.app-layout-sider{
+  background: #2a56ae !important;
+  .ivu-menu-submenu{
+    background: #2a56ae;
+    color: white;
+    font-size: 17px;
+  }
+  .ivu-menu-item{
+    font-size: 17px;
+    background: #2a56ae;
+  }
+  .ivu-menu-submenu .ivu-menu-item{
+    background: #3b71c9;
+  }
+  .ivu-menu{
+    background: #3b71c9;
+    color: white;
+    font-size: 17px;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+    color: white;
+    background: #2b85e4;
+  }
+  .ivu-menu-vertical.ivu-menu-light:after{
+    width: 0px;
+  }
+}
+/* 主页左侧菜单样式 end */
+
 /* 主页tabs */
 .app-layout-tabs{
   .ivu-tabs-bar{
@@ -40,7 +70,7 @@ html, body{
   }
 }
 
-/* header头信息样式 */
+/* header头信息样式 start */
 .cheader-images{
   float: left;
   img{
@@ -58,6 +88,21 @@ html, body{
     margin-left: 30px;
     letter-spacing: 5px;
     text-shadow: 5px 2px 5px #676a6c;
+  }
+}
+.cheader-system{
+  position: absolute;
+  left: 850px;
+  right: 150px;
+  .ivu-menu-light{
+    background: transparent;
+  }
+  .ivu-menu-horizontal.ivu-menu-light:after{
+    height: 0px;
+  }
+  .ivu-menu-item{
+    color: white !important;
+    font-size: 17px;
   }
 }
 .cheader-user{
@@ -78,3 +123,4 @@ html, body{
     color: white;
   }
 }
+/* header头信息样式 end */
