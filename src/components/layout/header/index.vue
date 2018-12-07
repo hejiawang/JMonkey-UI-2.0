@@ -56,7 +56,7 @@
       </a>
     </div>
     <div class="cheader-back">
-      <a href="#">
+      <a href="#" @click="goGuide">
         <Row class="cheader-back-title">
           <Icon type="ios-undo" size="40" color="#2b85e4"/>
         </Row>
@@ -72,6 +72,11 @@ export default {
   name: 'CHeader',
   data: function () {
     return {
+    }
+  },
+  methods: {
+    goGuide () {
+      this.$router.push('/guide')
     }
   }
 }

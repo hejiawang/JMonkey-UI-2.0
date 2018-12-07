@@ -1,5 +1,5 @@
 <template>
-  <Layout class="guide">
+  <Layout v-layoutIn class="guide">
     <CHeader></CHeader>
     <Layout class="content">
       <Row :gutter="120">
