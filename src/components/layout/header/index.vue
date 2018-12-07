@@ -7,22 +7,9 @@
     <div class="cheader-info">
       <span>欢迎登录JMonkey管理系统2.0版本</span>
     </div>
-    <div class="cheader-system">
-      <div style="float: left">
-        <Icon type="ios-undo" size="45" color="white"/>
-      </div>
-      <div style="float: left">
-        <Menu mode="horizontal">
-          <MenuItem name="1"> <Icon type="ios-paper" /> 内容管理 </MenuItem>
-          <MenuItem name="2"> <Icon type="ios-people" /> 用户管理 </MenuItem>
-          <MenuItem name="3"> <Icon type="ios-construct" /> 系统设置 </MenuItem>
-          <MenuItem name="4"> <Icon type="ios-construct" /> 综合设置 </MenuItem>
-        </Menu>
-      </div>
-    </div>
     <div class="cheader-user">
       <Row class="photo">
-        <Avatar shape="square" icon="ios-person" size="large" />
+        <Avatar shape="square" icon="ios-person" size="default" />
       </Row>
       <Row class="menu">
         <Dropdown>
@@ -37,6 +24,46 @@
           </DropdownMenu>
         </Dropdown>
       </Row>
+    </div>
+    <div class="cheader-system">
+      <a href="#">
+        <Row class="cheader-system-title">
+          <Icon type="ios-baseball" size="30" />
+        </Row>
+        <Row class="cheader-system-content">
+          <span>足球系统</span>
+        </Row>
+      </a>
+    </div>
+    <div class="cheader-system-current">
+      <a href="#">
+        <Row class="cheader-system-title">
+          <Icon type="md-beer" size="30"/>
+        </Row>
+        <Row class="cheader-system-content">
+          <span>当前系统</span>
+        </Row>
+      </a>
+    </div>
+    <div class="cheader-system">
+      <a href="#">
+        <Row class="cheader-system-title">
+          <Icon type="ios-body" size="30"/>
+        </Row>
+        <Row class="cheader-system-content">
+          <span>人员系统</span>
+        </Row>
+      </a>
+    </div>
+    <div class="cheader-back">
+      <a href="#">
+        <Row class="cheader-back-title">
+          <Icon type="ios-undo" size="40" color="#2b85e4"/>
+        </Row>
+        <Row class="cheader-back-content">
+          <span>返回上级</span>
+        </Row>
+      </a>
     </div>
   </Header>
 </template>

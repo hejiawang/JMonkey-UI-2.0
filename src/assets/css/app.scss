@@ -90,33 +90,66 @@ html, body{
     text-shadow: 5px 2px 5px #676a6c;
   }
 }
+.cheader-back{
+  border-left: 2px solid #2b85e4;
+  float: right;
+  width: 80px;
+  text-align: center;
+  .cheader-back-title{
+    line-height: 40px;
+    text-align: center
+  }
+  .cheader-back-content{
+    line-height: 24px;
+    color: #2b85e4;
+  }
+}
+.cheader-system-current{
+  border-left: 2px solid #2b85e4;
+  float: right;
+  width: 80px;
+  text-align: center;
+  .cheader-system-title{
+    line-height: 40px;
+    text-align: center;
+    color: white;
+  }
+  .cheader-system-content{
+    line-height: 24px;
+    color: white;
+  }
+}
 .cheader-system{
-  position: absolute;
-  left: 850px;
-  right: 150px;
-  .ivu-menu-light{
-    background: transparent;
+  border-left: 2px solid #2b85e4;
+  float: right;
+  width: 80px;
+  text-align: center;
+  .cheader-system-title{
+    line-height: 40px;
+    text-align: center;
+    color: #2b85e4;
   }
-  .ivu-menu-horizontal.ivu-menu-light:after{
-    height: 0px;
-  }
-  .ivu-menu-item{
-    color: white !important;
-    font-size: 17px;
+  .cheader-system-content{
+    line-height: 24px;
+    color: #2b85e4;
   }
 }
 .cheader-user{
+  background: #2b85e4;
   float: right;
-  margin-right: 20px;
+  width: 150px;
+  text-align: center;
   .ivu-dropdown{
     font-size: 14px;
     text-align: center;
   }
   .photo{
     line-height: 40px;
+    height: 40px;
     text-align: center
   }
   .menu{
+    height: 24px;
     line-height: 24px;
   }
   a{
