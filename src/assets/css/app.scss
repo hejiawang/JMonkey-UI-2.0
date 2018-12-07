@@ -39,3 +39,42 @@ html, body{
     padding: 0 17px;
   }
 }
+
+/* header头信息样式 */
+.cheader-images{
+  float: left;
+  img{
+    width: 64px;
+    height: 64px;
+    margin-left: 20px;
+  }
+}
+.cheader-info{
+  float: left;
+  span{
+    color: #fff;
+    font-style: oblique;
+    font-size: 30px;
+    margin-left: 30px;
+    letter-spacing: 5px;
+    text-shadow: 5px 2px 5px #676a6c;
+  }
+}
+.cheader-user{
+  float: right;
+  margin-right: 20px;
+  .ivu-dropdown{
+    font-size: 14px;
+    text-align: center;
+  }
+  .photo{
+    line-height: 40px;
+    text-align: center
+  }
+  .menu{
+    line-height: 24px;
+  }
+  a{
+    color: white;
+  }
+}

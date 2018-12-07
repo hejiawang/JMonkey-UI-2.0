@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <Header> </Header>
+    <CHeader> </CHeader>
     <Layout>
       <Sider hide-trigger >
         <Menu :active-name="activeMenu" theme="light" width="auto" accordion :open-names="['1']" @on-select="selectMenu">
@@ -52,9 +52,13 @@
 
 <script>
 import store from '@/store'
+import CHeader from '@/components/layout/header'
 
 export default {
   name: 'LayoutMain',
+  components: {
+    CHeader
+  },
   created () {
     this.activeMenu = store.getters.currentMenu
     this.$router.push(store.getters.currentMenu)

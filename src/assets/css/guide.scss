@@ -1,0 +1,87 @@
+.guide {
+  .ivu-layout-header{
+    background-image: none !important;
+    background: #0022d0;
+  }
+  .content{
+    background: #0022d0;
+    padding: 0px 80px;
+  }
+
+  .content-col{
+    margin-top: 80px;
+  }
+
+  .content-menu{
+    .ivu-row{
+      margin: 0px !important;
+    }
+    .ivu-col{
+      margin-top: 20px;
+      height: 95px;
+    }
+    .content-menu-detail{
+      text-align: center;
+      font-size: 25px;
+      span{
+        color: white;
+      }
+    }
+  }
+
+  .content-right{
+    margin-left: 100px;
+    height: 250px;
+    background: #0022d0;
+    background-image: url(../../assets/images/guide/guide_content.png);
+    background-size: cover;
+    color: white;
+  }
+
+  .content-left{
+    float: left;
+    width: 100px;
+    height: 250px;
+    background: #0017a8;
+  }
+
+  .content-sys{
+    height: 250px;
+    width: 100%;
+    font-size: 35px;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    letter-spacing: 16px;
+    a{
+      color: white;
+    }
+  }
+
+  .ivu-card{
+    height: 250px;
+  }
+
+  .ivu-card-body{
+    height: 100%;
+    padding: 0px;
+  }
+
+  .ivu-card-bordered{
+    border: 0px solid #0113A5;
+  }
+
+  .content-only{
+    text-align: center;
+    height: 100%;
+    padding: 40px;
+    background: #0022d0;
+    background-image: url(../../assets/images/guide/guide_content.png);
+    background-size: cover;
+    font-size: 40px;
+
+    span{
+      color: white;
+    }
+  }
+}
