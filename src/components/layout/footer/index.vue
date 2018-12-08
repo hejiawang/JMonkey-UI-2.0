@@ -1,5 +1,5 @@
 <template>
-  <Footer> 2011-2016 &copy; TalkingData </Footer >
+  <Footer> 2011-2016 &copy; JMonkey </Footer >
 </template>
 <script>
 export default {

@@ -1,6 +1,6 @@
 <template>
   <Layout v-layoutIn class="guide">
-    <CHeader></CHeader>
+    <CHeader :system="false" />
     <Layout class="content">
       <Row :gutter="120">
         <Col span="8" class="content-col">
