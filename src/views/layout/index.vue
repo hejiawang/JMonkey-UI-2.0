@@ -4,27 +4,15 @@
     <Layout>
       <Sider hide-trigger class="app-layout-sider">
         <Menu :active-name="activeMenu" theme="light" width="auto" accordion :open-names="['1']" @on-select="selectMenu">
-          <MenuItem name="/home" to="/home">
-            <icon type="md-home"></icon>
-            首页
-          </MenuItem>
+          <MenuItem name="/home" to="/home"><icon type="md-home"></icon>系统首页</MenuItem>
+          <MenuItem name="/sys/user" to="/sys/user"><Icon type="ios-contact" />用户管理</MenuItem>
+          <MenuItem name="/sys/role" to="/sys/role"><Icon type="md-globe" />角色管理</MenuItem>
+          <MenuItem name="/sys/dept" to="/sys/dept"><Icon type="logo-xbox" />部门管理</MenuItem>
           <Submenu name="1">
-            <template slot="title">
-              <Icon type="ios-navigate"></Icon>
-              系统设置
-            </template>
-            <MenuItem name="/sys/user" to="/sys/user">用户管理</MenuItem>
-            <MenuItem name="/sys/role" to="/sys/role">角色管理</MenuItem>
-            <MenuItem name="/sys/dept" to="/sys/dept">部门管理</MenuItem>
+            <template slot="title"> <Icon type="ios-navigate"></Icon>资源管理</template>
+            <MenuItem name="/sys/system" to="/sys/system">系统管理</MenuItem>
+            <MenuItem name="/sys/menu" to="/sys/menu">菜单管理</MenuItem>
             <MenuItem name="/sys/button" to="/sys/button">按钮管理</MenuItem>
-          </Submenu>
-          <Submenu name="2">
-            <template slot="title">
-              <Icon type="ios-keypad"></Icon>
-              Item 2
-            </template>
-            <MenuItem name="2-1"> Option 1 </MenuItem>
-            <MenuItem name="2-2">  Option 2 </MenuItem>
           </Submenu>
         </Menu>
       </Sider>
