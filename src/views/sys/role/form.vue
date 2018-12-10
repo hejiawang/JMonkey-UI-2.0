@@ -109,12 +109,7 @@ export default {
      */
     modify () {
       modify(this.roleForm).then(data => {
-        if (data.isSuccess) {
-          this.$Message.success('修改成功')
-          this.cancel()
-
-          this.$emit('refresh', '')
-        }
+        if (data.isSuccess) this.callBack('修改成功')
       })
     },
     /**
@@ -122,13 +117,17 @@ export default {
      */
     raise () {
       save(this.roleForm).then(data => {
-        if (data.isSuccess) {
-          this.$Message.success('新增成功')
-          this.cancel()
-
-          this.$emit('refresh', '')
-        }
+        if (data.isSuccess) this.callBack('新增成功')
       })
+    },
+    /**
+     * 修改/新增角色信息成功回掉
+     */
+    callBack (msg) {
+      this.$Message.success(msg)
+      this.cancel()
+
+      this.$emit('refresh', '')
     },
     /**
      * 关闭modal
@@ -138,7 +137,7 @@ export default {
       this.isShow = false
     },
     /**
-     * modal显示/隐藏变化回掉
+     * modal显示/隐藏变化回调
      * @param isOpen true显示 false隐藏
      */
     visibleChange (isOpen) {

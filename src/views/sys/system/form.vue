@@ -1,11 +1,11 @@
 <template>
-  <Modal v-model="isShow" :title="title" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="500">
+  <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="500">
     <Form ref="systemForm" :model="systemForm" :rules="systemRules" :label-width="100">
         <FormItem label="系统名称" prop="name">
-          <Input type="text" v-model="systemForm.name" clearable />
+          <Input type="text" v-model.trim="systemForm.name" clearable />
         </FormItem>
         <FormItem label="系统图标" prop="icon">
-          <Input type="text" v-model="systemForm.icon" clearable />
+          <Input type="text" v-model.trim="systemForm.icon" clearable />
         </FormItem>
       <FormItem label="系统排序" prop="sort">
         <InputNumber :max="1000" :min="1" v-model="systemForm.sort" style="width: 100%"/>
@@ -50,11 +50,14 @@
   </Modal>
 </template>
 <script>
+import { save, modify, find } from '@/api/sys/system'
+
 export default {
   name: 'SysSystem_Form',
   props: {
     value: {type: Boolean, default: false, required: true},
-    type: {type: String, default: 'View', required: true}
+    type: {type: String, default: 'View', required: true},
+    systemId: {type: String, default: '', required: false}
   },
   watch: {
     value (val) {
@@ -67,14 +70,15 @@ export default {
   computed: {
     title () {
       let titleAry = {
-        'Modify': '编辑系统信息',
-        'Raise': '新增系统信息'
+        'modify': '编辑系统信息',
+        'raise': '新增系统信息'
       }
       return titleAry[this.type]
     }
   },
   data () {
     return {
+      loading: true,
       isShow: false,
       systemForm: {
         id: '',
@@ -86,20 +90,64 @@ export default {
         showMenu: 'Yes',
         sort: 1
       },
-      systemRules: { }
+      systemRules: {
+        name: { required: true, message: '请输入系统名称', trigger: 'blur' },
+        icon: { required: true, message: '请输入系统图标', trigger: 'blur' }
+      }
     }
   },
   methods: {
+    /**
+     * 操作系统信息
+     */
     ok () {
+      this.$refs.systemForm.validate((valid) => {
+        if (valid) {
+          this[this.type]()
+        } else {
+          this.loading = false
+          this.$nextTick(() => { this.loading = true })
+        }
+      })
+    },
+    /**
+     * 新增系统信息
+     */
+    raise () {
+      save(this.systemForm).then(data => {
+        if (data.isSuccess) this.callBack('新增成功')
+      })
+    },
+    /**
+     * 修改系统信息
+     */
+    modify () {
+      modify(this.systemForm).then(data => {
+        if (data.isSuccess) this.callBack('修改成功')
+      })
+    },
+    /**
+     * 修改/新增系统信息成功回调
+     */
+    callBack (msg) {
+      this.$Message.success(msg)
+      this.cancel()
+
       this.$emit('refresh', '')
-      this.isShow = false
     },
     cancel () {
+      this.$refs.systemForm.resetFields()
       this.isShow = false
     },
+    /**
+     * modal显示/隐藏变化回调
+     * @param isOpen true显示 false隐藏
+     */
     visibleChange (isOpen) {
-      if (isOpen) {
-        console.info(1)
+      if (isOpen && this.type === 'modify' && !this.$CV.isEmpty(this.systemId)) {
+        find(this.systemId).then(data => {
+          this.systemForm = data.result
+        })
       }
     }
   }
