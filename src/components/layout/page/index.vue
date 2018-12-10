@@ -21,11 +21,9 @@ export default {
   },
   watch: {
     value (val) {
-      console.info('page value')
       this.pageQuery = val
     },
     pageQuery (val) {
-      console.info('page pageQuery')
       this.$emit('input', val)
     }
   },
