@@ -76,17 +76,21 @@ export default {
             // 缩进
             for (let i = 0; i < (params.row._level - 1); i++) {
               renderContent.push(h('span', {
-                style: { width: '40px', display: 'inline-block' }
+                style: { width: '25px', display: 'inline-block' }
               }))
             }
 
-            // 判断是否显示下级图标
+            // 判断是否显示图标
             if (!this.$CV.isEmpty(params.row.children)) {
               let iconType = params.row.children[0]._show ? 'ios-arrow-down' : 'ios-arrow-forward'
               let renderIcon = h('Icon', {
                 props: { type: iconType, size: 25 }
               })
               renderContent.push(renderIcon)
+            } else {
+              renderContent.push(h('span', {
+                style: { width: '25px', display: 'inline-block' }
+              }))
             }
 
             // 显示菜单名称
@@ -104,7 +108,7 @@ export default {
           key: 'icon',
           width: 80,
           render: (h, params) => {
-            return h('Icon', { props: { type: params.row.icon } })
+            return h('Icon', { props: { type: params.row.icon, size: 25 } })
           }
         },
         {title: '路由', key: 'path', tooltip: true},

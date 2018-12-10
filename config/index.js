@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+var baseUrl = 'http://49.4.54.245:8080'
 
 module.exports = {
   dev: {
@@ -10,7 +11,22 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/auth': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auth': '/auth'
+        }
+      },
+      '/sys': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/sys': '/sys'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

@@ -37,6 +37,8 @@ import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
 import store from '@/store'
 
+import { list } from '@/api/sys/user'
+
 export default {
   name: 'SysUser',
   components: {
@@ -103,8 +105,14 @@ export default {
     }
   },
   created () {
+    this.initList()
   },
   methods: {
+    initList () {
+      list({}).then(data => {
+        console.info(data)
+      })
+    },
     deleteHandle (row) {
       this.$CDelete({
         'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的用户将被删除</p><p>是否继续？</p>',
