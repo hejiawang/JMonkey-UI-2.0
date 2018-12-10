@@ -30,11 +30,13 @@
     </Row>
 
     <CRoleForm v-model="showForm" :type="formType" :roleId="currentRoleId" @refresh="restSearch"/>
+    <CRoleAuthorize v-model="showAuthorize"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import CRoleForm from '@/views/sys/role/form'
+import CRoleAuthorize from '@/views/sys/role/authorize'
 import { list, del } from '@/api/sys/role'
 
 /**
@@ -43,7 +45,7 @@ import { list, del } from '@/api/sys/role'
 export default {
   name: 'SysRole',
   components: {
-    CRoleForm
+    CRoleForm, CRoleAuthorize
   },
   computed: {
     roleTableHeight () {
@@ -64,7 +66,8 @@ export default {
       roleTableData: [ ],
       formType: '',
       showForm: false,
-      currentRoleId: ''
+      currentRoleId: '',
+      showAuthorize: false
     }
   },
   created () {
@@ -96,7 +99,8 @@ export default {
                 on: { click: () => { this.deleteHandle(params.row) } }
               }, '删除'),
               h('Button', {
-                props: { type: 'success', ghost: true }
+                props: { type: 'success', ghost: true },
+                on: { click: () => { this.authHandle(params.row) } }
               }, '权限')
             ])
           }
@@ -157,6 +161,13 @@ export default {
      */
     modifyHandle (row) {
       this.formType = 'modify'; this.showForm = true; this.currentRoleId = row.id
+    },
+    /**
+     * 为角色授权
+     * @param row 角色信息
+     */
+    authHandle (row) {
+      this.showAuthorize = true
     }
   }
 }
