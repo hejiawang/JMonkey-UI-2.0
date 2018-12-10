@@ -17,7 +17,7 @@ import store from '@/store'
 
 export default {
   name: 'CMenu',
-  data: function () {
+  data () {
     return {
       activeMenu: ''
     }

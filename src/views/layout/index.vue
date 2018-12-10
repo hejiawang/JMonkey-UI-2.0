@@ -30,7 +30,7 @@ export default {
   },
   created () {
   },
-  data: function () {
+  data () {
     return {
     }
   },

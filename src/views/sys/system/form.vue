@@ -65,15 +65,15 @@ export default {
     }
   },
   computed: {
-    title: function () {
+    title () {
       let titleAry = {
-        'Modify': '编辑心痛信息',
+        'Modify': '编辑系统信息',
         'Raise': '新增系统信息'
       }
       return titleAry[this.type]
     }
   },
-  data: function () {
+  data () {
     return {
       isShow: false,
       systemForm: {

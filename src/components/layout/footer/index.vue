@@ -4,7 +4,7 @@
 <script>
 export default {
   name: 'CFooter',
-  data: function () {
+  data () {
     return {
     }
   },

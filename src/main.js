@@ -12,7 +12,7 @@ import 'babel-polyfill'
 import store from './store'
 
 import layoutIn from '@/directive/layoutIn'
-
+import CPage from '@/components/layout/page'
 import CDelete from './plugins/deleteModal/index'
 import CViladate from './plugins/validate/index'
 
@@ -25,7 +25,7 @@ Vue.use(iView, {
 Vue.use(animated)
 Vue.use(CDelete)
 Vue.use(CViladate)
-
+Vue.component('CPage', CPage)
 Vue.directive('layoutIn', layoutIn)
 
 /* eslint-disable no-new */

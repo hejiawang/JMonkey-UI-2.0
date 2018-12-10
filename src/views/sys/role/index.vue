@@ -15,8 +15,8 @@
 
           <FormItem :label-width="0">
             <ButtonGroup>
-              <Button icon="ios-search" ></Button>
-              <Button icon="ios-trash-outline" ></Button>
+              <Button icon="ios-search" />
+              <Button icon="ios-trash-outline" @click="restSearch" />
             </ButtonGroup>
           </FormItem>
         </Form>
@@ -26,7 +26,7 @@
       <Table :height="roleTableHeight" border :columns="roleTableColumns" :data="roleTableData"></Table>
     </Row>
     <Row>
-      <Page :total="listQuery.total" :current="listQuery.current" :page-size="listQuery.size" @on-change="changeCurrent" @on-page-size-change="changePageSize" show-sizer show-elevator show-total></Page>
+      <CPage v-model="listQuery" @on-list="initRoleList" ref="rolePage"/>
     </Row>
   </Layout>
 </template>
@@ -38,11 +38,11 @@ import { list } from '@/api/sys/role'
 export default {
   name: 'SysRole',
   computed: {
-    roleTableHeight: function () {
-      return store.getters.windowHeight - 280
+    roleTableHeight () {
+      return store.getters.windowHeight - 290
     }
   },
-  data: function () {
+  data () {
     return {
       listQuery: {
         name: null,
@@ -92,15 +92,11 @@ export default {
     initRoleList () {
       list(this.listQuery).then(data => {
         this.roleTableData = data.rows
-        this.listQuery.total = data.total
+        this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
       })
     },
-    changeCurrent (current) {
-      this.listQuery.current = current
-      this.initRoleList()
-    },
-    changePageSize (pageSize) {
-      this.listQuery.size = pageSize
+    restSearch () {
+      this.$refs.rolePage.rest()
       this.initRoleList()
     }
   }

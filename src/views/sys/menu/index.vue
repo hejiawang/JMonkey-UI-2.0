@@ -27,15 +27,15 @@ export default {
   components: {
   },
   computed: {
-    menuTableHeight: function () {
+    menuTableHeight () {
       return store.getters.windowHeight - 235
     },
-    menuTreeTableData: function () {
+    menuTreeTableData () {
       let tmpTreeData = Array.isArray(this.menuTableData) ? this.menuTableData : [this.menuTableData]
       return treeToArray(tmpTreeData, false)
     }
   },
-  data: function () {
+  data () {
     return {
       menuTableColumns: [],
       menuTableData: [

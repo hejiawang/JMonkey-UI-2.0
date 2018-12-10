@@ -11,7 +11,7 @@ export default {
   components: {
     CBreadcrumb, CTabs
   },
-  data: function () {
+  data () {
     return {
     }
   },

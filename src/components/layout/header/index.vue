@@ -77,12 +77,12 @@ export default {
   props: {
     system: {type: Boolean, default: true, required: false}
   },
-  data: function () {
+  data () {
     return {
     }
   },
   computed: {
-    cheaderUserBackground: function () {
+    cheaderUserBackground () {
       if (this.system) return 'background: #2b85e4'
       else return 'background: #0022d0'
     }

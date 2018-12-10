@@ -1,41 +1,53 @@
 <template>
-  <Page :total="listQuery.total" :current="listQuery.current" :page-size="listQuery.size" @on-change="changeCurrent" @on-page-size-change="changePageSize" show-sizer show-elevator show-total></Page>
+  <Page :total="pageQuery.total" :current="pageQuery.current" :page-size="pageQuery.size" @on-change="changeCurrent" @on-page-size-change="changePageSize" show-sizer show-elevator show-total></Page>
 </template>
 <script>
+/**
+ * 封装分页组件
+ * 使用时请注意，在父页面手动对pageQuery赋值
+ * 请参考角色管理页面:
+ *     this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
+ */
 export default {
   name: 'CPage',
   props: {
     value: {
-      default: {
-        current: 1,
-        size: 10,
-        total: 0
-      }
-    }
-  },
-  data: function () {
-    return {
-      listQuery: {}
+      type: Object,
+      default: () => ({
+        current: 1, size: 10, total: 0
+      }),
+      required: true
     }
   },
   watch: {
     value (val) {
-      this.listQuery = val
+      console.info('page value')
+      this.pageQuery = val
     },
-    listQuery (val) {
+    pageQuery (val) {
+      console.info('page pageQuery')
       this.$emit('input', val)
+    }
+  },
+  data: function () {
+    return {
+      pageQuery: {current: 1, size: 10, total: 100}
     }
   },
   created () {
   },
   methods: {
     changeCurrent (current) {
-      this.listQuery.current = current
+      this.pageQuery.current = current
       this.$emit('on-list', '')
     },
     changePageSize (pageSize) {
-      this.listQuery.size = pageSize
+      this.pageQuery.size = pageSize
       this.$emit('on-list', '')
+    },
+    rest () {
+      this.pageQuery.current = 1
+      this.pageQuery.size = 10
     }
   }
 }

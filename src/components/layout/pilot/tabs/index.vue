@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'CTabs',
-  data: function () {
+  data () {
     return {
     }
   },

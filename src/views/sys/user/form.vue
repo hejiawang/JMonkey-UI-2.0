@@ -76,7 +76,7 @@ export default {
     }
   },
   computed: {
-    title: function () {
+    title () {
       let titleAry = {
         'View': '查看用户信息',
         'Modify': '编辑用户信息',
@@ -85,7 +85,7 @@ export default {
       return titleAry[this.type]
     }
   },
-  data: function () {
+  data () {
     return {
       isShow: false,
       userForm: {

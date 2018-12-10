@@ -27,13 +27,13 @@ export default {
     }
   },
   computed: {
-    title: function () {
+    title () {
       let t = '修改密码'
       if (!this.$CV.isEmpty(this.userName)) t = t + '（用户名称：' + this.userName + '）'
       return t
     }
   },
-  data: function () {
+  data () {
     return {
       isShow: false,
       passwordForm: {

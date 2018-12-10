@@ -22,7 +22,7 @@ import store from '@/store'
 
 export default {
   name: 'SysButton',
-  data: function () {
+  data () {
     return {
       treeDate: [
         {
@@ -96,7 +96,7 @@ export default {
     }
   },
   computed: {
-    buttonTableHeight: function () {
+    buttonTableHeight () {
       return store.getters.windowHeight - 230
     }
   },

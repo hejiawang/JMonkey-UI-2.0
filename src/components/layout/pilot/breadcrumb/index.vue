@@ -9,7 +9,7 @@
 <script>
 export default {
   name: 'CBreadcrumb',
-  data: function () {
+  data () {
     return {
     }
   },

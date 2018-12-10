@@ -44,7 +44,7 @@ export default {
   components: {
     CModifyPassword, CUserForm
   },
-  data: function () {
+  data () {
     return {
       userSearchForm: {
         userName: ''
@@ -100,7 +100,7 @@ export default {
     }
   },
   computed: {
-    userTableHeight: function () {
+    userTableHeight () {
       return store.getters.windowHeight - 280
     }
   },

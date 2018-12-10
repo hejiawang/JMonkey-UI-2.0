@@ -38,7 +38,7 @@ export default {
   components: {
     CSystemForm
   },
-  data: function () {
+  data () {
     return {
       dataList: [],
       formType: '',
