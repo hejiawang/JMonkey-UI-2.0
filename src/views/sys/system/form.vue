@@ -1,12 +1,12 @@
 <template>
   <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="500">
     <Form ref="systemForm" :model="systemForm" :rules="systemRules" :label-width="100">
-        <FormItem label="系统名称" prop="name">
-          <Input type="text" v-model.trim="systemForm.name" clearable />
-        </FormItem>
-        <FormItem label="系统图标" prop="icon">
-          <Input type="text" v-model.trim="systemForm.icon" clearable />
-        </FormItem>
+      <FormItem label="系统名称" prop="name">
+        <Input type="text" v-model.trim="systemForm.name" :maxlength="20" clearable />
+      </FormItem>
+      <FormItem label="系统图标" prop="icon">
+        <Input type="text" v-model.trim="systemForm.icon" :maxlength="50" clearable />
+      </FormItem>
       <FormItem label="系统排序" prop="sort">
         <InputNumber :max="1000" :min="1" v-model="systemForm.sort" style="width: 100%"/>
       </FormItem>

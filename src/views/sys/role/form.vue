@@ -2,13 +2,13 @@
   <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange">
     <Form ref="roleForm" :model="roleForm" :rules="roleRules" :label-width="90">
       <FormItem label="角色名称" prop="name">
-        <Input type="text" v-model.trim="roleForm.name" clearable />
+        <Input type="text" v-model.trim="roleForm.name" :maxlength="20" clearable />
       </FormItem>
       <FormItem label="角色编码" prop="code">
-        <Input type="text" v-model.trim="roleForm.code" clearable />
+        <Input type="text" v-model.trim="roleForm.code" :maxlength="50" clearable />
       </FormItem>
       <FormItem label="备注" prop="remark">
-        <Input type="textarea" v-model.trim="roleForm.remark" clearable />
+        <Input type="textarea" v-model.trim="roleForm.remark" :maxlength="100" clearable />
       </FormItem>
     </Form>
   </Modal>
@@ -100,6 +100,12 @@ export default {
           this[this.type]()
         } else {
           this.loading = false
+          /*
+            若不掉用$nextTick ：
+              this.loading = false
+              this.loading = true
+              这样相当于没执行，被vue优化掉了
+           */
           this.$nextTick(() => { this.loading = true })
         }
       })

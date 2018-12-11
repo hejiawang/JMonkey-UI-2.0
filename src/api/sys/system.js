@@ -4,7 +4,7 @@ import request from '@/utils/request'
  * 获取所有系统信息
  * @param query 查询条件
  */
-export const list = (query) => {
+export const list = () => {
   return request({
     url: '/sys/system/list',
     method: 'get'

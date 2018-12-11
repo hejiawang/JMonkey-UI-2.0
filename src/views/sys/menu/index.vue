@@ -1,35 +1,47 @@
 <template>
   <Layout v-layoutIn class="app-sys-menu">
     <Row>
+      <!-- 左侧菜单 -->
       <Col span="5">
-        <Menu active-name="1">
-          <MenuItem name="1"> <Icon type="md-document" /> 文章管理 </MenuItem>
-          <MenuItem name="2"> <Icon type="md-chatbubbles" /> 评论管理 </MenuItem>
+        <Menu :active-name="currentSystemRId" @on-select="selectMenu">
+          <MenuItem v-for="system in systemList" :key="system.rid" :name="system.rid">
+            <Icon :type="system.icon" /> {{system.name}}
+          </MenuItem>
         </Menu>
       </Col>
+      <!-- 右侧菜单树形列表 -->
       <Col span="19">
         <Row>
-          <Button type="primary">新增</Button>
+          <Button type="primary" @click="raiseHandle">新增</Button>
         </Row>
         <Row style="margin-top: 20px">
-          <Table :height="menuTableHeight" border :columns="menuTableColumns" :data="menuTreeTableData" stripe :row-class-name="showTableTree"></Table>
+          <Table :height="menuTableHeight" border :columns="menuTableColumns" :data="menuTreeTableData" stripe :row-class-name="showTableTree" :loading="listLoading"/>
         </Row>
       </Col>
     </Row>
+
+    <CMenuForm v-model="showForm" :type="formType" :systemRId="currentSystemRId" @refresh="initMenuTreeList"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import { treeToArray } from '@/utils/common'
+import { list as systemList } from '@/api/sys/system'
+import { treeList } from '@/api/sys/menu'
+import CMenuForm from '@/views/sys/menu/form'
 
 export default {
   name: 'SysMenu',
   components: {
+    CMenuForm
   },
   computed: {
     menuTableHeight () {
       return store.getters.windowHeight - 235
     },
+    /**
+     * 将树形属性转换为树形表格需要的数据
+     */
     menuTreeTableData () {
       let tmpTreeData = Array.isArray(this.menuTableData) ? this.menuTableData : [this.menuTableData]
       return treeToArray(tmpTreeData, false)
@@ -38,32 +50,24 @@ export default {
   data () {
     return {
       menuTableColumns: [],
-      menuTableData: [
-        {
-          name: '系统设置',
-          icon: 'md-apps',
-          path: '1',
-          component: '1',
-          isShow: 'Yes',
-          isIndex: 'Yes',
-          showType: 'Home',
-          sort: '1',
-          children: [
-            { name: '用户管理', icon: 'md-apps', path: '1', component: '1', isShow: 'Yes', isIndex: 'Yes', showType: 'Home', sort: '1' },
-            { name: '角色管理', icon: 'md-apps', path: '1', component: '1', isShow: 'Yes', isIndex: 'No', showType: 'Screen', sort: '1' }
-          ]
-        },
-        { name: '足球系会', icon: 'md-apps', path: '1', component: '1', isShow: 'No', isIndex: 'No', showType: 'Home', sort: '1' },
-        { name: '就是一样', icon: 'md-apps', path: '1', component: '1', isShow: 'Yes', isIndex: 'No', showType: 'Screen', sort: '1' }
-      ],
+      menuTableData: [],
       yesOrNo: {'Yes': '是', 'No': '否'},
-      showTypeConver: {'Home': '内置页', 'Screen': '独立页'}
+      showTypeConver: {'Home': '内置页', 'Screen': '独立页'},
+      systemList: [],
+      currentSystemRId: '',
+      listLoading: false,
+      formType: '',
+      showForm: false
     }
   },
   created () {
     this.initMenuTableColumns()
+    this.initSystemList()
   },
   methods: {
+    /**
+     * 初始化菜单树形表格头
+     */
     initMenuTableColumns () {
       this.menuTableColumns = [
         {
@@ -158,6 +162,45 @@ export default {
         }
       ]
     },
+    /**
+     * 初始化系统信息
+     */
+    initSystemList () {
+      systemList().then(data => {
+        this.systemList = data.result
+        console.info(this.systemList)
+        if (!this.$CV.isEmpty(this.systemList)) {
+          // 当systemList赋值后，MenuItem标签重新渲染，若没有$nextTick，Menu标签active-name找不到对应的MenuItem
+          this.$nextTick(_ => {
+            // ? ? ? 后台返回的是rId，到前端怎么变成rid了？？？
+            this.currentSystemRId = this.systemList[0].rid
+            this.initMenuTreeList()
+          })
+        }
+      })
+    },
+    /**
+     * 初始化菜单树形表格
+     */
+    initMenuTreeList () {
+      this.listLoading = true
+      treeList(this.currentSystemRId).then(data => {
+        this.menuTableData = data.result
+        this.listLoading = false
+      })
+    },
+    /**
+     * 选择系统
+     * @param name 系统id
+     */
+    selectMenu (rid) {
+      this.currentSystemRId = rid
+      this.initMenuTreeList()
+    },
+    /**
+     * 显示子菜单
+     * @param index 菜单在树形表格的序号
+     */
     showChildren (index) {
       if (!this.$CV.isEmpty(this.menuTableData[index])) {
         this.menuTableData[index].children.forEach(menu => {
@@ -165,8 +208,20 @@ export default {
         })
       }
     },
+    /**
+     * 树形表格显示行时的样式
+     * @param row
+     * @param index
+     * @returns {string}
+     */
     showTableTree (row, index) {
       return row._show ? '' : 'switchTableTree'
+    },
+    /**
+     * 新增菜单信息
+     */
+    raiseHandle () {
+      this.formType = 'raise'; this.showForm = true
     }
   }
 }
