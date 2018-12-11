@@ -81,6 +81,7 @@ export default {
       isShow: false,
       menuForm: {
         name: null,
+        parentId: null,
         parentName: null,
         icon: null,
         path: null,

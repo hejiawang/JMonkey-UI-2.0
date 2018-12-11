@@ -25,3 +25,14 @@ export const save = (obj) => {
     data: obj
   })
 }
+
+/**
+ * 删除菜单信息
+ * @param id 菜单信息id
+ */
+export const del = (id) => {
+  return request({
+    url: '/sys/menu/delete/' + id,
+    method: 'delete'
+  })
+}

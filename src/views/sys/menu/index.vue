@@ -27,7 +27,7 @@
 import store from '@/store'
 import { treeToArray } from '@/utils/common'
 import { list as systemList } from '@/api/sys/system'
-import { treeList } from '@/api/sys/menu'
+import { treeList, del } from '@/api/sys/menu'
 import CMenuForm from '@/views/sys/menu/form'
 
 export default {
@@ -155,7 +155,8 @@ export default {
                 props: { type: 'warning', ghost: true }
               }, '编辑'),
               h('Button', {
-                props: { type: 'error', ghost: true }
+                props: { type: 'error', ghost: true },
+                on: { click: () => { this.deleteHandle(params.row) } }
               }, '删除')
             ])
           }
@@ -222,6 +223,21 @@ export default {
      */
     raiseHandle () {
       this.formType = 'raise'; this.showForm = true
+    },
+    /**
+     * 删除菜单信息
+     * @param row 菜单信息
+     */
+    deleteHandle (row) {
+      this.$CDelete({
+        'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的菜单以及下属资源</p><p>将被删除，是否继续？</p>',
+        'confirm': () => {
+          del(row.id).then(() => {
+            this.initMenuTreeList()
+            this.$Message.success('删除成功')
+          })
+        }
+      })
     }
   }
 }
