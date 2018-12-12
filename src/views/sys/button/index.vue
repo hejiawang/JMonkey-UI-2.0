@@ -11,26 +11,33 @@
         </Card>
       </Col>
       <Col span="19">
-        <Row style="height: 53px;"> <Button type="primary">新增</Button> </Row>
+        <Row style="height: 53px;"> <Button type="primary" @click="raiseHandle">新增</Button> </Row>
         <Table :height="buttonTableHeight" border :columns="buttonTableColumns" :data="buttonTableData" stripe></Table>
       </Col>
     </Row>
+
+    <CButtonForm v-model="showForm" :type="formType"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import { smtree } from '@/api/sys/resource'
+import { list } from '@/api/sys/button'
+import CButtonForm from '@/views/sys/button/form'
 
 export default {
   name: 'SysButton',
+  components: {
+    CButtonForm
+  },
   data () {
     return {
       resourceTreeDate: [],
       buttonTableColumns: [],
-      buttonTableData: [
-        {id: 'id1', name: '新增', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'},
-        {id: 'id2', name: '修改', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'}
-      ]
+      buttonTableData: [],
+      currentResource: null,
+      showForm: false,
+      formType: ''
     }
   },
   computed: {
@@ -85,7 +92,7 @@ export default {
           class: 'ivu-tree-title',
           on: { click: (e) => {
             this.buildTreeStyle(e)
-            // this.initButtonTable(data)
+            this.initButtonTable(data)
           }}
         },
         [
@@ -109,6 +116,16 @@ export default {
         console.info(e.path)
         e.path[1].style.backgroundColor = '#2d8cf0'
       }) */
+    },
+    initButtonTable (resource) {
+      this.currentResource = resource
+
+      list(resource.id).then(data => {
+        this.buttonTableData = data.result
+      })
+    },
+    raiseHandle () {
+      this.formType = 'raise'; this.showForm = true
     }
   }
 }
