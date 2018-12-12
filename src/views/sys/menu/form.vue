@@ -4,8 +4,9 @@
       <FormItem label="菜单名称" prop="name">
         <Input type="text" v-model.trim="menuForm.name" :maxlength="20" clearable />
       </FormItem>
-      <FormItem label="上级菜单" prop="parentName">
-        <Input type="text" v-model.trim="menuForm.parentName" :maxlength="20" clearable />
+      <FormItem label="上级资源" prop="parentId">
+        <!--<Input type="text" v-model.trim="menuForm.parentName" :maxlength="20" clearable />-->
+        <CRsmTree v-model="menuForm.parentId"></CRsmTree>
       </FormItem>
       <FormItem label="菜单图标" prop="icon">
         <Input type="text" v-model.trim="menuForm.icon" :maxlength="50" clearable />
@@ -50,9 +51,13 @@
 </template>
 <script>
 import { save } from '@/api/sys/menu'
+import CRsmTree from '@/views/sys/resource/smTree'
 
 export default {
   name: 'SysMenu_Form',
+  components: {
+    CRsmTree
+  },
   props: {
     value: {type: Boolean, default: false, required: true},
     type: {type: String, default: 'raise', required: true},
@@ -82,7 +87,6 @@ export default {
       menuForm: {
         name: null,
         parentId: null,
-        parentName: null,
         icon: null,
         path: null,
         component: null,

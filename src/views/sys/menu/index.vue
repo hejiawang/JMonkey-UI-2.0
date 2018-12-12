@@ -169,7 +169,6 @@ export default {
     initSystemList () {
       systemList().then(data => {
         this.systemList = data.result
-        console.info(this.systemList)
         if (!this.$CV.isEmpty(this.systemList)) {
           // 当systemList赋值后，MenuItem标签重新渲染，若没有$nextTick，Menu标签active-name找不到对应的MenuItem
           this.$nextTick(_ => {

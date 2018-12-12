@@ -4,12 +4,12 @@ import request from '@/utils/request'
  * 菜单树形表格数据
  * @param systemId 归属系统id
  */
-export const treeList = (systemId) => {
+export const treeList = (rId) => {
   return request({
     url: '/sys/menu/treeList',
     method: 'get',
     params: {
-      'systemId': systemId
+      'rId': rId
     }
   })
 }

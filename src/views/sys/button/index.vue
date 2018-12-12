@@ -7,7 +7,7 @@
             <Icon type="md-apps"></Icon>
             <Tag color="warning">未选择菜单</Tag>
           </p>
-          <Tree :data="treeDate" :render="renderTreeContent"></Tree>
+          <Tree :data="resourceTreeDate" :render="renderTreeContent" ref="resourceTree"></Tree>
         </Card>
       </Col>
       <Col span="19">
@@ -19,52 +19,32 @@
 </template>
 <script>
 import store from '@/store'
+import { smtree } from '@/api/sys/resource'
 
 export default {
   name: 'SysButton',
   data () {
     return {
-      treeDate: [
-        {
-          title: '系统 1',
-          type: 'System',
-          children: [
-            {
-              title: '菜单 1-1',
-              type: 'Menu',
-              children: [
-                {
-                  title: '菜单 1-1-1',
-                  type: 'Menu'
-                },
-                {
-                  title: '菜单 1-1-2',
-                  type: 'Menu'
-                }
-              ]
-            },
-            {
-              title: '菜单 1-2',
-              type: 'Menu'
-            }
-          ]
-        },
-        {
-          title: '系统 2',
-          type: 'System',
-          children: [
-            {
-              title: '菜单 2-1',
-              type: 'Menu'
-            },
-            {
-              title: '菜单 2-2',
-              type: 'Menu'
-            }
-          ]
-        }
-      ],
-      buttonTableColumns: [
+      resourceTreeDate: [],
+      buttonTableColumns: [],
+      buttonTableData: [
+        {id: 'id1', name: '新增', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'},
+        {id: 'id2', name: '修改', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'}
+      ]
+    }
+  },
+  computed: {
+    buttonTableHeight () {
+      return store.getters.windowHeight - 230
+    }
+  },
+  created () {
+    this.initTableColumns()
+    this.initResourceTree()
+  },
+  methods: {
+    initTableColumns () {
+      this.buttonTableColumns = [
         {title: '名称', key: 'name'},
         {title: '请求方式', key: 'method'},
         {title: '请求路径', key: 'path'},
@@ -88,31 +68,47 @@ export default {
             ])
           }
         }
-      ],
-      buttonTableData: [
-        {id: 'id1', name: '新增', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'},
-        {id: 'id2', name: '修改', method: 'Get', path: '/sys/button/save', perrison: 'sys_button_add'}
       ]
-    }
-  },
-  computed: {
-    buttonTableHeight () {
-      return store.getters.windowHeight - 230
-    }
-  },
-  methods: {
+    },
+    initResourceTree () {
+      smtree().then(data => {
+        this.resourceTreeDate = data.result
+      })
+    },
     renderTreeContent (h, { root, node, data }) {
       let iconType = ''
-      if (node.node.type === 'System') iconType = 'md-apps'
-      else if (node.node.type === 'Menu') iconType = 'ios-menu'
+      if (data.type === 'System') iconType = 'md-apps'
+      else if (data.type === 'Menu') iconType = 'ios-menu'
 
-      return h('span', { class: 'ivu-tree-title' }, [
-        h('Icon', {
-          props: { type: iconType },
-          style: { marginRight: '8px' }
-        }),
-        h('span', data.title)
-      ])
+      return h('span',
+        {
+          class: 'ivu-tree-title',
+          on: { click: (e) => {
+            this.buildTreeStyle(e)
+            // this.initButtonTable(data)
+          }}
+        },
+        [
+          h('Icon', {
+            props: { type: iconType },
+            style: { marginRight: '8px' }
+          }),
+          h('span', data.name)
+        ]
+      )
+    },
+    buildTreeStyle (e) {
+      /* console.info(e)
+      console.info(this.$refs.resourceTree.$el)
+      this.$nextTick(() => {
+        let btns = this.$refs.resourceTree.$el.querySelectorAll('.ivu-tree-title')
+        for (let i = 0; i < btns.length; i++) {
+          btns[i].style.backgroundColor = '#fff'
+        }
+
+        console.info(e.path)
+        e.path[1].style.backgroundColor = '#2d8cf0'
+      }) */
     }
   }
 }
