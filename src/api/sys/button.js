@@ -36,3 +36,15 @@ export const del = (id) => {
     method: 'delete'
   })
 }
+
+/**
+ * 修改按钮信息
+ * @param obj 按钮信息
+ */
+export const modify = (obj) => {
+  return request({
+    url: '/sys/button/modify',
+    method: 'put',
+    data: obj
+  })
+}

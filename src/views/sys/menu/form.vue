@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="700">
+  <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="750">
     <Form ref="menuForm" :model="menuForm" :rules="menuRules" :label-width="90">
       <FormItem label="菜单名称" prop="name">
         <Input type="text" v-model.trim="menuForm.name" :maxlength="20" clearable />

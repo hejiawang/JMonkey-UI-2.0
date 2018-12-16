@@ -5,24 +5,25 @@
         <Card style="height: 100%;">
           <p slot="title">
             <Icon type="md-apps"></Icon>
-            <Tag color="warning">未选择菜单</Tag>
+            <Tag color="success" v-if="currentResource.id != null">{{currentResource.name}}</Tag>
+            <Tag color="warning" v-else>未选择菜单</Tag>
           </p>
           <Tree :data="resourceTreeDate" :render="renderTreeContent" ref="resourceTree"></Tree>
         </Card>
       </Col>
       <Col span="19">
-        <Row style="height: 53px;"> <Button type="primary" @click="raiseHandle">新增</Button> </Row>
-        <Table :height="buttonTableHeight" border :columns="buttonTableColumns" :data="buttonTableData" stripe></Table>
+        <Row style="height: 53px;"> <Button type="primary" @click="raiseHandle" :disabled="currentResource.id == null">新增</Button> </Row>
+        <Table :height="buttonTableHeight" border :columns="buttonTableColumns" :data="buttonTableData" stripe :loading="listLoading" />
       </Col>
     </Row>
 
-    <CButtonForm v-model="showForm" :type="formType"/>
+    <CButtonForm v-model="showForm" :type="formType" :resource="currentResource" :button="currentButton" @refresh="initButtonTable"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import { smtree } from '@/api/sys/resource'
-import { list } from '@/api/sys/button'
+import { list, del } from '@/api/sys/button'
 import CButtonForm from '@/views/sys/button/form'
 
 export default {
@@ -35,9 +36,11 @@ export default {
       resourceTreeDate: [],
       buttonTableColumns: [],
       buttonTableData: [],
-      currentResource: null,
+      currentResource: {},
+      currentButton: null,
       showForm: false,
-      formType: ''
+      formType: '',
+      listLoading: false
     }
   },
   computed: {
@@ -50,12 +53,15 @@ export default {
     this.initResourceTree()
   },
   methods: {
+    /**
+     * 初始化按钮表格头
+     */
     initTableColumns () {
       this.buttonTableColumns = [
         {title: '名称', key: 'name'},
+        {title: '权限标识', key: 'permission'},
         {title: '请求方式', key: 'method'},
-        {title: '请求路径', key: 'path'},
-        {title: '权限标识', key: 'perrison'},
+        {title: '请求路径', key: 'url'},
         {
           title: '操作',
           key: 'action',
@@ -64,24 +70,34 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('Button', {
-                props: { type: 'primary', ghost: true }
-              }, '查看'),
-              h('Button', {
-                props: { type: 'warning', ghost: true }
+                props: { type: 'warning', ghost: true },
+                on: { click: () => { this.modifyHandle(params.row) } }
               }, '编辑'),
               h('Button', {
-                props: { type: 'error', ghost: true }
+                props: { type: 'error', ghost: true },
+                on: { click: () => { this.deleteHandle(params.row) } }
               }, '删除')
             ])
           }
         }
       ]
     },
+    /**
+     * 初始化资源树信息
+     */
     initResourceTree () {
       smtree().then(data => {
         this.resourceTreeDate = data.result
       })
     },
+    /**
+     * 渲染表格树样式，绑定资源点击事件
+     * @param h
+     * @param root
+     * @param node
+     * @param data
+     * @returns {*}
+     */
     renderTreeContent (h, { root, node, data }) {
       let iconType = ''
       if (data.type === 'System') iconType = 'md-apps'
@@ -91,8 +107,8 @@ export default {
         {
           class: 'ivu-tree-title',
           on: { click: (e) => {
-            this.buildTreeStyle(e)
-            this.initButtonTable(data)
+            this.currentResource = data
+            this.initButtonTable()
           }}
         },
         [
@@ -104,26 +120,41 @@ export default {
         ]
       )
     },
-    buildTreeStyle (e) {
-      /* console.info(e)
-      console.info(this.$refs.resourceTree.$el)
-      this.$nextTick(() => {
-        let btns = this.$refs.resourceTree.$el.querySelectorAll('.ivu-tree-title')
-        for (let i = 0; i < btns.length; i++) {
-          btns[i].style.backgroundColor = '#fff'
-        }
-
-        console.info(e.path)
-        e.path[1].style.backgroundColor = '#2d8cf0'
-      }) */
-    },
-    initButtonTable (resource) {
-      this.currentResource = resource
-
-      list(resource.id).then(data => {
+    /**
+     * 初始化按钮表格数据
+     */
+    initButtonTable () {
+      this.listLoading = true
+      list(this.currentResource.id).then(data => {
         this.buttonTableData = data.result
+        this.listLoading = false
       })
     },
+    /**
+     * 删除按钮信息
+     * @param row
+     */
+    deleteHandle (row) {
+      this.$CDelete({
+        'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的按钮将被删除</p><p>是否继续？</p>',
+        'confirm': () => {
+          del(row.id).then(() => {
+            this.initButtonTable()
+            this.$Message.success('删除成功')
+          })
+        }
+      })
+    },
+    /**
+     * 修改按钮信息
+     * @param row
+     */
+    modifyHandle (row) {
+      this.formType = 'modify'; this.currentButton = row; this.showForm = true
+    },
+    /**
+     * 新增按钮信息
+     */
     raiseHandle () {
       this.formType = 'raise'; this.showForm = true
     }
