@@ -7,6 +7,7 @@ import DefaultHome from '@/views/home'
 import SysUser from '@/views/sys/user'
 import SysRole from '@/views/sys/role'
 import SysDept from '@/views/sys/dept'
+import SysDict from '@/views/sys/dict'
 import SysButton from '@/views/sys/button'
 import SysMenu from '@/views/sys/menu'
 import SysSystem from '@/views/sys/system'
@@ -29,6 +30,7 @@ export default new Router({
         { path: '/sys/user', name: '用户管理', component: SysUser },
         { path: '/sys/role', name: '角色管理', component: SysRole },
         { path: '/sys/dept', name: '部门管理', component: SysDept },
+        { path: '/sys/dict', name: '字典管理', component: SysDict },
         { path: '/sys/system', name: '系统管理', component: SysSystem },
         { path: '/sys/menu', name: '菜单管理', component: SysMenu },
         { path: '/sys/button', name: '按钮管理', component: SysButton }
