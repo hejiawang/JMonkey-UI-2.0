@@ -147,6 +147,7 @@ export default {
         {
           title: '操作',
           key: 'action',
+          align: 'center',
           fixed: 'right',
           width: 200,
           render: (h, params) => {

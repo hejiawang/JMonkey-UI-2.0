@@ -23,6 +23,29 @@ export const save = (obj) => {
 }
 
 /**
+ * 修改字典信息
+ * @param obj 字典信息
+ */
+export const modify = (obj) => {
+  return request({
+    url: '/sys/dict/modify',
+    method: 'put',
+    data: obj
+  })
+}
+
+/**
+ * 获取字典信息
+ * @param id 字典id
+ */
+export const find = (id) => {
+  return request({
+    url: '/sys/dict/find/' + id,
+    method: 'get'
+  })
+}
+
+/**
  * 删除字典
  * @param id 字典id
  */

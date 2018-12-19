@@ -7,9 +7,10 @@ import Vue from 'vue'
  * @param show 父结构对象
  * @param level 等级
  */
-export const treeToArray = (data, expandAll, show = true, level = null) => {
+export const treeToArray = (data, expandAll, show = true, level = null, indexArray = []) => {
   let treeArray = []
-  Array.from(data).forEach(record => {
+
+  Array.from(data).forEach((record, index) => {
     Vue.set(record, '_expanded', expandAll) // 设置节点是否展开
     if (record._show === undefined || record._show == null) Vue.set(record, '_show', show) // 设置节点是否显示
 
@@ -17,10 +18,14 @@ export const treeToArray = (data, expandAll, show = true, level = null) => {
     if (level !== undefined && level !== null) _level = level + 1
     Vue.set(record, '_level', _level) // 设置节点层级
 
+    indexArray = indexArray.slice(0, _level - 1)
+    indexArray.push(index)
+    Vue.set(record, '_indexArray', indexArray)
+
     treeArray.push(record)
 
     if (record.children && record.children.length > 0) { // 递归子节点
-      const children = treeToArray(record.children, expandAll, false, _level)
+      const children = treeToArray(record.children, expandAll, false, _level, indexArray)
       treeArray = treeArray.concat(children)
     }
   })

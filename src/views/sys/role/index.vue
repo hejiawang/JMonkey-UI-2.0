@@ -86,26 +86,31 @@ export default {
         {
           title: '操作',
           key: 'action',
+          align: 'center',
           fixed: 'right',
           width: 350,
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: { type: 'primary', ghost: true },
-                on: { click: () => { this.modifyHandle(params.row) } }
-              }, '编辑'),
-              h('Button', {
-                props: { type: 'error', ghost: true },
-                on: { click: () => { this.deleteHandle(params.row) } }
-              }, '删除'),
-              h('Button', {
-                props: { type: 'success', ghost: true },
-                on: { click: () => { this.authHandle(params.row) } }
-              }, '权限')
-            ])
-          }
+          render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
+    },
+    /**
+     * 列表按钮
+     */
+    bindEvent (h, params) {
+      return h('div', [
+        h('Button', {
+          props: { type: 'warning', ghost: true },
+          on: { click: () => { this.modifyHandle(params.row) } }
+        }, '编辑'),
+        h('Button', {
+          props: { type: 'error', ghost: true },
+          on: { click: () => { this.deleteHandle(params.row) } }
+        }, '删除'),
+        h('Button', {
+          props: { type: 'success', ghost: true },
+          on: { click: () => { this.authHandle(params.row) } }
+        }, '权限')
+      ])
     },
     /**
      * 获取角色list数据
