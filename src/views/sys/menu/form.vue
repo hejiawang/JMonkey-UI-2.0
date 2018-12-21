@@ -130,6 +130,17 @@ export default {
     },
     cancel () {
       this.$refs.menuForm.resetFields()
+      this.menuForm = {
+        name: null,
+        parentId: null,
+        icon: null,
+        path: null,
+        component: null,
+        sort: 1,
+        isShow: 'Yes',
+        isIndex: 'No',
+        showType: 'Home'
+      }
       this.isShow = false
     },
     visibleChange (isOpen) {

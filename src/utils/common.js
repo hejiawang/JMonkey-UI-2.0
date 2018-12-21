@@ -32,3 +32,24 @@ export const treeToArray = (data, expandAll, show = true, level = null, indexArr
 
   return treeArray
 }
+
+/**
+ * 在iview中有些组件显示的key必须按照iview制定名称命名，
+ * 该方法将指定的old key 赋值到新的 novel key上
+ * 如果数据有子节点，按照指定的子节点childrenKey key遍历修改子节点信息
+ * @param data 将要转换的数据
+ * @param old 后台返回的key
+ * @param novel 将要转换适应iview的key
+ * @param childrenKey 子节点key
+ * @returns {*} 转换后的数据（原来的数据也变化了）
+ */
+export const converKey = (data, old = 'name', novel = 'title', childrenKey = 'children') => {
+  Array.from(data).forEach(tData => {
+    Vue.set(tData, novel, tData[old])
+
+    // 过滤子节点key
+    if (tData[childrenKey] && tData[childrenKey].length > 0) converKey(tData.children, old, novel, childrenKey)
+  })
+
+  return data
+}

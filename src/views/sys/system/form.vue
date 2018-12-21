@@ -137,6 +137,16 @@ export default {
     },
     cancel () {
       this.$refs.systemForm.resetFields()
+      this.systemForm = {
+        id: '',
+        icon: '',
+        name: '',
+        isShow: 'Yes',
+        showType: 'Tabs',
+        showGuide: 'Yes',
+        showMenu: 'Yes',
+        sort: 1
+      }
       this.isShow = false
     },
     /**

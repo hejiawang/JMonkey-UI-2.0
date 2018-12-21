@@ -1,8 +1,8 @@
 <template>
-  <Layout v-layoutIn>
+  <Layout v-layoutIn class="app-sys-button">
     <Row :gutter="32" style="height: 100%;">
       <Col span="5" style="height: 100%;">
-        <Card style="height: 100%;">
+        <Card class="resource-tree">
           <p slot="title">
             <Icon type="md-apps"></Icon>
             <Tag color="success" v-if="currentResource.id != null">{{currentResource.name}}</Tag>
@@ -65,6 +65,7 @@ export default {
         {
           title: '操作',
           key: 'action',
+          align: 'center',
           fixed: 'right',
           width: 250,
           render: (h, params) => {
@@ -161,3 +162,17 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .app-sys-button{
+    .resource-tree{
+      height: 100%;
+      .ivu-card-body{
+        height: calc(100% - 54px);
+      }
+      .ivu-tree{
+        height: 100%;
+        overflow-y: auto;
+      }
+    }
+  }
+</style>

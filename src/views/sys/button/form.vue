@@ -113,6 +113,12 @@ export default {
      */
     cancel () {
       this.$refs.buttonForm.resetFields()
+      this.buttonForm = {
+        name: '',
+        permission: '',
+        url: '',
+        method: 'Get'
+      }
       this.isShow = false
     },
     /**

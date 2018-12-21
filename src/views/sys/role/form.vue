@@ -140,6 +140,7 @@ export default {
      */
     cancel () {
       this.$refs.roleForm.resetFields()
+      this.roleForm = {id: null, name: null, code: null, remark: null}
       this.isShow = false
     },
     /**

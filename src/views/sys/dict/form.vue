@@ -137,6 +137,14 @@ export default {
      */
     cancel () {
       this.$refs.dictForm.resetFields()
+      this.dictForm = {
+        parentId: null,
+        parentLable: null,
+        lable: null,
+        value: null,
+        sort: 1,
+        remark: null
+      }
       this.isShow = false
 
       // 新增并继续后，关闭时刷新list
