@@ -1,6 +1,16 @@
 import request from '@/utils/request'
 
 /**
+ * 获取所有角色信息
+ */
+export const listAll = () => {
+  return request({
+    url: '/sys/role/listAll',
+    method: 'get'
+  })
+}
+
+/**
  * 角色分页列表
  * @param query 查询条件
  */

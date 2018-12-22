@@ -7,9 +7,9 @@
         <Button type="warning">导出</Button>
       </Col>
       <Col span="16">
-        <Form ref="userSearchForm" :model="userSearchForm" :label-width="80" inline style="float: right" @submit.native.prevent>
+        <Form ref="userSearchForm" :model="listQuery" :label-width="80" inline style="float: right" @submit.native.prevent>
           <FormItem label="用户名称">
-            <Input type="text" v-model="userSearchForm.userName" />
+            <Input type="text" v-model="listQuery.username" />
           </FormItem>
 
           <FormItem :label-width="0">
@@ -22,10 +22,10 @@
       </Col>
     </Row>
     <Row>
-      <Table :height="userTableHeight" border :columns="userTableColumns" :data="userTableData" stripe></Table>
+      <Table :height="userTableHeight" border :columns="userTableColumns" :data="userTableData" :loading="listLoading" stripe />
     </Row>
     <Row>
-      <Page :total="100" show-sizer show-elevator show-total></Page>
+      <CPage v-model="listQuery" @on-list="initList" ref="userPage"/>
     </Row>
 
     <CModifyPassword v-model="showModifyPassword" :userId="currenUser.id" :userName="currenUser.name"></CModifyPassword>
@@ -37,7 +37,7 @@ import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
 import store from '@/store'
 
-import { list } from '@/api/sys/user'
+import { list, del } from '@/api/sys/user'
 
 export default {
   name: 'SysUser',
@@ -46,78 +46,132 @@ export default {
   },
   data () {
     return {
-      userSearchForm: {
-        userName: ''
+      listQuery: {
+        username: null,
+        current: 1,
+        size: 10,
+        total: 0
       },
-      userTableColumns: [
-        {title: '用户名称', key: 'name'},
-        {title: '年龄', key: 'age', width: 200},
+      userTableColumns: [],
+      userTableData: [],
+      showModifyPassword: false,
+      showForm: false,
+      currenUser: {},
+      formType: '',
+      listLoading: false,
+      sexFilter: { 'Man': '男', 'Woman': '女', 'Other': '其他' }
+    }
+  },
+  computed: {
+    /**
+     * 用户列表高度
+     */
+    userTableHeight () {
+      return store.getters.windowHeight - 280
+    }
+  },
+  created () {
+    this.initTableColumns()
+    this.initList()
+  },
+  methods: {
+    /**
+     * 初始化用户列表头
+     */
+    initTableColumns () {
+      this.userTableColumns = [
+        {title: '用户名称', key: 'username'},
+        {title: '真实姓名', key: 'realName'},
+        {
+          title: '用户性别',
+          key: 'sex',
+          render: (h, params) => { return h('span', this.sexFilter[params.row.sex]) }
+        },
         {title: '手机号码', key: 'phone'},
-        {title: '归属部门', key: 'dept'},
-        {title: '地址', key: 'address'},
+        {
+          title: '归属部门',
+          key: 'dept',
+          render: (h, params) => {
+            let t = ''
+            if (!this.$CV.isEmpty(params.row.depts)) {
+              params.row.depts.forEach(d => { t = t + d.name + ',' })
+              t = t.substr(0, t.length - 1)
+            }
+
+            return h('span', t)
+          }
+        },
+        {
+          title: '用户角色',
+          key: 'role',
+          render: (h, params) => {
+            let t = ''
+            if (!this.$CV.isEmpty(params.row.roles)) {
+              params.row.roles.forEach(r => { t = t + r.name + ',' })
+              t = t.substr(0, t.length - 1)
+            }
+
+            return h('span', t)
+          }
+        },
         {
           title: '操作',
           key: 'action',
           fixed: 'right',
           width: 350,
           render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: { type: 'primary', ghost: true },
-                on: { click: () => { this.viewHandle(params.row) } }
-              }, '查看'),
-              h('Button', {
-                props: { type: 'warning', ghost: true },
-                on: { click: () => { this.modifyHandle(params.row) } }
-              }, '编辑'),
-              h('Button', {
-                props: { type: 'error', ghost: true },
-                on: { click: () => { this.deleteHandle(params.row) } }
-              }, '删除'),
-              h('Button', {
-                props: {},
-                on: { click: () => { this.modifyPasswordHandle(params.row) } }
-              }, '修改密码')
-            ])
+            return this.bindTableEvent(h, params)
           }
         }
-      ],
-      userTableData: [
-        {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'},
-        {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
-        {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'},
-        {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
-        {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
-        {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'},
-        {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
-        {id: 'id1', name: 'Jim Green', age: 24, phone: '13333333333', dept: '研发中心', address: 'London No. 1 Lake Park', date: '2016-10-01'},
-        {id: 'id1', name: 'John Brown', age: 18, phone: '13333333333', dept: '研发中心', address: 'New York No. 1 Lake Park', date: '2016-10-03'}
-      ],
-      showModifyPassword: false,
-      showForm: false,
-      currenUser: {},
-      formType: ''
-    }
-  },
-  computed: {
-    userTableHeight () {
-      return store.getters.windowHeight - 280
-    }
-  },
-  created () {
-    this.initList()
-  },
-  methods: {
+      ]
+    },
+    /**
+     * 用户列表点击事件
+     */
+    bindTableEvent (h, params) {
+      return h('div', [
+        h('Button', {
+          props: { type: 'primary', ghost: true },
+          on: { click: () => { this.viewHandle(params.row) } }
+        }, '查看'),
+        h('Button', {
+          props: { type: 'warning', ghost: true },
+          on: { click: () => { this.modifyHandle(params.row) } }
+        }, '编辑'),
+        h('Button', {
+          props: { type: 'error', ghost: true },
+          on: { click: () => { this.deleteHandle(params.row) } }
+        }, '删除'),
+        h('Button', {
+          props: {},
+          on: { click: () => { this.modifyPasswordHandle(params.row) } }
+        }, '修改密码')
+      ])
+    },
+    /**
+     * 初始化用户列表
+     */
     initList () {
-      list({}).then(data => {
-        console.info(data)
+      this.listLoading = true
+      list(this.listQuery).then(data => {
+        this.userTableData = data.rows
+        this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
+
+        this.listLoading = false
       })
     },
+    /**
+     * 删除用户信息
+     * @param row
+     */
     deleteHandle (row) {
       this.$CDelete({
-        'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的用户将被删除</p><p>是否继续？</p>',
+        'content': '<p>名称为 <span style="color: #f60">' + row.username + '</span> 的用户将被删除</p><p>是否继续？</p>',
         'confirm': () => {
-          this.$Message.success('删除成功')
+          del(row.id).then(() => {
+            this.restSearch()
+            this.$Message.success('删除成功')
+          })
         }
       })
     },
@@ -126,19 +180,29 @@ export default {
       this.showModifyPassword = true
     },
     modifyHandle (userInfo) {
-      this.currenUser = userInfo; this.formType = 'Modify'; this.showForm = true
+      this.currenUser = userInfo; this.formType = 'modify'; this.showForm = true
     },
     viewHandle (userInfo) {
-      this.currenUser = userInfo; this.formType = 'View'; this.showForm = true
+
     },
     raiseHandle () {
-      this.formType = 'Raise'; this.showForm = true
+      this.currenUser = {}; this.formType = 'raise'; this.showForm = true
     },
+    /**
+     * 重置检索信息
+     */
     restSearch () {
-      console.info('restSearch')
+      ['username'].forEach(param => (
+        this.listQuery[param] = null
+      ))
+      this.search()
     },
+    /**
+     * 检索用户信息
+     */
     search () {
-      console.info('search')
+      this.$refs.userPage.rest()
+      this.initList()
     }
   }
 }

@@ -11,6 +11,9 @@
 import { find, tree } from '@/api/sys/dept'
 import { converKey } from '@/utils/common'
 
+/**
+ * 选择部门组件
+ */
 export default {
   name: 'CDept',
   props: {
@@ -21,12 +24,11 @@ export default {
     value (val) {
       this.deptId = val
 
+      // 根据部门id，对部门名称赋值
       if (this.$CV.isEmpty(val)) {
         this.deptName = null
       } else {
-        find(val).then(data => {
-          this.deptName = data.result.name
-        })
+        find(val).then(data => { this.deptName = data.result.name })
       }
     },
     deptId (val) { this.$emit('input', val) }
@@ -50,6 +52,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * 初始化要选择的部门树信息
+     * @param isOpen
+     */
     visibleChange (isOpen) {
       if (isOpen) {
         tree().then(data => {
@@ -57,13 +63,23 @@ export default {
         })
       }
     },
+    /**
+     * 选择部门信息
+     * @param row
+     */
     selectDept (row) {
       this.deptId = row[0].id; this.deptName = row[0].name
       this.isShow = false
     },
+    /**
+     * 清空部门信息
+     */
     clearDept () {
       this.deptId = null; this.deptName = null
     },
+    /**
+     * 显示选择部门的modal
+     */
     showDeptTree () {
       this.isShow = true
     }

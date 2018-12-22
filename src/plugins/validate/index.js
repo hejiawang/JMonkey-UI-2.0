@@ -21,6 +21,15 @@ export default {
           return false
         }
         return false
+      },
+      /**
+       * 判断是否为正确的11位手机号码
+       * @param str
+       * @returns {boolean}
+       */
+      isPhone: (str) => {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        return reg.test(str)
       }
     }
   }
