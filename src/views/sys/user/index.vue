@@ -36,6 +36,7 @@
 import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
 import store from '@/store'
+import { parseTime } from '@/utils/common'
 
 import { list, del } from '@/api/sys/user'
 
@@ -80,6 +81,7 @@ export default {
      */
     initTableColumns () {
       this.userTableColumns = [
+        {title: '头像', key: 'photo', width: 80},
         {title: '用户名称', key: 'username'},
         {title: '真实姓名', key: 'realName'},
         {
@@ -88,6 +90,11 @@ export default {
           render: (h, params) => { return h('span', this.sexFilter[params.row.sex]) }
         },
         {title: '手机号码', key: 'phone'},
+        {
+          title: '出生日期',
+          key: 'birthday',
+          render: (h, params) => { return h('span', parseTime(params.row.birthday, '{y}-{m}-{d}')) }
+        },
         {
           title: '归属部门',
           key: 'dept',
@@ -118,6 +125,7 @@ export default {
           title: '操作',
           key: 'action',
           fixed: 'right',
+          align: 'center',
           width: 350,
           render: (h, params) => {
             return this.bindTableEvent(h, params)
@@ -130,10 +138,6 @@ export default {
      */
     bindTableEvent (h, params) {
       return h('div', [
-        h('Button', {
-          props: { type: 'primary', ghost: true },
-          on: { click: () => { this.viewHandle(params.row) } }
-        }, '查看'),
         h('Button', {
           props: { type: 'warning', ghost: true },
           on: { click: () => { this.modifyHandle(params.row) } }
@@ -175,16 +179,22 @@ export default {
         }
       })
     },
+    /**
+     * 修改用户密码
+     */
     modifyPasswordHandle (userInfo) {
       this.currenUser = userInfo
       this.showModifyPassword = true
     },
+    /**
+     * 修改用户
+     */
     modifyHandle (userInfo) {
       this.currenUser = userInfo; this.formType = 'modify'; this.showForm = true
     },
-    viewHandle (userInfo) {
-
-    },
+    /**
+     * 新增用户
+     */
     raiseHandle () {
       this.currenUser = {}; this.formType = 'raise'; this.showForm = true
     },

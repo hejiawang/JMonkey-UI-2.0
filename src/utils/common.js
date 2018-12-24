@@ -53,3 +53,39 @@ export const converKey = (data, old = 'name', novel = 'title', childrenKey = 'ch
 
   return data
 }
+
+/**
+ * 将时间戳根据规则转换为时间字符串
+ * @param timeData 时间戳
+ * @param cFormat 转换规则， 默认‘{y}-{m}-{d} {h}:{i}:{s}’
+ * @returns {string} 时间字符串
+ */
+export const parseTime = (timeData, cFormat = '{y}-{m}-{d} {h}:{i}:{s}') => {
+  if (timeData === null || timeData === '' || timeData === 'undefined' || timeData === undefined) return ''
+
+  let time = new Date(timeData)
+  if ((time + '').length === 10) time = +time * 1000
+
+  let date
+  if (typeof time === 'object') date = time
+  else date = new Date(parseInt(time))
+
+  const formatObj = {
+    y: date.getFullYear(),
+    m: date.getMonth() + 1,
+    d: date.getDate(),
+    h: date.getHours(),
+    i: date.getMinutes(),
+    s: date.getSeconds(),
+    a: date.getDay()
+  }
+
+  const timeStr = cFormat.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+    let value = formatObj[key]
+    if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+    if (result.length > 0 && value < 10) value = '0' + value
+    return value || 0
+  })
+
+  return timeStr
+}
