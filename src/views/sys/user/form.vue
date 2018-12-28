@@ -2,20 +2,15 @@
   <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" @on-visible-change="visibleChange" width="800">
     <Form ref="userForm" :model="userForm" :rules="userRules" :label-width="90" class="userForm">
       <Row  :gutter="32">
-        <Col span="12" class="userForm-upload">
-          <Upload type="drag" action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
-            <div class="userForm-upload-context">
-              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-              <p>上传用户头像</p>
-            </div>
-          </Upload>
+        <Col span="12">
+          <CUploadPhoto v-model="userForm.photo"/>
         </Col>
         <Col span="12">
           <FormItem label="用户名称" prop="username">
             <Input type="text" v-model.trim="userForm.username" :maxlength="50" clearable />
           </FormItem>
           <FormItem label="登录密码" prop="password">
-            <Input type="password" v-model.trim="userForm.password" :maxlength="20" clearable />
+            <Input type="password" v-model.trim="userForm.password" :maxlength="20" :clearable="type != 'modify'" :disabled="type === 'modify'"/>
           </FormItem>
           <FormItem label="真实姓名" prop="realName">
             <Input type="text" v-model.trim="userForm.realName" :maxlength="50" clearable />
@@ -59,15 +54,16 @@
 <script>
 import CDept from '@/components/sys/dept'
 import CRole from '@/components/sys/role'
+import CUploadPhoto from '@/views/sys/user/UploadPhoto'
 import { checkUsername, save, modify } from '@/api/sys/user'
 
 export default {
   name: 'SysUser_Form',
-  components: { CDept, CRole },
+  components: { CDept, CRole, CUploadPhoto },
   props: {
     value: {type: Boolean, default: false, required: true},
     userInfo: {type: Object, default: null, required: false},
-    type: {type: String, default: 'View', required: true}
+    type: {type: String, default: 'raise', required: true}
   },
   watch: {
     value (val) { this.isShow = val },
@@ -126,7 +122,7 @@ export default {
         phone: null,
         sex: 'Man',
         birthday: '',
-        photo: null,
+        photo: '',
         deptIds: [],
         roleIds: []
       },
@@ -134,7 +130,7 @@ export default {
         username: { required: true, validator: validateUsername, trigger: 'blur' },
         password: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+          { min: 6, max: 100, message: '长度在 6 到 100 个字符', trigger: 'blur' }
         ],
         realName: { required: true, message: '请输入用户真实姓名', trigger: 'blur' },
         phone: [
@@ -145,6 +141,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * modal 确定事件
+     */
     ok () {
       this.$refs.userForm.validate((valid) => {
         if (valid) {
@@ -155,16 +154,25 @@ export default {
         }
       })
     },
+    /**
+     * 新增用户
+     */
     raise () {
       save(this.userForm).then(data => {
         if (data.isSuccess) this.callBack('新增成功')
       })
     },
+    /**
+     * 修改用户信息
+     */
     modify () {
       modify(this.userForm).then(data => {
         if (data.isSuccess) this.callBack('修改成功')
       })
     },
+    /**
+     * 操作后
+     */
     callBack (msg) {
       this.$Message.success(msg)
       this.cancel()
@@ -186,7 +194,7 @@ export default {
         phone: null,
         sex: 'Man',
         birthday: '',
-        photo: null,
+        photo: '',
         deptIds: [],
         roleIds: []
       }
@@ -194,8 +202,8 @@ export default {
       this.isShow = false
     },
     visibleChange (isOpen) {
-      if (isOpen) {
-        console.info(this.userInfo)
+      if (isOpen && this.type === 'modify') {
+        this.userForm = Object.assign({}, this.userInfo)
       }
     }
   }
@@ -203,18 +211,6 @@ export default {
 </script>
 <style lang="scss">
   .userForm{
-    .userForm-upload{
-      .ivu-upload .ivu-upload-drag{
-        height: 220px;
-      }
-      .userForm-upload-context{
-        padding: 20px 0;
-        margin-top: 50px;
-        p{
-          font-size: 17px;
-        }
-      }
-    }
     .ivu-radio-group-item{
       margin-left: 20px;
     }

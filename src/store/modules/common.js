@@ -1,7 +1,9 @@
 import { setStore, getStore } from '@/utils/store'
+import website from '@/const/website'
 
 const common = {
   state: {
+    website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
     currentMenu: getStore({ name: 'currentMenu' }) || '/home'
   },

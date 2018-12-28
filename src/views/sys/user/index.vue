@@ -36,7 +36,8 @@
 import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
 import store from '@/store'
-import { parseTime } from '@/utils/common'
+import moment from 'moment'
+import { mapGetters } from 'vuex'
 
 import { list, del } from '@/api/sys/user'
 
@@ -64,6 +65,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['website']),
     /**
      * 用户列表高度
      */
@@ -81,7 +83,23 @@ export default {
      */
     initTableColumns () {
       this.userTableColumns = [
-        {title: '头像', key: 'photo', width: 80},
+        {
+          title: '头像',
+          key: 'photo',
+          width: 80,
+          render: (h, params) => {
+            if (this.$CV.isEmpty(params.row.photo)) {
+              return h('Avatar', {
+                props: { shape: 'square', icon: 'ios-person', size: 'default' }
+              })
+            } else {
+              return h('img', {
+                attrs: { src: this.website.filePath + params.row.photo },
+                style: 'width: 32px; height: 32px'
+              })
+            }
+          }
+        },
         {title: '用户名称', key: 'username'},
         {title: '真实姓名', key: 'realName'},
         {
@@ -93,7 +111,11 @@ export default {
         {
           title: '出生日期',
           key: 'birthday',
-          render: (h, params) => { return h('span', parseTime(params.row.birthday, '{y}-{m}-{d}')) }
+          render: (h, params) => {
+            let birthday = ''
+            if (params.row.birthday) birthday = moment(params.row.birthday).format('YYYY-MM-DD')
+            return h('span', birthday)
+          }
         },
         {
           title: '归属部门',
@@ -127,9 +149,7 @@ export default {
           fixed: 'right',
           align: 'center',
           width: 350,
-          render: (h, params) => {
-            return this.bindTableEvent(h, params)
-          }
+          render: (h, params) => { return this.bindTableEvent(h, params) }
         }
       ]
     },
