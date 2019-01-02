@@ -73,3 +73,19 @@ export const checkUsername = (id, username) => {
     method: 'post'
   })
 }
+
+/**
+ * 修改用户登陆密码
+ * @param id 用户id
+ * @param password 用户修改的密码
+ */
+export const modifyPassword = (id, password) => {
+  return request({
+    url: '/sys/user/modifyPassword',
+    method: 'put',
+    data: {
+      id: id,
+      password: password
+    }
+  })
+}

@@ -1,5 +1,5 @@
 <template>
-  <Select v-model="roleIds" style="width:100%" :multiple="multiple">
+  <Select v-model="roleIds" style="width:100%" :multiple="multiple" clearable >
     <Option v-for="r in roleListData" :key="r.id" :value="r.id" >{{r.name}}</Option>
   </Select>
 </template>

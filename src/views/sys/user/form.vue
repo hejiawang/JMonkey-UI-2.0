@@ -32,7 +32,7 @@
         </Col>
         <Col span="12">
           <FormItem label="出生日期" prop="birthday">
-            <DatePicker type="date" v-model="userForm.birthday" style="width: 100%"></DatePicker>
+            <DatePicker type="date" v-model="userForm.birthday" style="width: 100%" />
           </FormItem>
         </Col>
       </Row>
@@ -104,7 +104,9 @@ export default {
      * @param callback
      */
     const validatePhone = (rule, value, callback) => {
-      if (!this.$CV.isEmpty(value) && !this.$CV.isPhone(value)) {
+      if (this.$CV.isEmpty(value)) {
+        callback(new Error('请输入手机号码'))
+      } else if (!this.$CV.isPhone(value)) {
         callback(new Error('请输入正确的11位手机号码'))
       } else {
         callback()
@@ -121,8 +123,8 @@ export default {
         realName: null,
         phone: null,
         sex: 'Man',
-        birthday: '',
-        photo: '',
+        birthday: null,
+        photo: null,
         deptIds: [],
         roleIds: []
       },
@@ -130,13 +132,11 @@ export default {
         username: { required: true, validator: validateUsername, trigger: 'blur' },
         password: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 6, max: 100, message: '长度在 6 到 100 个字符', trigger: 'blur' }
+          { min: 6, max: 100, message: '长度在 6 到 20 个字符', trigger: 'blur' }
         ],
         realName: { required: true, message: '请输入用户真实姓名', trigger: 'blur' },
-        phone: [
-          { required: false, message: '', trigger: 'blur' },
-          { required: true, validator: validatePhone, trigger: 'blur' }
-        ]
+        phone: { required: true, validator: validatePhone, trigger: 'blur' },
+        birthday: { required: true, type: 'date', message: '请输入出生日期', trigger: 'change' }
       }
     }
   },
@@ -193,8 +193,8 @@ export default {
         realName: null,
         phone: null,
         sex: 'Man',
-        birthday: '',
-        photo: '',
+        birthday: null,
+        photo: null,
         deptIds: [],
         roleIds: []
       }

@@ -1,25 +1,11 @@
 <template>
   <Layout v-layoutIn>
-    <Row>
-      <Col span="8">
-        <Button type="primary" @click="raiseHandle">新增</Button>
-        <Button type="success">导入</Button>
-        <Button type="warning">导出</Button>
-      </Col>
-      <Col span="16">
-        <Form ref="userSearchForm" :model="listQuery" :label-width="80" inline style="float: right" @submit.native.prevent>
-          <FormItem label="用户名称">
-            <Input type="text" v-model="listQuery.username" />
-          </FormItem>
+    <Row style="height: 60px;">
+      <Button type="primary" @click="raiseHandle">新增</Button>
+      <Button type="success">导入</Button>
+      <Button type="warning">导出</Button>
 
-          <FormItem :label-width="0">
-            <ButtonGroup>
-              <Button icon="ios-search" @click="search"></Button>
-              <Button icon="ios-trash-outline" @click="restSearch"></Button>
-            </ButtonGroup>
-          </FormItem>
-        </Form>
-      </Col>
+      <Button type="info" icon="ios-search" style="float: right;" @click="searchHandle">高级检索</Button>
     </Row>
     <Row>
       <Table :height="userTableHeight" border :columns="userTableColumns" :data="userTableData" :loading="listLoading" stripe />
@@ -28,13 +14,20 @@
       <CPage v-model="listQuery" @on-list="initList" ref="userPage"/>
     </Row>
 
-    <CModifyPassword v-model="showModifyPassword" :userId="currenUser.id" :userName="currenUser.name"></CModifyPassword>
-    <CUserForm v-model="showForm" :userInfo="currenUser" :type="formType" @refresh="restSearch" ></CUserForm>
+    <!-- 修改用户密码 -->
+    <CModifyPassword v-model="showModifyPassword" :userId="currenUser.id" :userName="currenUser.username" />
+
+    <!-- 新增/修改用户信息 -->
+    <CUserForm v-model="showForm" :userInfo="currenUser" :type="formType" @refresh="restSearch" />
+
+    <!-- 检索用户信息 -->
+    <CUserSearch v-model="showSearch" :listQuery="listQuery" @search="search" @rest="restSearch"/>
   </Layout>
 </template>
 <script>
 import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
+import CUserSearch from '@/views/sys/user/search'
 import store from '@/store'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
@@ -44,12 +37,18 @@ import { list, del } from '@/api/sys/user'
 export default {
   name: 'SysUser',
   components: {
-    CModifyPassword, CUserForm
+    CModifyPassword, CUserForm, CUserSearch
   },
   data () {
     return {
+      showSearch: false,
       listQuery: {
         username: null,
+        realName: null,
+        phone: null,
+        sex: null,
+        roleId: null,
+        deptId: null,
         current: 1,
         size: 10,
         total: 0
@@ -222,7 +221,7 @@ export default {
      * 重置检索信息
      */
     restSearch () {
-      ['username'].forEach(param => (
+      ['username', 'realName', 'phone', 'sex', 'roleId', 'deptId'].forEach(param => (
         this.listQuery[param] = null
       ))
       this.search()
@@ -231,8 +230,15 @@ export default {
      * 检索用户信息
      */
     search () {
+      this.showSearch = false
       this.$refs.userPage.rest()
       this.initList()
+    },
+    /**
+     * 显示检索抽屉
+     */
+    searchHandle () {
+      this.showSearch = true
     }
   }
 }
