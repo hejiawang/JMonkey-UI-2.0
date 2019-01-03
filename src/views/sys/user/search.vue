@@ -2,13 +2,13 @@
   <Drawer title="用户信息检索" v-model="isShow" width="400" class="app-sys-user-search">
     <Form ref="userSearchForm" :model="listQuery" :label-width="80" style="margin-top: 30px;">
       <FormItem label="用户名称">
-        <Input type="text" v-model="listQuery.username" />
+        <Input type="text" v-model.trim="listQuery.username" :maxlength="50" clearable/>
       </FormItem>
       <FormItem label="真实姓名">
-        <Input type="text" v-model="listQuery.realName" />
+        <Input type="text" v-model.trim="listQuery.realName" :maxlength="50" clearable/>
       </FormItem>
       <FormItem label="手机号码">
-        <Input type="text" v-model="listQuery.phone" />
+        <Input type="text" v-model.trim="listQuery.phone" :maxlength="11" clearable/>
       </FormItem>
       <FormItem label="用户性别">
         <RadioGroup v-model="listQuery.sex">
