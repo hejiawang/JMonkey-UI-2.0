@@ -71,3 +71,15 @@ export const checkValue = (id, value) => {
     method: 'post'
   })
 }
+
+/**
+ * 为字典组件赋值
+ * 根据父value获取子字典信息
+ * @param parentValue 父字典value
+ */
+export const findChildren = (parentValue) => {
+  return request({
+    url: '/sys/dict/findChildren/' + parentValue,
+    method: 'get'
+  })
+}
