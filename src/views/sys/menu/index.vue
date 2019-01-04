@@ -74,38 +74,7 @@ export default {
           title: '名称',
           key: 'name',
           width: 200,
-          render: (h, params) => {
-            let renderContent = []
-
-            // 缩进
-            for (let i = 0; i < (params.row._level - 1); i++) {
-              renderContent.push(h('span', {
-                style: { width: '25px', display: 'inline-block' }
-              }))
-            }
-
-            // 判断是否显示图标
-            if (!this.$CV.isEmpty(params.row.children)) {
-              let iconType = params.row.children[0]._show ? 'ios-arrow-down' : 'ios-arrow-forward'
-              let renderIcon = h('Icon', {
-                props: { type: iconType, size: 25 }
-              })
-              renderContent.push(renderIcon)
-            } else {
-              renderContent.push(h('span', {
-                style: { width: '25px', display: 'inline-block' }
-              }))
-            }
-
-            // 显示菜单名称
-            let renderSpan = h('span', ' ' + params.row.name)
-            renderContent.push(renderSpan)
-
-            return h('div', {
-              style: { cursor: 'pointer' },
-              on: { click: () => { this.showChildren(params.index) } }
-            }, renderContent)
-          }
+          render: (h, params) => { return this.bindTreeEvent(h, params) }
         },
         {
           title: '图标',
@@ -150,19 +119,90 @@ export default {
           align: 'center',
           fixed: 'right',
           width: 200,
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: { type: 'warning', ghost: true }
-              }, '编辑'),
-              h('Button', {
-                props: { type: 'error', ghost: true },
-                on: { click: () => { this.deleteHandle(params.row) } }
-              }, '删除')
-            ])
-          }
+          render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
+    },
+    /**
+     * 树形表格展示事件
+     */
+    bindTreeEvent (h, params) {
+      let renderContent = []
+
+      // 缩进
+      for (let i = 0; i < (params.row._level - 1); i++) {
+        renderContent.push(h('span', {
+          style: { width: '25px', display: 'inline-block' }
+        }))
+      }
+
+      // 判断是否显示图标
+      if (!this.$CV.isEmpty(params.row.children)) {
+        let iconType = params.row.children[0]._show ? 'ios-arrow-down' : 'ios-arrow-forward'
+        let renderIcon = h('Icon', {
+          props: { type: iconType, size: 25 }
+        })
+        renderContent.push(renderIcon)
+      } else {
+        renderContent.push(h('span', {
+          style: { width: '25px', display: 'inline-block' }
+        }))
+      }
+
+      // 显示菜单名称
+      let renderSpan = h('span', ' ' + params.row.name)
+      renderContent.push(renderSpan)
+
+      return h('div', {
+        style: { cursor: 'pointer' },
+        on: { click: () => { this.showChildren(params.row._indexArray) } }
+      }, renderContent)
+    },
+    /**
+     * 显示子菜单
+     * @param index 菜单在树形表格的序号
+     */
+    showChildren (indexArray) {
+      let menuP = Object.assign({}, this.menuTableData)
+      indexArray.forEach(i => { menuP = menuP[i].children })
+
+      menuP.forEach(menu => {
+        if (menu._show) this.hidenChildren(menu)
+        else menu._show = !menu._show
+      })
+    },
+    /**
+     * 隐藏子菜单时，将孙子以下菜单也隐藏
+     */
+    hidenChildren (menu) {
+      menu._show = false
+
+      if (!this.$CV.isEmpty(menu.children)) {
+        menu.children.forEach(menuChildren => { this.hidenChildren(menuChildren) })
+      }
+    },
+    /**
+     * 树形表格显示行时的样式
+     * @param row
+     * @param index
+     * @returns {string}
+     */
+    showTableTree (row, index) {
+      return row._show ? '' : 'switchTableTree'
+    },
+    /**
+     * 列表按钮事件
+     */
+    bindEvent (h, params) {
+      return h('div', [
+        h('Button', {
+          props: { type: 'warning', ghost: true }
+        }, '编辑'),
+        h('Button', {
+          props: { type: 'error', ghost: true },
+          on: { click: () => { this.deleteHandle(params.row) } }
+        }, '删除')
+      ])
     },
     /**
      * 初始化系统信息
@@ -173,7 +213,7 @@ export default {
         if (!this.$CV.isEmpty(this.systemList)) {
           // 当systemList赋值后，MenuItem标签重新渲染，若没有$nextTick，Menu标签active-name找不到对应的MenuItem
           this.$nextTick(_ => {
-            // ? ? ? 后台返回的是rId，到前端怎么变成rid了？？？
+            // TODO ? ? ? 后台返回的是rId，到前端怎么变成rid了？？？ 艹艹艹艹艹艹艹艹艹
             this.currentSystemRId = this.systemList[0].rid
             this.initMenuTreeList()
           })
@@ -197,26 +237,6 @@ export default {
     selectMenu (rid) {
       this.currentSystemRId = rid
       this.initMenuTreeList()
-    },
-    /**
-     * 显示子菜单
-     * @param index 菜单在树形表格的序号
-     */
-    showChildren (index) {
-      if (!this.$CV.isEmpty(this.menuTableData[index])) {
-        this.menuTableData[index].children.forEach(menu => {
-          menu._show = !menu._show
-        })
-      }
-    },
-    /**
-     * 树形表格显示行时的样式
-     * @param row
-     * @param index
-     * @returns {string}
-     */
-    showTableTree (row, index) {
-      return row._show ? '' : 'switchTableTree'
     },
     /**
      * 新增菜单信息

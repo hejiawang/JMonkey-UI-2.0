@@ -59,7 +59,7 @@ export default {
           title: '字典标签',
           key: 'lable',
           width: 400,
-          render: (h, params) => { return this.bindMenuTreeEvent(h, params) }
+          render: (h, params) => { return this.bindTreeEvent(h, params) }
         },
         { title: '字典键值', key: 'value', width: 300 },
         { title: '排序', key: 'sort', width: 100 },
@@ -74,7 +74,7 @@ export default {
         }
       ]
     },
-    bindMenuTreeEvent (h, params) {
+    bindTreeEvent (h, params) {
       let renderContent = []
 
       // 缩进
@@ -107,8 +107,8 @@ export default {
       }, renderContent)
     },
     /**
-     * 显示子菜单
-     * @param index 菜单在树形表格的序号
+     * 显示子表格
+     * @param index 表格在树形表格的序号
      */
     showChildren (indexArray) {
       let dictP = Object.assign({}, this.dictTableData)
@@ -120,7 +120,7 @@ export default {
       })
     },
     /**
-     * 隐藏子菜单时，将孙子以下菜单也隐藏
+     * 隐藏子表格时，将孙子以下表格也隐藏
      */
     hidenChildren (dict) {
       dict._show = false
