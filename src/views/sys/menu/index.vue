@@ -20,7 +20,7 @@
       </Col>
     </Row>
 
-    <CMenuForm v-model="showForm" :type="formType" :systemRId="currentSystemRId" @refresh="initMenuTreeList"/>
+    <CMenuForm v-model="showForm" :type="formType" :systemRId="currentSystemRId" :menuId="currentMenuId" @refresh="initMenuTreeList"/>
   </Layout>
 </template>
 <script>
@@ -52,9 +52,10 @@ export default {
       menuTableColumns: [],
       menuTableData: [],
       yesOrNo: {'Yes': '是', 'No': '否'},
-      showTypeConver: {'Home': '内置页', 'Screen': '独立页'},
+      showTypeConver: {'Home': 'Home页', 'Screen': '全屏页'},
       systemList: [],
       currentSystemRId: '',
+      currentMenuId: '',
       listLoading: false,
       formType: '',
       showForm: false
@@ -196,7 +197,8 @@ export default {
     bindEvent (h, params) {
       return h('div', [
         h('Button', {
-          props: { type: 'warning', ghost: true }
+          props: { type: 'warning', ghost: true },
+          on: { click: () => { this.modifyHandle(params.row) } }
         }, '编辑'),
         h('Button', {
           props: { type: 'error', ghost: true },
@@ -213,7 +215,7 @@ export default {
         if (!this.$CV.isEmpty(this.systemList)) {
           // 当systemList赋值后，MenuItem标签重新渲染，若没有$nextTick，Menu标签active-name找不到对应的MenuItem
           this.$nextTick(_ => {
-            // TODO ? ? ? 后台返回的是rId，到前端怎么变成rid了？？？ 艹艹艹艹艹艹艹艹艹
+            // TODO ? ? ? 后台返回的是rId，到前端怎么变成rid了？？？ 艹 艹 艹 艹 艹 艹 艹 艹 艹
             this.currentSystemRId = this.systemList[0].rid
             this.initMenuTreeList()
           })
@@ -242,7 +244,13 @@ export default {
      * 新增菜单信息
      */
     raiseHandle () {
-      this.formType = 'raise'; this.showForm = true
+      this.formType = 'raise'; this.currentMenuId = ''; this.showForm = true
+    },
+    /**
+     * 修改菜单信息
+     */
+    modifyHandle (row) {
+      this.formType = 'modify'; this.currentMenuId = row.rid; this.showForm = true
     },
     /**
      * 删除菜单信息
@@ -252,7 +260,7 @@ export default {
       this.$CDelete({
         'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的菜单以及下属资源</p><p>将被删除，是否继续？</p>',
         'confirm': () => {
-          del(row.id).then(() => {
+          del(row.rid).then(() => {
             this.initMenuTreeList()
             this.$Message.success('删除成功')
           })

@@ -49,7 +49,7 @@
   </Modal>
 </template>
 <script>
-import { save } from '@/api/sys/menu'
+import { save, find, modify } from '@/api/sys/menu'
 import CRsmTree from '@/views/sys/resource/smTree'
 
 export default {
@@ -60,7 +60,8 @@ export default {
   props: {
     value: {type: Boolean, default: false, required: true},
     type: {type: String, default: 'raise', required: true},
-    systemRId: {type: String, default: null, required: true}
+    systemRId: {type: String, default: null, required: true},
+    menuId: {type: String, default: null, required: false}
   },
   computed: {
     title () {
@@ -115,7 +116,9 @@ export default {
       })
     },
     modify () {
-
+      modify(this.menuForm).then(data => {
+        if (data.isSuccess) this.callBack('修改成功')
+      })
     },
     callBack (msg) {
       this.$Message.success(msg)
@@ -140,6 +143,7 @@ export default {
     },
     visibleChange (isOpen) {
       if (isOpen && this.type === 'raise') this.menuForm.parentId = this.systemRId
+      if (isOpen && this.type === 'modify') find(this.menuId).then(data => { this.menuForm = data.result })
     }
   }
 }

@@ -27,6 +27,18 @@ export const save = (obj) => {
 }
 
 /**
+ * 修改菜单信息
+ * @param obj 菜单信息
+ */
+export const modify = (obj) => {
+  return request({
+    url: '/sys/menu/modify',
+    method: 'put',
+    data: obj
+  })
+}
+
+/**
  * 删除菜单信息
  * @param id 菜单信息id
  */
@@ -34,5 +46,16 @@ export const del = (id) => {
   return request({
     url: '/sys/menu/delete/' + id,
     method: 'delete'
+  })
+}
+
+/**
+ * 获取菜单信息
+ * @param id 菜单id
+ */
+export const find = (id) => {
+  return request({
+    url: '/sys/menu/find/' + id,
+    method: 'get'
   })
 }
