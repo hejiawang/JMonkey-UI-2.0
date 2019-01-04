@@ -19,3 +19,17 @@ export const smbtree = () => {
     method: 'get'
   })
 }
+
+/**
+ * 根据sys_resource表的id获取资源名称
+ * @param rId sys_resource表的id
+ */
+export const findNameByRid = (rId) => {
+  return request({
+    url: '/sys/resource/findNameByRid',
+    method: 'get',
+    params: {
+      'rId': rId
+    }
+  })
+}

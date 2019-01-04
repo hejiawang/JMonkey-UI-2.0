@@ -5,8 +5,7 @@
         <Input type="text" v-model.trim="menuForm.name" :maxlength="20" clearable />
       </FormItem>
       <FormItem label="上级资源" prop="parentId">
-        <!--<Input type="text" v-model.trim="menuForm.parentName" :maxlength="20" clearable />-->
-        <CRsmTree v-model="menuForm.parentId"></CRsmTree>
+        <CRsmTree v-model="menuForm.parentId" />
       </FormItem>
       <FormItem label="菜单图标" prop="icon">
         <Input type="text" v-model.trim="menuForm.icon" :maxlength="50" clearable />
@@ -73,12 +72,8 @@ export default {
     }
   },
   watch: {
-    value (val) {
-      this.isShow = val
-    },
-    isShow (val) {
-      this.$emit('input', val)
-    }
+    value (val) { this.isShow = val },
+    isShow (val) { this.$emit('input', val) }
   },
   data () {
     return {
@@ -144,9 +139,7 @@ export default {
       this.isShow = false
     },
     visibleChange (isOpen) {
-      if (isOpen) {
-        this.menuForm.parentId = this.systemRId
-      }
+      if (isOpen && this.type === 'raise') this.menuForm.parentId = this.systemRId
     }
   }
 }
