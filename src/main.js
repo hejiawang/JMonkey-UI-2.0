@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import './router/filter'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import animated from 'animate.css'

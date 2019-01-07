@@ -2,11 +2,23 @@
   background-image: url(../../assets/images/login/login_b.jpg);
   background-size: cover;
 
+  .content{
+    position: absolute;
+    top: 30%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
   .ivu-card-head{
     text-align: center;
+    p{
+      font-size: 20px;
+      color: #2d8cf0
+    }
   }
   .ivu-card-body{
-    padding: 24px 24px 0px;
+    padding: 34px 34px 10px;
   }
 
   .login-code-img{

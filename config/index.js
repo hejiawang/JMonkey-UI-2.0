@@ -12,11 +12,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/auth': {
+      '/oauth': {
         target: baseUrl,
         changeOrigin: true,
         pathRewrite: {
-          '^/auth': '/auth'
+          '^/oauth': '/oauth'
         }
       },
       '/sys': {

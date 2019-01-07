@@ -1,6 +1,8 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { Message } from 'iview'
+import errorCode from '@/const/errorCode'
 
 NProgress.configure({ showSpinner: false })
 
@@ -26,6 +28,12 @@ axios.interceptors.response.use(data => {
   return data.data
 }, error => {
   NProgress.done()
+
+  let errMsg = error.toString()
+  console.error('jmonkey request error:' + errMsg)
+  let code = errMsg.substr(errMsg.indexOf('code') + 5)
+  Message.error(errorCode[code] || errorCode['default'])
+
   return Promise.reject(new Error(error))
 })
 
