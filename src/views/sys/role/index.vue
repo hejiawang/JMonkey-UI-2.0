@@ -30,7 +30,7 @@
     </Row>
 
     <CRoleForm v-model="showForm" :type="formType" :roleId="currentRoleId" @refresh="restSearch"/>
-    <CRoleAuthorize v-model="showAuthorize"/>
+    <CRoleAuthorize v-model="showAuthorize" :role="authRole"/>
   </Layout>
 </template>
 <script>
@@ -67,7 +67,8 @@ export default {
       formType: '',
       showForm: false,
       currentRoleId: '',
-      showAuthorize: false
+      showAuthorize: false,
+      authRole: null
     }
   },
   created () {
@@ -172,7 +173,7 @@ export default {
      * @param row 角色信息
      */
     authHandle (row) {
-      this.showAuthorize = true
+      this.authRole = row; this.showAuthorize = true
     }
   }
 }

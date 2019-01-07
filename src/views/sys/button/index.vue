@@ -8,7 +8,7 @@
             <Tag color="success" v-if="currentResource.id != null">{{currentResource.name}}</Tag>
             <Tag color="warning" v-else>未选择菜单</Tag>
           </p>
-          <Tree :data="resourceTreeDate" :render="renderTreeContent" ref="resourceTree"></Tree>
+          <Tree :data="resourceTreeDate" :render="renderTreeContent" ref="resourceTree" />
         </Card>
       </Col>
       <Col span="19">
