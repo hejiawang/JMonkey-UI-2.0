@@ -1,8 +1,10 @@
 import axios from 'axios'
+import store from '../store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Message } from 'iview'
 import errorCode from '@/const/errorCode'
+import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: false })
 
@@ -12,9 +14,12 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 /**
  * axios 请求拦截
+ * 如果已经登陆成功，请求时将token带着
  */
 axios.interceptors.request.use(config => {
   NProgress.start()
+  if (store.getters.access_token) config.headers['Authorization'] = 'Bearer ' + getToken()
+
   return config
 }, error => {
   return Promise.reject(error)
@@ -29,6 +34,7 @@ axios.interceptors.response.use(data => {
 }, error => {
   NProgress.done()
 
+  // 提示错误信息
   let errMsg = error.toString()
   console.error('jmonkey request error:' + errMsg)
   let code = errMsg.substr(errMsg.indexOf('code') + 5)

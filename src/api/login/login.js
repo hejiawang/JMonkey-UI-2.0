@@ -8,19 +8,10 @@ import request from '@/utils/request'
  * @param randomStr 验证码key
  */
 export const loginByUsername = (username, password, code, randomStr) => {
+  let grant_type = 'password', scope = 'server', client_id = 'JMonkey_client_id', client_secret = 'JMonkey_client_secret' // eslint-disable-line
   return request({
     url: '/oauth/token',
-    headers: { 'Authorization': 'Basic cGlnOnBpZw==' },
     method: 'post',
-    params: {
-      username: username,
-      password: password,
-      randomStr: randomStr,
-      code: code,
-      grant_type: 'password',
-      scope: 'server',
-      client_id: 'JMonkey_client_id',
-      client_secret: 'JMonkey_client_secret'
-    }
+    params: { username, password, randomStr, code, grant_type, scope, client_id, client_secret }
   })
 }

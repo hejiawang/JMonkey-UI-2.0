@@ -7,24 +7,7 @@
     <div class="cheader-info">
       <span>欢迎登录JMonkey管理系统2.0版本</span>
     </div>
-    <div class="cheader-user" :style="cheaderUserBackground">
-      <Row class="photo">
-        <Avatar shape="square" icon="ios-person" size="default" />
-      </Row>
-      <Row class="menu">
-        <Dropdown>
-          <a href="javascript:void(0)">
-            超级管理员
-            <Icon type="ios-arrow-down"></Icon>
-          </a>
-          <DropdownMenu slot="list">
-            <DropdownItem><Icon type="md-person" /> 个人信息</DropdownItem>
-            <DropdownItem><Icon type="ios-lock-outline"></Icon> 修改密码</DropdownItem>
-            <DropdownItem divided style="color: #ed4014"><Icon type="md-power" /> 安全退出</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </Row>
-    </div>
+    <CHeaderUser :system="system"/>
 
     <template v-if="system">
       <div class="cheader-system">
@@ -72,19 +55,18 @@
   </Header>
 </template>
 <script>
+import CHeaderUser from '@/components/layout/header/userInfo'
+
 export default {
   name: 'CHeader',
+  components: {
+    CHeaderUser
+  },
   props: {
     system: {type: Boolean, default: true, required: false}
   },
   data () {
     return {
-    }
-  },
-  computed: {
-    cheaderUserBackground () {
-      if (this.system) return 'background: #2b85e4'
-      else return 'background: #0022d0'
     }
   },
   methods: {

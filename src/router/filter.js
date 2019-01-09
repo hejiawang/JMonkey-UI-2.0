@@ -6,6 +6,9 @@ import 'nprogress/nprogress.css'
 NProgress.configure({ showSpinner: false })
 const whiteList = ['/login', '/404', '/401']
 
+/**
+ * router before
+ */
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
@@ -21,6 +24,9 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+/**
+ * router after
+ */
 router.afterEach((to, from) => {
   NProgress.done()
 })

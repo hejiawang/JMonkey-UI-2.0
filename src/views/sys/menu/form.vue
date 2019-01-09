@@ -92,10 +92,7 @@ export default {
         showType: 'Home'
       },
       menuRules: {
-        name: { required: true, message: '请输入菜单名称', trigger: 'blur' },
-        icon: { required: true, message: '请输入菜单图标', trigger: 'blur' },
-        path: { required: true, message: '请输入前端路由', trigger: 'blur' },
-        component: { required: true, message: '请输入前端页面', trigger: 'blur' }
+        name: { required: true, message: '请输入菜单名称', trigger: 'blur' }
       }
     }
   },
