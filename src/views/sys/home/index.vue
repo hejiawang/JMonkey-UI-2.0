@@ -1,5 +1,5 @@
 <template>
-  <Layout>home</Layout>
+  <Layout>sys home</Layout>
 </template>
 <script>
 export default {

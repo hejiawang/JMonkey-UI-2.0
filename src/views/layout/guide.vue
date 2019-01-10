@@ -61,6 +61,7 @@
 <script>
 import store from '@/store'
 import CHeader from '@/components/layout/header'
+import { guideInfo } from '@/api/sys/resource'
 
 export default {
   name: 'LayoutGuide',
@@ -69,6 +70,7 @@ export default {
   },
   created () {
     this.initRouter()
+    this.initGuideInfo()
   },
   methods: {
     /**
@@ -83,6 +85,9 @@ export default {
 
       // 进入系统后显示首页菜单
       store.commit('SET_CURRENTMENU', '/home')
+    },
+    initGuideInfo () {
+      guideInfo().then(data => { console.info(data) })
     }
   }
 }
