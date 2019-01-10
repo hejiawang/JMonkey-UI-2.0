@@ -74,7 +74,7 @@ export default {
         {
           title: '名称',
           key: 'name',
-          width: 200,
+          width: 170,
           render: (h, params) => { return this.bindTreeEvent(h, params) }
         },
         {
@@ -88,18 +88,27 @@ export default {
         {title: '路由', key: 'path', tooltip: true},
         {title: '页面', key: 'component', tooltip: true},
         {
-          title: '是否显示',
+          title: '显示',
           key: 'isShow',
-          width: 110,
+          width: 80,
           render: (h, params) => {
             if (params.row.isShow === 'No') return h('Tag', { props: { color: 'error' } }, this.yesOrNo[params.row.isShow])
             else return h('Tag', { props: { color: 'success' } }, this.yesOrNo[params.row.isShow])
           }
         },
         {
-          title: '是否主页',
+          title: '引导页',
+          key: 'isGuide',
+          width: 90,
+          render: (h, params) => {
+            if (params.row.isGuide === 'No') return h('Tag', { props: { color: 'error' } }, this.yesOrNo[params.row.isGuide])
+            else return h('Tag', { props: { color: 'success' } }, this.yesOrNo[params.row.isGuide])
+          }
+        },
+        {
+          title: '主页',
           key: 'isIndex',
-          width: 110,
+          width: 80,
           render: (h, params) => {
             if (params.row.isIndex === 'No') return h('Tag', { props: { color: 'error' } }, this.yesOrNo[params.row.isIndex])
             else return h('Tag', { props: { color: 'success' } }, this.yesOrNo[params.row.isIndex])

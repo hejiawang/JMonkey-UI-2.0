@@ -1,10 +1,12 @@
 .guide {
+  background-image: url(../../assets/images/guide/background.jpg);
+  background-size: cover;
   .ivu-layout-header{
     background-image: none !important;
-    background: #0022d0;
+    background: none !important;
   }
   .content{
-    background: #0022d0;
+    background: none !important;
     padding: 0px 80px;
   }
 
@@ -32,7 +34,7 @@
   .content-right{
     margin-left: 100px;
     height: 250px;
-    background: #0022d0;
+    background: #1688cb;
     background-image: url(../../assets/images/guide/guide_content.png);
     background-size: cover;
     color: white;
@@ -42,7 +44,7 @@
     float: left;
     width: 100px;
     height: 250px;
-    background: #0017a8;
+    background: #106696;
   }
 
   .content-sys{
@@ -75,7 +77,7 @@
     text-align: center;
     height: 100%;
     padding: 40px;
-    background: #0022d0;
+    background: #1688cb;
     background-image: url(../../assets/images/guide/guide_content.png);
     background-size: cover;
     font-size: 40px;

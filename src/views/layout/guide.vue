@@ -68,9 +68,22 @@ export default {
     CHeader
   },
   created () {
-    store.commit('SET_CURRENTMENU', '/home')
+    this.initRouter()
   },
   methods: {
+    /**
+     * 处理页面跳转路径问题
+     */
+    initRouter () {
+      // 如果不需要引导页，回到首页
+      if (!store.getters.isGuide) {
+        this.$router.push({path: '/'})
+        return
+      }
+
+      // 进入系统后显示首页菜单
+      store.commit('SET_CURRENTMENU', '/home')
+    }
   }
 }
 </script>

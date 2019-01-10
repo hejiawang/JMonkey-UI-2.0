@@ -20,7 +20,7 @@
         <InputNumber :max="1000" :min="1" v-model="menuForm.sort" style="width: 100%"/>
       </FormItem>
       <Row :gutter="32">
-        <Col span="7">
+        <Col span="6">
           <FormItem label="是否显示" prop="isShow">
             <i-switch v-model="menuForm.isShow" true-value="Yes" false-value="No">
               <span slot="open">是</span>
@@ -28,7 +28,15 @@
             </i-switch>
           </FormItem>
         </Col>
-        <Col span="7">
+        <Col span="10">
+          <FormItem label="是否在引导页显示" prop="isGuide" :label-width="180">
+            <i-switch v-model="menuForm.isGuide" true-value="Yes" false-value="No">
+              <span slot="open">是</span>
+              <span slot="close">否</span>
+            </i-switch>
+          </FormItem>
+        </Col>
+        <Col span="6">
           <FormItem label="是否主页" prop="isShow">
             <i-switch v-model="menuForm.isIndex" true-value="Yes" false-value="No">
               <span slot="open">是</span>
@@ -36,14 +44,14 @@
             </i-switch>
           </FormItem>
         </Col>
-        <Col span="10">
-          <FormItem label="路由方式" prop="showType">
-            <RadioGroup v-model="menuForm.showType">
-              <Radio label="Home">Home页</Radio>
-              <Radio label="Screen">全屏页</Radio>
-            </RadioGroup>
-          </FormItem>
-        </Col>
+      </Row>
+      <Row>
+        <FormItem label="路由方式" prop="showType">
+          <RadioGroup v-model="menuForm.showType">
+            <Radio label="Home">Home页</Radio>
+            <Radio label="Screen">全屏页</Radio>
+          </RadioGroup>
+        </FormItem>
       </Row>
     </Form>
   </Modal>
@@ -88,6 +96,7 @@ export default {
         component: null,
         sort: 1,
         isShow: 'Yes',
+        isGuide: 'No',
         isIndex: 'No',
         showType: 'Home'
       },
@@ -133,6 +142,7 @@ export default {
         component: null,
         sort: 1,
         isShow: 'Yes',
+        isGuide: 'No',
         isIndex: 'No',
         showType: 'Home'
       }

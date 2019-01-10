@@ -9,7 +9,7 @@
     </div>
     <CHeaderUser :system="system"/>
 
-    <template v-if="system">
+    <template v-if="system && isGuide">
       <div class="cheader-system">
         <a href="#">
           <Row class="cheader-system-title">
@@ -40,6 +40,7 @@
           </Row>
         </a>
       </div>
+
       <div class="cheader-back">
         <a href="#" @click="goGuide">
           <Row class="cheader-back-title">
@@ -55,6 +56,7 @@
   </Header>
 </template>
 <script>
+import store from '@/store'
 import CHeaderUser from '@/components/layout/header/userInfo'
 
 export default {
@@ -64,6 +66,13 @@ export default {
   },
   props: {
     system: {type: Boolean, default: true, required: false}
+  },
+  computed: {
+    /**
+     * 是否在头部显示系统列表
+     * @returns {getters.isGuide} true显示
+     */
+    isGuide () { return store.getters.isGuide }
   },
   data () {
     return {

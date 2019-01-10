@@ -52,7 +52,7 @@ export default {
      */
     cheaderUserBackground () {
       if (this.system) return 'background: #2b85e4'
-      else return 'background: #0022d0'
+      else return 'background: none'
     },
     /**
      * 获取当前登录用户
