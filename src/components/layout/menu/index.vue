@@ -25,7 +25,6 @@ export default {
   },
   created () {
     this.activeMenu = store.getters.currentMenu
-    this.$router.push(store.getters.currentMenu)
   },
   methods: {
     selectMenu (name) {

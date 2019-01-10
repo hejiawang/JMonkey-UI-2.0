@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '../store'
+import router from '../router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Message } from 'iview'
@@ -39,6 +40,11 @@ axios.interceptors.response.use(data => {
   console.error('jmonkey request error:' + errMsg)
   let code = errMsg.substr(errMsg.indexOf('code') + 5)
   Message.error(errorCode[code] || errorCode['default'])
+
+  // token过期或无资源权限
+  if (code === '401' || code === '403') {
+    store.dispatch('LogOut').then(() => { router.push({ path: '/login' }) })
+  }
 
   return Promise.reject(new Error(error))
 })

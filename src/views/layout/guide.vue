@@ -59,6 +59,7 @@
   </Layout>
 </template>
 <script>
+import store from '@/store'
 import CHeader from '@/components/layout/header'
 
 export default {
@@ -67,6 +68,7 @@ export default {
     CHeader
   },
   created () {
+    store.commit('SET_CURRENTMENU', '/home')
   },
   methods: {
   }

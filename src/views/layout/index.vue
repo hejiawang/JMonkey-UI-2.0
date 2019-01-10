@@ -29,6 +29,7 @@ export default {
     CHeader, CFooter, CMenu, CPilot
   },
   created () {
+    this.$router.push(store.getters.currentMenu)
   },
   data () {
     return {
