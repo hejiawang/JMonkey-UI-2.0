@@ -1,6 +1,6 @@
 <template>
   <Row>
-    <Input type="text" v-model="deptName" icon="ios-close" @on-focus="showDeptTree" @on-click="clearDept" readonly/>
+    <Input type="text" v-model="deptName" icon="ios-close" @on-focus="showDeptTree" @on-click="clearDept" readonly :disabled="disabled"/>
 
     <Modal v-model="isShow" :title="title" @on-visible-change="visibleChange" footer-hide>
       <Tree :data="treeDate" ref="deptTree" @on-select-change="selectDept"/>
@@ -18,7 +18,8 @@ export default {
   name: 'CDept',
   props: {
     value: {type: String, default: null, required: false},
-    title: {type: String, default: '请选择部门', required: false}
+    title: {type: String, default: '请选择部门', required: false},
+    disabled: {type: Boolean, default: false, required: false}
   },
   watch: {
     value (val) {
@@ -75,7 +76,9 @@ export default {
      * 清空部门信息
      */
     clearDept () {
-      this.deptId = null; this.deptName = null
+      if (!this.disabled) {
+        this.deptId = null; this.deptName = null
+      }
     },
     /**
      * 显示选择部门的modal

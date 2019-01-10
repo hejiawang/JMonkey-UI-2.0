@@ -1,5 +1,5 @@
 <template>
-  <Select v-model="roleIds" style="width:100%" :multiple="multiple" clearable >
+  <Select v-model="roleIds" style="width:100%" :multiple="multiple" clearable :disabled="disabled" >
     <Option v-for="r in roleListData" :key="r.id" :value="r.id" >{{r.name}}</Option>
   </Select>
 </template>
@@ -13,7 +13,8 @@ export default {
   name: 'CRole',
   props: {
     value: {},
-    multiple: {type: Boolean, default: false, required: false}
+    multiple: {type: Boolean, default: false, required: false},
+    disabled: {type: Boolean, default: false, required: false}
   },
   watch: {
     value (val) { this.roleIds = val },

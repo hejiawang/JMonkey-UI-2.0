@@ -7,7 +7,7 @@
         </Col>
         <Col span="12">
           <FormItem label="用户名称" prop="username">
-            <Input type="text" v-model.trim="userForm.username" :maxlength="50" clearable />
+            <Input type="text" v-model.trim="userForm.username" :maxlength="50" clearable :disabled="disabled"/>
           </FormItem>
           <FormItem label="登录密码" prop="password">
             <Input type="password" v-model.trim="userForm.password" :maxlength="20" :clearable="type != 'modify'" :disabled="type === 'modify'"/>
@@ -39,12 +39,12 @@
       <Row  :gutter="40">
         <Col span="12">
           <FormItem label="用户角色" prop="roleIds">
-            <CRole :multiple="true" v-model="userForm.roleIds" />
+            <CRole :multiple="true" v-model="userForm.roleIds" :disabled="disabled"/>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem label="归属部门" prop="deptIds">
-            <CDept v-model="userForm.deptIds[0]"/>
+            <CDept v-model="userForm.deptIds[0]" :disabled="disabled"/>
           </FormItem>
         </Col>
       </Row>
@@ -63,7 +63,8 @@ export default {
   props: {
     value: {type: Boolean, default: false, required: true},
     userInfo: {type: Object, default: null, required: false},
-    type: {type: String, default: 'raise', required: true}
+    type: {type: String, default: 'raise', required: true},
+    disabled: {type: Boolean, default: false, required: false}
   },
   watch: {
     value (val) { this.isShow = val },

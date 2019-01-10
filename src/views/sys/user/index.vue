@@ -92,9 +92,8 @@ export default {
                 props: { shape: 'square', icon: 'ios-person', size: 'default' }
               })
             } else {
-              return h('img', {
-                attrs: { src: this.website.filePath + params.row.photo },
-                style: 'width: 32px; height: 32px'
+              return h('Avatar', {
+                props: { shape: 'square', size: 'default', src: this.website.filePath + params.row.photo }
               })
             }
           }
