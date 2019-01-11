@@ -18,17 +18,18 @@ import store from '@/store'
 
 export default {
   name: 'CMenu',
-  data () {
-    return {
-      activeMenu: ''
-    }
-  },
-  created () {
-    this.activeMenu = store.getters.currentMenu
+  computed: {
+    /**
+     * 当前处于激活状态的菜单
+     */
+    activeMenu () { return store.getters.currentMenu }
   },
   methods: {
+    /**
+     * 记录选择的菜单
+     * @param name router path
+     */
     selectMenu (name) {
-      this.activeMenu = name
       store.commit('SET_CURRENTMENU', name)
     }
   }

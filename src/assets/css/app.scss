@@ -90,48 +90,67 @@ html, body{
     text-shadow: 5px 2px 5px #676a6c;
   }
 }
-.cheader-back{
-  border-left: 2px solid #2b85e4;
-  float: right;
-  width: 80px;
-  text-align: center;
-  .cheader-back-title{
-    line-height: 40px;
-    text-align: center
-  }
-  .cheader-back-content{
-    line-height: 24px;
-    color: #2b85e4;
-  }
-}
-.cheader-system-current{
-  border-left: 2px solid #2b85e4;
-  float: right;
-  width: 80px;
-  text-align: center;
-  .cheader-system-title{
-    line-height: 40px;
-    text-align: center;
-    color: white;
-  }
-  .cheader-system-content{
-    line-height: 24px;
-    color: white;
-  }
-}
 .cheader-system{
-  border-left: 2px solid #2b85e4;
   float: right;
-  width: 80px;
-  text-align: center;
-  .cheader-system-title{
-    line-height: 40px;
+  .cheader-back{
+    border-left: 2px solid #2b85e4;
+    float: left;
+    width: 80px;
     text-align: center;
-    color: #2b85e4;
+    .cheader-back-title{
+      line-height: 40px;
+      text-align: center;
+      color: #ff9900;
+    }
+    .cheader-back-content{
+      line-height: 24px;
+      color: #ff9900;
+    }
   }
-  .cheader-system-content{
-    line-height: 24px;
-    color: #2b85e4;
+  .cheader-system-current{
+    border-left: 2px solid #2b85e4;
+    float: left;
+    width: 80px;
+    text-align: center;
+    .cheader-system-title{
+      line-height: 40px;
+      text-align: center;
+      color: white;
+    }
+    .cheader-system-content{
+      line-height: 24px;
+      color: white;
+    }
+  }
+  .cheader-system-n{
+    border-left: 2px solid #2b85e4;
+    float: left;
+    width: 80px;
+    text-align: center;
+    .cheader-system-title{
+      line-height: 40px;
+      text-align: center;
+      color: #2b85e4;
+    }
+    .cheader-system-content{
+      line-height: 24px;
+      color: #2b85e4;
+    }
+  }
+  .cheader-system-y{
+    border-left: 2px solid #2b85e4;
+    float: left;
+    width: 80px;
+    text-align: center;
+    .cheader-system-title{
+      line-height: 40px;
+      text-align: center;
+      color: #ff9900;
+    }
+    .cheader-system-content{
+      line-height: 24px;
+      color: #ff9900;
+    }
   }
 }
 .cheader-user{
