@@ -6,7 +6,7 @@ const common = {
     website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
     currentMenu: getStore({ name: 'currentMenu' }) || '/home',
-    currentSystem: getStore({ name: 'currentSystem' }) || ''
+    currentSystem: getStore({ name: 'currentSystem' }) || {}
   },
   mutations: {
     /**

@@ -8,7 +8,7 @@
           <Card v-if="system.menuList && system.menuList.length > 0">
             <div class="content-left">
               <div class="content-sys">
-                <a @click="goIndex(system.rid, system.isAuth, '/home')">
+                <a @click="goIndex(system, '/home')">
                   <span :style="system.isAuth | authSpanFilter"> {{system.name}} </span>
                 </a>
               </div>
@@ -18,7 +18,7 @@
                 <Row :gutter="40">
                   <!-- 遍历系统菜单 -->
                   <Col span="12" v-for="menu in system.menuList" :key="menu.id">
-                    <a @click="goIndex(system.rid, system.isAuth, menu.path)">
+                    <a @click="goIndex(system, menu.path)">
                       <div class="content-menu-detail">
                         <Row><Icon :type="menu.icon" size="50" :color="menu.isAuth | authIconFilter" /></Row>
                         <Row><span :style="menu.isAuth | authSpanFilter">{{menu.name}}</span></Row>
@@ -33,7 +33,7 @@
           <!-- 无子菜单的显示方式 -->
           <Card v-else>
             <div class="content-only">
-              <a @click="goIndex(system.rid, system.isAuth, '/home')">
+              <a @click="goIndex(system, '/home')">
                 <Row><Icon :type="system.icon" size="100" :color="system.isAuth | authIconFilter"/></Row>
                 <Row><span :style="system.isAuth | authSpanFilter">{{system.name}}</span></Row>
               </a>
@@ -84,13 +84,12 @@ export default {
     },
     /**
      * 进入index页面
-     * @param systemId 系统资源id resource id
-     * @param isAuth 是否已授权
+     * @param system 系统信息
      * @param path index页面路径
      */
-    goIndex (systemRId, isAuth, path) {
-      if (isAuth === 'Yes') {
-        store.commit('SET_CURRENTSYSTEM', systemRId)
+    goIndex (system, path) {
+      if (system.isAuth === 'Yes') {
+        store.commit('SET_CURRENTSYSTEM', system)
         store.commit('SET_CURRENTMENU', path)
 
         this.$router.push({path: path})

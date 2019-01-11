@@ -16,11 +16,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/login',
-      name: '登陆页',
-      component: Login
-    },
+    { path: '/login', name: '登陆页', component: Login },
     {
       path: '/',
       name: '系统主页',
@@ -36,10 +32,6 @@ export default new Router({
         { path: '/sys/button', name: '按钮管理', component: SysButton }
       ]
     },
-    {
-      path: '/guide',
-      name: '引导页',
-      component: LayoutGuide
-    }
+    { path: '/guide', name: '引导页', component: LayoutGuide }
   ]
 })
