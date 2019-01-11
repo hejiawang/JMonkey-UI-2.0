@@ -94,9 +94,9 @@ export const modifyPassword = (id, password) => {
  * 根据用户登陆名称获取用户信息
  * @param username 用户详细信息
  */
-export const getUserInfoByUsername = (username) => {
+export const getCurrentUserInfo = () => {
   return request({
-    url: '/sys/user/info/' + username,
+    url: '/sys/user/info/',
     method: 'get'
   })
 }

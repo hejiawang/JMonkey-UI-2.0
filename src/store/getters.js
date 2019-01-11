@@ -7,7 +7,8 @@ const getters = {
   roleList: state => state.user.roleList,
   deptList: state => state.user.deptList,
   permissions: state => state.user.permissions,
-  isGuide: state => state.user.isGuide
+  isGuide: state => state.user.isGuide,
+  systemList: state => state.user.systemList
 }
 
 export default getters

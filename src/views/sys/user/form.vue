@@ -7,7 +7,7 @@
         </Col>
         <Col span="12">
           <FormItem label="用户名称" prop="username">
-            <Input type="text" v-model.trim="userForm.username" :maxlength="50" clearable :disabled="disabled"/>
+            <Input type="text" v-model.trim="userForm.username" :maxlength="50" :clearable="!disabled" :disabled="disabled"/>
           </FormItem>
           <FormItem label="登录密码" prop="password">
             <Input type="password" v-model.trim="userForm.password" :maxlength="20" :clearable="type != 'modify'" :disabled="type === 'modify'"/>

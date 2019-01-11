@@ -5,7 +5,8 @@ const common = {
   state: {
     website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
-    currentMenu: getStore({ name: 'currentMenu' }) || '/home'
+    currentMenu: getStore({ name: 'currentMenu' }) || '/home',
+    currentSystem: getStore({ name: 'currentSystem' }) || ''
   },
   mutations: {
     /**
@@ -33,6 +34,20 @@ const common = {
       setStore({
         name: 'currentMenu',
         content: state.currentMenu,
+        type: 'session'
+      })
+    },
+    /**
+     * 记录当前进入的系统Rid
+     * @param state
+     * @param system
+     * @constructor
+     */
+    SET_CURRENTSYSTEM: (state, system) => {
+      state.currentSystem = system
+      setStore({
+        name: 'currentSystem',
+        content: state.currentSystem,
         type: 'session'
       })
     }

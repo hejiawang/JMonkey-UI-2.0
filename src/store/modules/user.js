@@ -1,7 +1,7 @@
 import { setStore, getStore } from '@/utils/store'
 import { setToken, removeToken } from '@/utils/auth'
 import { loginByUsername } from '@/api/login/login'
-import { getUserInfoByUsername } from '@/api/sys/user'
+import { getCurrentUserInfo } from '@/api/sys/user'
 
 /**
  * 用户信息以及登陆信息
@@ -14,7 +14,8 @@ const user = {
     roleList: getStore({ name: 'roleList' }) || [],
     deptList: getStore({ name: 'deptList' }) || [],
     permissions: getStore({ name: 'permissions' }) || {},
-    isGuide: getStore({ name: 'isGuide' }) || false
+    isGuide: getStore({ name: 'isGuide' }) || false,
+    systemList: getStore({ name: 'systemList' }) || []
   },
   actions: {
     /**
@@ -35,12 +36,13 @@ const user = {
           commit('SET_REFRESH_TOKEN', data.refresh_token)
 
           // 登陆成功后，获取用户信息放到store中
-          getUserInfoByUsername(userInfo.username).then(data => {
+          getCurrentUserInfo().then(data => {
             commit('SET_USER_INFO', data.result.user)
             commit('SET_ROLELIST', data.result.roleList)
             commit('SET_DEPTLIST', data.result.deptList)
             commit('SET_PERMISSIONS', data.result.permissionList)
             commit('SET_ISGUIDE', data.result.guide)
+            commit('SET_SYSTEMLIST', data.result.systemList)
 
             resolve()
           }).catch(error => {
@@ -69,6 +71,7 @@ const user = {
         commit('SET_DEPTLIST', [])
         commit('SET_PERMISSIONS', [])
         commit('SET_ISGUIDE', false)
+        commit('SET_SYSTEMLIST', [])
 
         resolve()
       })
@@ -173,6 +176,20 @@ const user = {
       setStore({
         name: 'isGuide',
         content: state.isGuide,
+        type: 'session'
+      })
+    },
+    /**
+     * 保存用户系统配置信息
+     * @param state
+     * @param data
+     * @constructor
+     */
+    SET_SYSTEMLIST: (state, data) => {
+      state.systemList = data
+      setStore({
+        name: 'systemList',
+        content: state.systemList,
         type: 'session'
       })
     }

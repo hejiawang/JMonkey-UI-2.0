@@ -33,13 +33,3 @@ export const findNameByRid = (rId) => {
     }
   })
 }
-
-/**
- * 构建引导页显示系统与菜单信息
- */
-export const guideInfo = () => {
-  return request({
-    url: '/sys/resource/guideInfo',
-    method: 'get'
-  })
-}
