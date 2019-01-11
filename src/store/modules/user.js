@@ -20,6 +20,7 @@ const user = {
   actions: {
     /**
      * 用户登录
+     * 登陆成功后，将用户信息保存到store中
      * @param commit
      * @param state
      * @param dispatch

@@ -15,7 +15,6 @@
     </Layout>
   </Layout>
 </template>
-
 <script>
 import store from '@/store'
 import CHeader from '@/components/layout/header'
@@ -29,7 +28,13 @@ export default {
     CHeader, CFooter, CMenu, CPilot
   },
   created () {
+    // 显示home中的页面
     this.$router.push(store.getters.currentMenu)
+
+    // 如果当前系统为空,设置第0个系统为当前系统
+    if (this.$CV.isEmpty(store.getters.currentSystem)) {
+      store.commit('SET_CURRENTSYSTEM', store.getters.systemList[0])
+    }
   },
   data () {
     return {
