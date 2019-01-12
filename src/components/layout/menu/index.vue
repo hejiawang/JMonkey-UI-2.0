@@ -1,16 +1,22 @@
 <template>
   <Menu :active-name="activeMenu" theme="light" width="auto" accordion @on-select="selectMenu">
-    <MenuItem name="/home" to="/home"><icon type="md-home"></icon>系统首页</MenuItem>
-    <MenuItem name="/sys/user" to="/sys/user"><Icon type="ios-contact" />用户管理</MenuItem>
-    <MenuItem name="/sys/role" to="/sys/role"><Icon type="md-globe" />角色管理</MenuItem>
-    <MenuItem name="/sys/dept" to="/sys/dept"><Icon type="logo-xbox" />部门管理</MenuItem>
-    <MenuItem name="/sys/dict" to="/sys/dict"><Icon type="ios-at-outline" />字典管理</MenuItem>
-    <Submenu name="1">
-      <template slot="title"> <Icon type="ios-navigate"></Icon>资源管理</template>
-      <MenuItem name="/sys/system" to="/sys/system">系统管理</MenuItem>
-      <MenuItem name="/sys/menu" to="/sys/menu">菜单管理</MenuItem>
-      <MenuItem name="/sys/button" to="/sys/button">按钮管理</MenuItem>
-    </Submenu>
+    <!-- TODO 最多支持两级菜单 -->
+    <template v-for="menu in menuList" >
+      <!-- 两层菜单的遍历方式 -->
+      <Submenu :key="menu.id" v-if="menu.children && menu.children.length > 0" name="1" >
+        <template slot="title"> <Icon v-if="menu.icon" :type="menu.icon" />{{menu.name}}</template>
+
+        <!-- 遍历第二层菜单 -->
+        <MenuItem v-for="menuChildren in menu.children" :key="menuChildren.id" :name="menuChildren.path" :to="menuChildren.path">
+          <icon v-if="menuChildren.icon" :type="menuChildren.icon" />{{menuChildren.name}}
+        </MenuItem>
+      </Submenu>
+
+      <!-- 一层菜单的遍历 -->
+      <MenuItem :key="menu.id" v-else :name="menu.path" :to="menu.path">
+        <icon :key="menu.id" v-if="menu.icon" :type="menu.icon" />{{menu.name}}
+      </MenuItem>
+    </template>
   </Menu>
 </template>
 <script>
@@ -22,7 +28,8 @@ export default {
     /**
      * 当前处于激活状态的菜单
      */
-    activeMenu () { return store.getters.currentMenu }
+    activeMenu () { return store.getters.currentMenu },
+    menuList () { return store.getters.currentSystem.authMenuList }
   },
   methods: {
     /**
