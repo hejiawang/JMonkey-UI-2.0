@@ -39,7 +39,17 @@ export default {
      * @param name router path
      */
     selectMenu (name) {
+      // 设置当前激活的菜单
       store.commit('SET_CURRENTMENU', name)
+
+      // 如果当前系统展现方式为tab，记录tabList TODO
+      if (store.getters.currentSystem.showType === 'Tabs') {
+        let menuInfo = {name: name, path: name, icon: 'logo-apple', closable: true}
+        let tabList = store.getters.tabList
+        tabList.push(menuInfo)
+
+        store.commit('SET_TABLIST', tabList)
+      }
     }
   }
 }

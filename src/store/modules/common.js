@@ -7,7 +7,7 @@ const common = {
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
     currentMenu: getStore({ name: 'currentMenu' }) || '/home',
     currentSystem: getStore({ name: 'currentSystem' }) || {},
-    tabList: getStore({ name: 'tabList' }) || [{name: '首页', path: '/home', icon: 'logo-apple', closable: false}]
+    tabList: getStore({ name: 'tabList' }) || [] // 格式： {name: '首页', path: '/home', icon: 'logo-apple', closable: false}
   },
   mutations: {
     /**

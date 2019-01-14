@@ -72,15 +72,18 @@ export default {
     }
   },
   created () {
-    this.initRouter()
+    this.init()
   },
   methods: {
     /**
      * 处理页面跳转路径问题
      */
-    initRouter () {
+    init () {
       // 如果不需要引导页，回到首页
       if (!store.getters.isGuide) this.$router.push({path: '/'})
+
+      // 清空tabsList内容
+      store.commit('SET_TABLIST', [])
     },
     /**
      * 进入index页面
