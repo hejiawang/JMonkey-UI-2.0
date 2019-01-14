@@ -7,13 +7,14 @@
         <template slot="title"> <Icon v-if="menu.icon" :type="menu.icon" />{{menu.name}}</template>
 
         <!-- 遍历第二层菜单 -->
-        <MenuItem v-for="menuChildren in menu.children" :key="menuChildren.id" :name="menuChildren.path" :to="menuChildren.path">
+        <MenuItem v-for="menuChildren in menu.children" :key="menuChildren.id" :name="menuChildren.path"
+                  :to="menuChildren.path" :replace="true">
           <icon v-if="menuChildren.icon" :type="menuChildren.icon" />{{menuChildren.name}}
         </MenuItem>
       </Submenu>
 
       <!-- 一层菜单的遍历 -->
-      <MenuItem :key="menu.id" v-else :name="menu.path" :to="menu.path">
+      <MenuItem :key="menu.id" v-else :name="menu.path" :to="menu.path" :replace="true">
         <icon :key="menu.id" v-if="menu.icon" :type="menu.icon" />{{menu.name}}
       </MenuItem>
     </template>

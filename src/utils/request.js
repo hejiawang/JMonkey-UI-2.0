@@ -43,7 +43,7 @@ axios.interceptors.response.use(data => {
 
   // token过期或无资源权限
   if (code === '401' || code === '403') {
-    store.dispatch('LogOut').then(() => { router.push({ path: '/login' }) })
+    store.dispatch('LogOut').then(() => { router.replace({ path: '/login' }) })
   }
 
   return Promise.reject(new Error(error))

@@ -80,7 +80,7 @@ export default {
      */
     init () {
       // 如果不需要引导页，回到首页
-      if (!store.getters.isGuide) this.$router.push({path: '/'})
+      if (!store.getters.isGuide) this.$router.replace({path: '/'})
 
       // 清空tabsList内容
       store.commit('SET_TABLIST', [])
@@ -95,7 +95,7 @@ export default {
         store.commit('SET_CURRENTSYSTEM', system)
         store.commit('SET_CURRENTMENU', path)
 
-        this.$router.push({path: path})
+        this.$router.replace({path: path})
       }
     }
   }

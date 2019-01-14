@@ -26,7 +26,7 @@ export default {
      * @param name
      */
     tabsClick (name) {
-      this.$router.push(name)
+      this.$router.replace(name)
       store.commit('SET_CURRENTMENU', name)
     },
     /**

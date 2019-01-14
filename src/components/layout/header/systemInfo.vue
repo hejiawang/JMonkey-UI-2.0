@@ -53,7 +53,7 @@ export default {
      * 返回到引导页
      */
     goGuide () {
-      this.$router.push('/guide')
+      this.$router.replace('/guide')
     },
     /**
      * 跳转首页
@@ -65,7 +65,7 @@ export default {
         store.commit('SET_CURRENTMENU', '/home')
         store.commit('SET_CURRENTSYSTEM', system)
 
-        this.$router.push({path: '/home'})
+        this.$router.replace({path: '/home'})
       }
     }
   }

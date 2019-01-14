@@ -29,7 +29,7 @@ export default {
   },
   created () {
     // 显示home中的页面
-    this.$router.push(store.getters.currentMenu)
+    this.$router.replace(store.getters.currentMenu)
 
     // 如果当前系统为空,设置第0个有权限的系统为当前系统，没有引导页时会出现该情况 TODO
     if (this.$CV.isEmpty(store.getters.currentSystem)) {

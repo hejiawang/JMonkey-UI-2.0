@@ -89,7 +89,7 @@ export default {
      * 退出登录
      */
     layoutHandle () {
-      this.$store.dispatch('LogOut').then(() => { this.$router.push({ path: '/login' }) })
+      this.$store.dispatch('LogOut').then(() => { this.$router.replace({ path: '/login' }) })
     },
     /**
      * 修改个人信息成功后重新登陆
