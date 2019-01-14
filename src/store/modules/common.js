@@ -6,7 +6,8 @@ const common = {
     website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
     currentMenu: getStore({ name: 'currentMenu' }) || '/home',
-    currentSystem: getStore({ name: 'currentSystem' }) || {}
+    currentSystem: getStore({ name: 'currentSystem' }) || {},
+    tabList: getStore({ name: 'tabList' }) || [{name: '首页', path: '/home', icon: 'logo-apple', closable: false}]
   },
   mutations: {
     /**
@@ -48,6 +49,20 @@ const common = {
       setStore({
         name: 'currentSystem',
         content: state.currentSystem,
+        type: 'session'
+      })
+    },
+    /**
+     * 标签页list
+     * @param state
+     * @param tabList
+     * @constructor
+     */
+    SET_TABLIST: (state, tabList) => {
+      state.tabList = tabList
+      setStore({
+        name: 'tabList',
+        content: state.tabList,
         type: 'session'
       })
     }

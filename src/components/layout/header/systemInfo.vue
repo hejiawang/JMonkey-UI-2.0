@@ -57,12 +57,13 @@ export default {
     },
     /**
      * 跳转首页
+     * TODO bug 左侧菜单首页菜单没有被选中（原因，store中的值变了，但是menu/index.vue中的computed没有重新计算，为什么？？？）
      * @param system 系统信息
      */
     goIndex (system) {
       if (system.isAuth === 'Yes' && system.id !== store.getters.currentSystem.id) {
-        store.commit('SET_CURRENTSYSTEM', system)
         store.commit('SET_CURRENTMENU', '/home')
+        store.commit('SET_CURRENTSYSTEM', system)
 
         this.$router.push({path: '/home'})
       }

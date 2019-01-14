@@ -3,6 +3,7 @@ const getters = {
   windowHeight: state => state.common.windowHeight,
   currentMenu: state => state.common.currentMenu,
   currentSystem: state => state.common.currentSystem,
+  tabList: state => state.common.tabList,
   access_token: state => state.user.access_token,
   user: state => state.user.user,
   roleList: state => state.user.roleList,

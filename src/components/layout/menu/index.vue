@@ -28,7 +28,9 @@ export default {
     /**
      * 当前处于激活状态的菜单
      */
-    activeMenu () { return store.getters.currentMenu },
+    activeMenu () {
+      return store.getters.currentMenu
+    },
     menuList () { return store.getters.currentSystem.authMenuList }
   },
   methods: {
