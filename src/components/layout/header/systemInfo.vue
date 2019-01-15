@@ -17,6 +17,7 @@
 </template>
 <script>
 import store from '@/store'
+import { converToList } from '@/utils/router'
 
 export default {
   name: 'CHeader_SystemInfo',
@@ -32,7 +33,16 @@ export default {
     /**
      * 登陆用户系统配置信息
      */
-    systemList () { return store.getters.systemList }
+    systemList () { return store.getters.systemList },
+    /**
+     * 计算菜单list信息
+     */
+    authMenuList () {
+      let system = store.getters.currentSystem
+
+      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
+      else return converToList(system.authMenuList)
+    }
   },
   filters: {
     /**
@@ -42,10 +52,6 @@ export default {
       if (systemId === store.getters.currentSystem.id) return 'cheader-system-current'
       if (val === 'Yes') return 'cheader-system-y'
       if (val === 'No') return 'cheader-system-n'
-    }
-  },
-  data () {
-    return {
     }
   },
   methods: {
@@ -65,7 +71,27 @@ export default {
         store.commit('SET_CURRENTMENU', '/home')
         store.commit('SET_CURRENTSYSTEM', system)
 
+        // 处理tab页信息
+        this.buildTabInfo(system)
+
+        // 进入首页
         this.$router.replace({path: '/home'})
+      }
+    },
+    /**
+     * 构建tab页信息
+     * @param system
+     */
+    buildTabInfo (system) {
+      store.commit('CLEAR_TABLIST')
+
+      if (system.showType === 'Tabs') {
+        this.authMenuList.forEach(menu => {
+          if (menu.path === '/home') {
+            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
+            store.commit('SET_TABLIST', tabInfo)
+          }
+        })
       }
     }
   }

@@ -22,6 +22,7 @@
 </template>
 <script>
 import store from '@/store'
+import { converToList } from '@/utils/router'
 
 export default {
   name: 'CMenu',
@@ -32,7 +33,19 @@ export default {
     activeMenu () {
       return store.getters.currentMenu
     },
-    menuList () { return store.getters.currentSystem.authMenuList }
+    /**
+     * 用于遍历菜单树
+     */
+    menuList () { return store.getters.currentSystem.authMenuList },
+    /**
+     * 系统展现形式为tab页时计算菜单list信息
+     */
+    authMenuList () {
+      let system = store.getters.currentSystem
+
+      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
+      else return converToList(system.authMenuList)
+    }
   },
   methods: {
     /**
@@ -43,14 +56,40 @@ export default {
       // 设置当前激活的菜单
       store.commit('SET_CURRENTMENU', name)
 
-      // 如果当前系统展现方式为tab，记录tabList TODO
-      if (store.getters.currentSystem.showType === 'Tabs') {
-        let menuInfo = {name: name, path: name, icon: 'logo-apple', closable: true}
-        let tabList = store.getters.tabList
-        tabList.push(menuInfo)
+      this.buildTabInfo(name)
+    },
+    /**
+     * 如果当前系统展现方式为tab，记录tabList
+     * @param path 菜单路径
+     */
+    buildTabInfo (path) {
+      if (!this.checkTab(path)) return
 
-        store.commit('SET_TABLIST', tabList)
-      }
+      let menuInfo = {}
+      this.authMenuList.forEach(menu => {
+        if (menu.path === path) {
+          menuInfo = {name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable}
+        }
+      })
+      store.commit('SET_TABLIST', menuInfo)
+    },
+    /**
+     * 判断是否需要添加tab信息
+     * @param path 菜单路径
+     * @returns {boolean} true 需要
+     */
+    checkTab (path) {
+      // 如果系统展现方式不是tab页，return false
+      if (store.getters.currentSystem.showType !== 'Tabs') return false
+
+      // 如果已经存在tab信息，return false
+      let isExist = false
+      store.getters.tabList.forEach(tab => {
+        if (tab.path === path) isExist = true
+      })
+      if (isExist) return false
+
+      return true
     }
   }
 }

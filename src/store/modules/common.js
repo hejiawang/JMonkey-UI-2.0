@@ -58,8 +58,41 @@ const common = {
      * @param tabList
      * @constructor
      */
-    SET_TABLIST: (state, tabList) => {
-      state.tabList = tabList
+    SET_TABLIST: (state, tabInfo) => {
+      state.tabList.push(tabInfo)
+      setStore({
+        name: 'tabList',
+        content: state.tabList,
+        type: 'session'
+      })
+    },
+    /**
+     * 移除标签页
+     * @param state
+     * @param path
+     * @constructor
+     */
+    DEL_TABLIST: (state, path) => {
+      let tabIndex = -1
+      state.tabList.forEach((tab, index) => {
+        if (tab.path === path) tabIndex = index
+      })
+
+      if (tabIndex > -1) state.tabList.splice(tabIndex, 1)
+
+      setStore({
+        name: 'tabList',
+        content: state.tabList,
+        type: 'session'
+      })
+    },
+    /**
+     * 清空标签页list
+     * @param state
+     * @constructor
+     */
+    CLEAR_TABLIST: (state) => {
+      state.tabList = []
       setStore({
         name: 'tabList',
         content: state.tabList,

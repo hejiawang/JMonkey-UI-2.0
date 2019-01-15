@@ -46,6 +46,7 @@
 </template>
 <script>
 import store from '@/store'
+import { converToList } from '@/utils/router'
 import CHeader from '@/components/layout/header'
 
 export default {
@@ -59,6 +60,16 @@ export default {
      */
     systemList () {
       return store.getters.systemList
+    },
+    /**
+     * 计算菜单list信息，在buildTabInfo中使用，
+     * 避免每次使用菜单list信息都计算一遍，通过computed计算，只有当系统变化时才重新计算
+     */
+    authMenuList () {
+      let system = store.getters.currentSystem
+
+      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
+      else return converToList(system.authMenuList)
     }
   },
   filters: {
@@ -83,7 +94,7 @@ export default {
       if (!store.getters.isGuide) this.$router.replace({path: '/'})
 
       // 清空tabsList内容
-      store.commit('SET_TABLIST', [])
+      store.commit('CLEAR_TABLIST')
     },
     /**
      * 进入index页面
@@ -95,7 +106,32 @@ export default {
         store.commit('SET_CURRENTSYSTEM', system)
         store.commit('SET_CURRENTMENU', path)
 
+        // 如果系统形式为tab页，处理tabList信息
+        this.buildTabInfo(system, path)
+
+        // 进入index页面
         this.$router.replace({path: path})
+      }
+    },
+    /**
+     * 如果系统形式为tab页，处理tabList信息
+     * TODO 系统展现形式为tab页时，理论上性能会比导航条形式慢，因为要遍历菜单信息
+     * @param system 系统信息
+     */
+    buildTabInfo (system, path) {
+      store.commit('CLEAR_TABLIST')
+
+      if (system.showType === 'Tabs') {
+        // 将选中的菜单和首页信息放入tabList中
+        let pathArray = [path]
+        if (path !== '/home') pathArray.push('/home')
+
+        this.authMenuList.forEach(menu => {
+          if (pathArray.indexOf(menu.path) !== -1) {
+            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
+            store.commit('SET_TABLIST', tabInfo)
+          }
+        })
       }
     }
   }
