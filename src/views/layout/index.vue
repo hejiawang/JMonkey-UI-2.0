@@ -21,7 +21,7 @@ import CHeader from '@/components/layout/header'
 import CFooter from '@/components/layout/footer'
 import CMenu from '@/components/layout/menu'
 import CPilot from '@/components/layout/pilot'
-import { converToList } from '@/utils/router'
+import { converToList, initRouter } from '@/utils/router'
 
 export default {
   name: 'LayoutMain',
@@ -40,8 +40,9 @@ export default {
     }
   },
   created () {
-    this.initRouter()
     this.initSystem()
+    this.initRouter()
+    this.initIndex()
   },
   mounted () {
     /**
@@ -58,8 +59,11 @@ export default {
     /**
      * 显示home中的页面
      */
-    initRouter () {
+    initIndex () {
       this.$router.replace(store.getters.currentMenu)
+    },
+    initRouter () {
+      initRouter()
     },
     /**
      * 没有引导页时设置第0个有权限的系统为当前系统

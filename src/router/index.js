@@ -3,17 +3,18 @@ import Router from 'vue-router'
 import Login from '@/views/login'
 import LayoutMain from '@/views/layout'
 import LayoutGuide from '@/views/layout/guide'
-import SysHome from '@/views/sys/home'
-import SysUser from '@/views/sys/user'
-import SysRole from '@/views/sys/role'
-import SysDept from '@/views/sys/dept'
-import SysDict from '@/views/sys/dict'
-import SysButton from '@/views/sys/button'
-import SysMenu from '@/views/sys/menu'
-import SysSystem from '@/views/sys/system'
 
 Vue.use(Router)
 
+export default new Router({
+  routes: [
+    { path: '/', name: '系统主页', component: LayoutMain },
+    { path: '/login', name: '登陆页', component: Login },
+    { path: '/guide', name: '引导页', component: LayoutGuide }
+  ]
+})
+
+/*
 export default new Router({
   routes: [
     { path: '/login', name: '登陆页', component: Login },
@@ -35,3 +36,4 @@ export default new Router({
     { path: '/guide', name: '引导页', component: LayoutGuide }
   ]
 })
+*/

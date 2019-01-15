@@ -17,7 +17,7 @@
 </template>
 <script>
 import store from '@/store'
-import { converToList } from '@/utils/router'
+import { converToList, initRouter } from '@/utils/router'
 
 export default {
   name: 'CHeader_SystemInfo',
@@ -36,6 +36,7 @@ export default {
     systemList () { return store.getters.systemList },
     /**
      * 计算菜单list信息
+     * TODO 有代码重复，应该优化，（引导页与index页有相同逻辑）
      */
     authMenuList () {
       let system = store.getters.currentSystem
@@ -74,12 +75,16 @@ export default {
         // 处理tab页信息
         this.buildTabInfo(system)
 
+        // 处理选择系统的router信息
+        initRouter()
+
         // 进入首页
         this.$router.replace({path: '/home'})
       }
     },
     /**
      * 构建tab页信息
+     * TODO 有代码重复，应该优化，（引导页与index页有相同逻辑, 应该重构）
      * @param system
      */
     buildTabInfo (system) {

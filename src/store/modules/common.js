@@ -5,7 +5,7 @@ const common = {
   state: {
     website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
-    currentMenu: getStore({ name: 'currentMenu' }) || '/home',
+    currentMenu: getStore({ name: 'currentMenu' }) || '/home', // TODO 考虑使用this.$router.currentRouter重构
     currentSystem: getStore({ name: 'currentSystem' }) || {},
     tabList: getStore({ name: 'tabList' }) || [] // 格式： {name: '首页', path: '/home', icon: 'logo-apple', closable: false}
   },
