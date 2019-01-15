@@ -35,8 +35,8 @@ export default {
     tabsRemove (name) {
       store.commit('DEL_TABLIST', name)
 
-      // 移除标签后，回到首页
-      this.tabsClick('/home')
+      // 移除当前标签页后，回到首页
+      if (name === this.currentMunu) this.tabsClick('/home')
     }
   }
 }
