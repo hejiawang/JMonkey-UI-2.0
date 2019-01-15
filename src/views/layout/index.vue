@@ -21,24 +21,27 @@ import CHeader from '@/components/layout/header'
 import CFooter from '@/components/layout/footer'
 import CMenu from '@/components/layout/menu'
 import CPilot from '@/components/layout/pilot'
+import { converToList } from '@/utils/router'
 
 export default {
   name: 'LayoutMain',
   components: {
     CHeader, CFooter, CMenu, CPilot
   },
-  created () {
-    // 显示home中的页面
-    this.$router.replace(store.getters.currentMenu)
+  computed: {
+    /**
+     * 计算菜单list信息
+     */
+    authMenuList () {
+      let system = store.getters.currentSystem
 
-    // 如果当前系统为空,设置第0个有权限的系统为当前系统，没有引导页时会出现该情况 TODO
-    if (this.$CV.isEmpty(store.getters.currentSystem)) {
-      store.commit('SET_CURRENTSYSTEM', store.getters.systemList[0])
+      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
+      else return converToList(system.authMenuList)
     }
   },
-  data () {
-    return {
-    }
+  created () {
+    this.initRouter()
+    this.initSystem()
   },
   mounted () {
     /**
@@ -52,6 +55,55 @@ export default {
     }
   },
   methods: {
+    /**
+     * 显示home中的页面
+     */
+    initRouter () {
+      this.$router.replace(store.getters.currentMenu)
+    },
+    /**
+     * 没有引导页时设置第0个有权限的系统为当前系统
+     */
+    initSystem () {
+      if (this.$CV.isEmpty(store.getters.currentSystem)) {
+        let systemInfo = this.getFirstSystem()
+        store.commit('SET_CURRENTSYSTEM', systemInfo)
+
+        this.buildTabInfo(systemInfo)
+      }
+    },
+    /**
+     * 获取第一个有权限的菜单
+     * @returns {*}
+     */
+    getFirstSystem () {
+      let systemInfo = null
+      for (var i = 0; i < store.getters.systemList.length; i++) {
+        let s = store.getters.systemList[i]
+        if (s.isAuth) {
+          systemInfo = s
+          break
+        }
+      }
+
+      return systemInfo
+    },
+    /**
+     * 构建tab页信息
+     * @param system
+     */
+    buildTabInfo (system) {
+      store.commit('CLEAR_TABLIST')
+
+      if (system.showType === 'Tabs') {
+        this.authMenuList.forEach(menu => {
+          if (menu.path === '/home') {
+            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
+            store.commit('SET_TABLIST', tabInfo)
+          }
+        })
+      }
+    }
   }
 }
 </script>
