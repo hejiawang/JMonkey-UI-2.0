@@ -17,7 +17,7 @@
 </template>
 <script>
 import store from '@/store'
-import { converToList, initRouter } from '@/utils/router'
+import { initRouter } from '@/utils/router'
 
 export default {
   name: 'CHeader_SystemInfo',
@@ -33,17 +33,7 @@ export default {
     /**
      * 登陆用户系统配置信息
      */
-    systemList () { return store.getters.systemList },
-    /**
-     * 计算菜单list信息
-     * TODO 有代码重复，应该优化，（引导页与index页有相同逻辑）
-     */
-    authMenuList () {
-      let system = store.getters.currentSystem
-
-      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
-      else return converToList(system.authMenuList)
-    }
+    systemList () { return store.getters.systemList }
   },
   filters: {
     /**
@@ -69,25 +59,23 @@ export default {
      */
     goIndex (system) {
       if (system.isAuth === 'Yes' && system.id !== store.getters.currentSystem.id) {
-        store.commit('SET_CURRENTMENU', '/home')
-        store.commit('SET_CURRENTSYSTEM', system)
+        store.dispatch('renderSystem', system).then(() => {
+          store.commit('SET_CURRENTMENU', store.getters.currentSystemHome)
 
-        // 处理tab页信息
-        this.buildTabInfo(system)
+          // 处理选择系统的router信息
+          initRouter()
 
-        // 处理选择系统的router信息
-        initRouter()
-
-        // 进入首页
-        this.$router.replace({path: '/home'})
+          // 进入首页
+          this.$router.replace({path: store.getters.currentSystemHome})
+        })
       }
-    },
+    }
     /**
      * 构建tab页信息
      * TODO 有代码重复，应该优化，（引导页与index页有相同逻辑, 应该重构）
      * @param system
      */
-    buildTabInfo (system) {
+    /* buildTabInfo (system) {
       store.commit('CLEAR_TABLIST')
 
       if (system.showType === 'Tabs') {
@@ -98,7 +86,7 @@ export default {
           }
         })
       }
-    }
+    } */
   }
 }
 </script>

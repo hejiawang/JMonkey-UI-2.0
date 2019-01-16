@@ -21,23 +21,12 @@ import CHeader from '@/components/layout/header'
 import CFooter from '@/components/layout/footer'
 import CMenu from '@/components/layout/menu'
 import CPilot from '@/components/layout/pilot'
-import { converToList, initRouter } from '@/utils/router'
+import { initRouter } from '@/utils/router'
 
 export default {
   name: 'LayoutMain',
   components: {
     CHeader, CFooter, CMenu, CPilot
-  },
-  computed: {
-    /**
-     * 计算菜单list信息
-     */
-    authMenuList () {
-      let system = store.getters.currentSystem
-
-      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
-      else return converToList(system.authMenuList)
-    }
   },
   created () {
     console.info('layout index')
@@ -72,9 +61,11 @@ export default {
     initSystem () {
       if (this.$CV.isEmpty(store.getters.currentSystem)) {
         let systemInfo = this.getFirstSystem()
-        store.commit('SET_CURRENTSYSTEM', systemInfo)
+        store.dispatch('renderSystem', systemInfo).then(() => {
+          store.commit('SET_CURRENTMENU', store.getters.currentSystemHome)
 
-        this.buildTabInfo(systemInfo)
+          // this.buildTabInfo(systemInfo)
+        })
       }
     },
     /**
@@ -92,12 +83,12 @@ export default {
       }
 
       return systemInfo
-    },
+    }
     /**
      * 构建tab页信息
      * @param system
      */
-    buildTabInfo (system) {
+    /* buildTabInfo (system) {
       store.commit('CLEAR_TABLIST')
 
       if (system.showType === 'Tabs') {
@@ -108,7 +99,7 @@ export default {
           }
         })
       }
-    }
+    } */
   }
 }
 </script>

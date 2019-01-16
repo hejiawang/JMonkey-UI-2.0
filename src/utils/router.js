@@ -28,8 +28,8 @@ export const initRouter = () => {
 
   router.addRoutes(router.options.routes)
 
-  console.info('router.js initRouter')
-  console.info(router)
+  // console.info('router.js initRouter')
+  // console.info(router)
 }
 
 /**

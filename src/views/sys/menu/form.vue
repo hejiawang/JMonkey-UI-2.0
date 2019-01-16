@@ -78,25 +78,11 @@ export default {
         'raise': '新增菜单信息'
       }
       return titleAry[this.type]
-    },
-
-    // 使用computed做中间层，以实现对menuForm.path与menuForm.isIndex的watch监听
-    menuPath () { return this.menuForm.path },
-    menuIsIndex () { return this.menuForm.isIndex }
+    }
   },
   watch: {
     value (val) { this.isShow = val },
-    isShow (val) { this.$emit('input', val) },
-
-    // 如果是首页，router路径必须是'/home'
-    menuPath (val) {
-      if (val !== '/home') this.menuForm.isIndex = 'No'
-      if (val === '/home') this.menuForm.isIndex = 'Yes'
-    },
-    menuIsIndex (val) {
-      if (val === 'Yes') this.menuForm.path = '/home'
-      if (val === 'No' && this.menuForm.path === '/home') this.menuForm.path = ''
-    }
+    isShow (val) { this.$emit('input', val) }
   },
   data () {
     return {

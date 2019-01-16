@@ -13,13 +13,36 @@ export default {
     }
   },
   computed: {
+    /**
+     * 当前选中的菜单项
+     */
     currentMunu () { return store.getters.currentMenu },
+    // currentSystem () { return store.getters.currentSystem },
     /**
      * 当前处于激活状态的菜单
      */
-    tabList () { return store.getters.tabList }
+    tabList () { return store.getters.tabList },
+    changeMenu () {
+
+    },
+    changeSystem () {}
+  },
+  watch: {
+    currentMunu (val) { this.buildTabsInfo(1) }
+    // currentSystem (val) { this.buildTabsInfo(2) }
+  },
+  created () {
+    this.initTabsInfo(3)
   },
   methods: {
+    initTabsInfo () {
+      console.info('build tabs info ' + 3)
+      // console.info(this.currentMunu)
+      // console.info(this.currentSystem)
+    },
+    buildTabsInfo (v) {
+      console.info('build tabs info ' + v)
+    },
     /**
      * 标签页点击事件
      * @param name

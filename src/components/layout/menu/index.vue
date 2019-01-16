@@ -22,7 +22,6 @@
 </template>
 <script>
 import store from '@/store'
-import { converToList } from '@/utils/router'
 
 export default {
   name: 'CMenu',
@@ -36,16 +35,7 @@ export default {
     /**
      * 用于遍历菜单树
      */
-    menuList () { return store.getters.currentSystem.authMenuList },
-    /**
-     * 系统展现形式为tab页时计算菜单list信息
-     */
-    authMenuList () {
-      let system = store.getters.currentSystem
-
-      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
-      else return converToList(system.authMenuList)
-    }
+    menuList () { return store.getters.currentSystem.authMenuList }
   },
   methods: {
     /**
@@ -56,13 +46,13 @@ export default {
       // 设置当前激活的菜单
       store.commit('SET_CURRENTMENU', name)
 
-      this.buildTabInfo(name)
-    },
+      // this.buildTabInfo(name)
+    }
     /**
      * 如果当前系统展现方式为tab，记录tabList
      * @param path 菜单路径
      */
-    buildTabInfo (path) {
+    /* buildTabInfo (path) {
       if (!this.checkTab(path)) return
 
       let menuInfo = {}
@@ -72,13 +62,13 @@ export default {
         }
       })
       store.commit('SET_TABLIST', menuInfo)
-    },
+    }, */
     /**
      * 判断是否需要添加tab信息
      * @param path 菜单路径
      * @returns {boolean} true 需要
      */
-    checkTab (path) {
+    /* checkTab (path) {
       // 如果系统展现方式不是tab页，return false
       if (store.getters.currentSystem.showType !== 'Tabs') return false
 
@@ -90,7 +80,7 @@ export default {
       if (isExist) return false
 
       return true
-    }
+    } */
   }
 }
 </script>

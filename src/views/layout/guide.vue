@@ -8,7 +8,7 @@
           <Card v-if="system.menuList && system.menuList.length > 0">
             <div class="content-left">
               <div class="content-sys">
-                <a @click="goIndex(system, '/home')">
+                <a @click="goIndex(system, '')">
                   <span :style="system.isAuth | authSpanFilter"> {{system.name}} </span>
                 </a>
               </div>
@@ -33,7 +33,7 @@
           <!-- 无子菜单的显示方式 -->
           <Card v-else>
             <div class="content-only">
-              <a @click="goIndex(system, '/home')">
+              <a @click="goIndex(system, '')">
                 <Row><Icon :type="system.icon" size="100" :color="system.isAuth | authIconFilter"/></Row>
                 <Row><span :style="system.isAuth | authSpanFilter">{{system.name}}</span></Row>
               </a>
@@ -46,7 +46,6 @@
 </template>
 <script>
 import store from '@/store'
-import { converToList } from '@/utils/router'
 import CHeader from '@/components/layout/header'
 
 export default {
@@ -60,16 +59,6 @@ export default {
      */
     systemList () {
       return store.getters.systemList
-    },
-    /**
-     * 计算菜单list信息，在buildTabInfo中使用，
-     * 避免每次使用菜单list信息都计算一遍，通过computed计算，只有当系统变化时才重新计算
-     */
-    authMenuList () {
-      let system = store.getters.currentSystem
-
-      if (this.$CV.isEmpty(system) || this.$CV.isEmpty(system.authMenuList)) return []
-      else return converToList(system.authMenuList)
     }
   },
   filters: {
@@ -103,24 +92,16 @@ export default {
      */
     goIndex (system, path) {
       if (system.isAuth === 'Yes') {
-        store.commit('SET_CURRENTSYSTEM', system)
-        store.commit('SET_CURRENTMENU', path)
+        store.dispatch('renderSystem', system).then(() => {
+          path = this.$CV.isEmpty(path) ? store.getters.currentSystemHome : path
+          store.commit('SET_CURRENTMENU', path)
 
-        // 如果系统形式为tab页，处理tabList信息
-        this.buildTabInfo(system, path)
-
-        // 处理该系统的router路径
-        // initRouter()
-
-        // 进入index页面
-        this.$router.replace({path: '/'})
+          // 进入index页面
+          this.$router.replace({path: '/'})
+        })
       }
-    },
-    /**
-     * 如果系统形式为tab页，处理tabList信息
-     * TODO 系统展现形式为tab页时，理论上性能会比导航条形式慢，因为要遍历菜单信息
-     * @param system 系统信息
-     */
+    }
+    /*
     buildTabInfo (system, path) {
       store.commit('CLEAR_TABLIST')
 
@@ -137,6 +118,7 @@ export default {
         })
       }
     }
+    */
   }
 }
 </script>

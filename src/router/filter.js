@@ -13,8 +13,8 @@ NProgress.configure({ showSpinner: false })
  * TODO 缺：在地址栏中随便输入地址，应该返回引导页或首页
  */
 router.beforeEach((to, from, next) => {
-  console.info('router filter beforeEach')
-  console.info(router)
+  // console.info('router filter beforeEach')
+  // console.info(router)
   NProgress.start()
 
   if (store.getters.access_token) {
