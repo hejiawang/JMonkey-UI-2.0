@@ -45,7 +45,7 @@ export const converToList = (treeMenu) => {
     if (!validatenull(menu.children)) converToList(menu.children).forEach(cMenu => menuList.push(cMenu))
 
     // 系统形式为tab时，首页tab不可关闭
-    Vue.set(menu, '_closable', menu.path !== '/home')
+    Vue.set(menu, '_closable', menu.isIndex === 'No')
 
     menuList.push(menu)
   })

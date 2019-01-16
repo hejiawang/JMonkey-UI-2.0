@@ -70,23 +70,6 @@ export default {
         })
       }
     }
-    /**
-     * 构建tab页信息
-     * TODO 有代码重复，应该优化，（引导页与index页有相同逻辑, 应该重构）
-     * @param system
-     */
-    /* buildTabInfo (system) {
-      store.commit('CLEAR_TABLIST')
-
-      if (system.showType === 'Tabs') {
-        this.authMenuList.forEach(menu => {
-          if (menu.path === '/home') {
-            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
-            store.commit('SET_TABLIST', tabInfo)
-          }
-        })
-      }
-    } */
   }
 }
 </script>

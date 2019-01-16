@@ -101,24 +101,6 @@ export default {
         })
       }
     }
-    /*
-    buildTabInfo (system, path) {
-      store.commit('CLEAR_TABLIST')
-
-      if (system.showType === 'Tabs') {
-        // 将选中的菜单和首页信息放入tabList中
-        let pathArray = [path]
-        if (path !== '/home') pathArray.push('/home')
-
-        this.authMenuList.forEach(menu => {
-          if (pathArray.indexOf(menu.path) !== -1) {
-            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
-            store.commit('SET_TABLIST', tabInfo)
-          }
-        })
-      }
-    }
-    */
   }
 }
 </script>

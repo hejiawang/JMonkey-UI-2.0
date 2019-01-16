@@ -29,9 +29,7 @@ export default {
     /**
      * 当前处于激活状态的菜单
      */
-    activeMenu () {
-      return store.getters.currentMenu
-    },
+    activeMenu () { return store.getters.currentMenu },
     /**
      * 用于遍历菜单树
      */
@@ -45,42 +43,7 @@ export default {
     selectMenu (name) {
       // 设置当前激活的菜单
       store.commit('SET_CURRENTMENU', name)
-
-      // this.buildTabInfo(name)
     }
-    /**
-     * 如果当前系统展现方式为tab，记录tabList
-     * @param path 菜单路径
-     */
-    /* buildTabInfo (path) {
-      if (!this.checkTab(path)) return
-
-      let menuInfo = {}
-      this.authMenuList.forEach(menu => {
-        if (menu.path === path) {
-          menuInfo = {name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable}
-        }
-      })
-      store.commit('SET_TABLIST', menuInfo)
-    }, */
-    /**
-     * 判断是否需要添加tab信息
-     * @param path 菜单路径
-     * @returns {boolean} true 需要
-     */
-    /* checkTab (path) {
-      // 如果系统展现方式不是tab页，return false
-      if (store.getters.currentSystem.showType !== 'Tabs') return false
-
-      // 如果已经存在tab信息，return false
-      let isExist = false
-      store.getters.tabList.forEach(tab => {
-        if (tab.path === path) isExist = true
-      })
-      if (isExist) return false
-
-      return true
-    } */
   }
 }
 </script>

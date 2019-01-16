@@ -14,34 +14,75 @@ export default {
   },
   computed: {
     /**
+     * 当前系统首页路径
+     */
+    currentSystemHome () { return store.getters.currentSystemHome },
+    /**
      * 当前选中的菜单项
      */
     currentMunu () { return store.getters.currentMenu },
-    // currentSystem () { return store.getters.currentSystem },
     /**
      * 当前处于激活状态的菜单
      */
-    tabList () { return store.getters.tabList },
-    changeMenu () {
-
-    },
-    changeSystem () {}
+    tabList () { return store.getters.tabList }
   },
   watch: {
-    currentMunu (val) { this.buildTabsInfo(1) }
-    // currentSystem (val) { this.buildTabsInfo(2) }
+    /**
+     * 选择的菜单变化是重构tab页
+     */
+    currentMunu (val) { this.buildTabsInfo() },
+    /**
+     * 当前系统变化时，重构tab页
+     */
+    currentSystemHome (val) {
+      store.commit('CLEAR_TABLIST')
+      this.buildTabsInfo()
+    }
   },
   created () {
-    this.initTabsInfo(3)
+    this.initTabsInfo()
   },
   methods: {
+    /**
+     * 页面创建时创建tab页信息
+     */
     initTabsInfo () {
-      console.info('build tabs info ' + 3)
-      // console.info(this.currentMunu)
-      // console.info(this.currentSystem)
+      store.commit('CLEAR_TABLIST')
+
+      let pathArray = [this.currentMunu]
+      if (this.currentMunu !== this.currentSystemHome) pathArray.push(this.currentSystemHome)
+      store.getters.menuList.forEach(menu => {
+        if (pathArray.indexOf(menu.path) !== -1) {
+          let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
+          store.commit('SET_TABLIST', tabInfo)
+        }
+      })
     },
-    buildTabsInfo (v) {
-      console.info('build tabs info ' + v)
+    /**
+     * 系统或菜单变化时，构建tab页信息
+     */
+    buildTabsInfo () {
+      if (!this.checkTab()) return
+
+      let menuInfo = {}
+      store.getters.menuList.forEach(menu => {
+        if (menu.path === this.currentMunu) {
+          menuInfo = {name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable}
+        }
+      })
+      store.commit('SET_TABLIST', menuInfo)
+    },
+    /**
+     * 校验是否需要向tab list中添加信息
+     */
+    checkTab () {
+      let isExist = false
+      store.getters.tabList.forEach(tab => {
+        if (tab.path === this.currentMunu) isExist = true
+      })
+      if (isExist) return false
+
+      return true
     },
     /**
      * 标签页点击事件
@@ -59,7 +100,7 @@ export default {
       store.commit('DEL_TABLIST', name)
 
       // 移除当前标签页后，回到首页
-      if (name === this.currentMunu) this.tabsClick('/home')
+      if (name === this.currentMunu) this.tabsClick(this.currentSystemHome)
     }
   }
 }

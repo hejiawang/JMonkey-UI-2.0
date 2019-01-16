@@ -6,7 +6,7 @@ const common = {
   state: {
     website: website,
     windowHeight: getStore({ name: 'windowHeight' }) || 0,
-    currentMenu: getStore({ name: 'currentMenu' }) || '/home', // TODO 考虑使用this.$router.currentRouter重构
+    currentMenu: getStore({ name: 'currentMenu' }) || '/', // TODO 考虑使用this.$router.currentRouter重构
     menuList: getStore({ name: 'menuList' }) || [], // 当前系统中菜单信息list，不是treelist
     currentSystem: getStore({ name: 'currentSystem' }) || {},
     currentSystemHome: getStore({ name: 'currentSystemHome' }) || '/', // 当前系统首页

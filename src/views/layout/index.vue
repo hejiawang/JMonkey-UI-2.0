@@ -29,7 +29,6 @@ export default {
     CHeader, CFooter, CMenu, CPilot
   },
   created () {
-    console.info('layout index')
     this.initSystem()
     this.initRouter()
     this.initIndex()
@@ -63,8 +62,6 @@ export default {
         let systemInfo = this.getFirstSystem()
         store.dispatch('renderSystem', systemInfo).then(() => {
           store.commit('SET_CURRENTMENU', store.getters.currentSystemHome)
-
-          // this.buildTabInfo(systemInfo)
         })
       }
     },
@@ -84,22 +81,6 @@ export default {
 
       return systemInfo
     }
-    /**
-     * 构建tab页信息
-     * @param system
-     */
-    /* buildTabInfo (system) {
-      store.commit('CLEAR_TABLIST')
-
-      if (system.showType === 'Tabs') {
-        this.authMenuList.forEach(menu => {
-          if (menu.path === '/home') {
-            let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
-            store.commit('SET_TABLIST', tabInfo)
-          }
-        })
-      }
-    } */
   }
 }
 </script>

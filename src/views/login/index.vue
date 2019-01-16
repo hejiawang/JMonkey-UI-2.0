@@ -76,7 +76,7 @@ export default {
           store.dispatch('LoginByUsername', this.loginForm).then(
             res => {
               if (store.getters.isGuide) this.$router.replace({path: '/guide'})
-              else this.$router.replace({path: '/home'})
+              else this.$router.replace({path: '/'})
             },
             error => { // eslint-disable-line
               this.isDisabled = false
