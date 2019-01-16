@@ -46,7 +46,7 @@
 </template>
 <script>
 import store from '@/store'
-import { converToList, initRouter } from '@/utils/router'
+import { converToList } from '@/utils/router'
 import CHeader from '@/components/layout/header'
 
 export default {
@@ -110,10 +110,10 @@ export default {
         this.buildTabInfo(system, path)
 
         // 处理该系统的router路径
-        initRouter()
+        // initRouter()
 
         // 进入index页面
-        this.$router.replace({path: path})
+        this.$router.replace({path: '/'})
       }
     },
     /**

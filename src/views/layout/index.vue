@@ -40,6 +40,7 @@ export default {
     }
   },
   created () {
+    console.info('layout index')
     this.initSystem()
     this.initRouter()
     this.initIndex()
