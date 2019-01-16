@@ -2,19 +2,17 @@ import router from '@/router'
 import store from '@/store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-// import { validatenull } from '@/utils/validate'
-// import { initRouter } from '@/utils/router'
+import { validatenull } from '@/utils/validate'
+import { initRouter } from '@/utils/router'
 
 NProgress.configure({ showSpinner: false })
+const whiteList = ['/login', '/guide', '/']
 
 /**
  * router before
  * TODO 在系统中禁用了 router history
- * TODO 缺：在地址栏中随便输入地址，应该返回引导页或首页
  */
 router.beforeEach((to, from, next) => {
-  // console.info('router filter beforeEach')
-  // console.info(router)
   NProgress.start()
 
   if (store.getters.access_token) {
@@ -22,10 +20,13 @@ router.beforeEach((to, from, next) => {
       if (store.getters.isGuide) next({ path: '/guide', replace: true })
       else next({ path: '/', replace: true })
     } else {
-      /* if (validatenull(router.options.routes[0].children)) { // 刷新页面
-        console.info('router filter beforeEach initRouter')
+      // 刷新页面或者重新选择系统时触发
+      if (validatenull(router.options.routes[0].children) && router.options.routes.length === 3 && !validatenull(store.getters.menuList)) {
         initRouter()
-      } */
+
+        // TODO 程序走到这里后，下面的next()不好使
+        router.replace(to.path)
+      }
 
       next()
     }
@@ -39,5 +40,10 @@ router.beforeEach((to, from, next) => {
  * router after
  */
 router.afterEach((to, from) => {
+  // 如果用户在浏览器地址栏中随意输入地址，回到当前页
+  if (whiteList.indexOf(to.path) === -1 && to.path !== store.getters.currentMenu) {
+    router.replace(store.getters.currentMenu)
+  }
+
   NProgress.done()
 })

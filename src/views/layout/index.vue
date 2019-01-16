@@ -21,7 +21,7 @@ import CHeader from '@/components/layout/header'
 import CFooter from '@/components/layout/footer'
 import CMenu from '@/components/layout/menu'
 import CPilot from '@/components/layout/pilot'
-import { initRouter } from '@/utils/router'
+import { rebuildRouter } from '@/utils/router'
 
 export default {
   name: 'LayoutMain',
@@ -52,7 +52,7 @@ export default {
       this.$router.replace(store.getters.currentMenu)
     },
     initRouter () {
-      initRouter()
+      rebuildRouter()
     },
     /**
      * 没有引导页时设置第0个有权限的系统为当前系统

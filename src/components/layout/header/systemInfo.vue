@@ -17,7 +17,7 @@
 </template>
 <script>
 import store from '@/store'
-import { initRouter } from '@/utils/router'
+import { rebuildRouter } from '@/utils/router'
 
 export default {
   name: 'CHeader_SystemInfo',
@@ -63,7 +63,7 @@ export default {
           store.commit('SET_CURRENTMENU', store.getters.currentSystemHome)
 
           // 处理选择系统的router信息
-          initRouter()
+          rebuildRouter()
 
           // 进入首页
           this.$router.replace({path: store.getters.currentSystemHome})
