@@ -74,6 +74,12 @@ const user = {
         commit('SET_ISGUIDE', false)
         commit('SET_SYSTEMLIST', [])
 
+        commit('SET_CURRENTMENU', '/')
+        commit('SET_MENULIST', [])
+        commit('SET_CURRENTSYSTEM', {})
+        commit('SET_CURRENTSYSTEMHOME', [])
+        commit('CLEAR_TABLIST')
+
         resolve()
       })
     }
