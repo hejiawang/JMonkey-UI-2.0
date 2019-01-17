@@ -3,9 +3,7 @@
     <Row class="content">
       <Col offset="9" span="6">
         <Card class="animated fadeInRight">
-          <p slot="title">
-            欢迎登陆综合业务管理系统
-          </p>
+          <p slot="title"> {{website.title.login}} </p>
           <Form ref="loginForm" :rules="loginRules" :model="loginForm">
             <FormItem prop="username">
               <Input type="text" v-model.trim="loginForm.username" :maxlength="50" @keyup.enter.native="loginHandle"
@@ -39,9 +37,13 @@
 </template>
 <script>
 import store from '@/store'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
+  computed: {
+    ...mapGetters(['website'])
+  },
   data () {
     return {
       isDisabled: false,

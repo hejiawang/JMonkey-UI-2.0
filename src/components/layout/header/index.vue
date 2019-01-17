@@ -5,7 +5,7 @@
       <img src="../../../assets/images/layout/guohui.png">
     </div>
     <div class="cheader-info">
-      <span>欢迎登录JMonkey管理系统2.0版本</span>
+      <span>{{website.title.header}}</span>
     </div>
 
     <CHeaderUser :system="system" />
@@ -16,9 +16,13 @@
 <script>
 import CHeaderUser from '@/components/layout/header/userInfo'
 import CHeaderSystem from '@/components/layout/header/systemInfo'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'CHeader',
+  computed: {
+    ...mapGetters(['website'])
+  },
   components: {
     CHeaderUser, CHeaderSystem
   },
