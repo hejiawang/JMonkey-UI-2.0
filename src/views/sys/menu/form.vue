@@ -57,7 +57,7 @@
   </Modal>
 </template>
 <script>
-import { save, find, modify } from '@/api/sys/menu'
+import { save, find, modify, checkPath } from '@/api/sys/menu'
 import CRsmTree from '@/views/sys/resource/smTree'
 
 export default {
@@ -85,6 +85,24 @@ export default {
     isShow (val) { this.$emit('input', val) }
   },
   data () {
+    /**
+     * 校验前端路由是否存在
+     * @param rule
+     * @param value
+     * @param callback
+     */
+    const validatePath = (rule, value, callback) => {
+      if (!this.$CV.isEmpty(value)) {
+        let id = this.menuForm.id ? this.menuForm.id : null
+        checkPath(id, value).then(data => {
+          if (data.result) callback(new Error('前端路由已存在'))
+          else callback()
+        })
+      } else {
+        callback()
+      }
+    }
+
     return {
       loading: true,
       isShow: false,
@@ -101,7 +119,8 @@ export default {
         showType: 'Home'
       },
       menuRules: {
-        name: { required: true, message: '请输入菜单名称', trigger: 'blur' }
+        name: { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        path: {required: false, validator: validatePath, trigger: 'blur'}
       }
     }
   },

@@ -59,3 +59,18 @@ export const find = (id) => {
     method: 'get'
   })
 }
+
+/**
+ * 校验path是否重复
+ * @param obj menu信息
+ */
+export const checkPath = (id, path) => {
+  return request({
+    url: '/sys/menu/checkPath',
+    data: {
+      id: id,
+      path: path
+    },
+    method: 'post'
+  })
+}

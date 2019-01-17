@@ -98,20 +98,30 @@ export default {
      * 列表按钮
      */
     bindEvent (h, params) {
-      return h('div', [
-        h('Button', {
-          props: { type: 'warning', ghost: true },
-          on: { click: () => { this.modifyHandle(params.row) } }
-        }, '编辑'),
-        h('Button', {
-          props: { type: 'error', ghost: true },
-          on: { click: () => { this.deleteHandle(params.row) } }
-        }, '删除'),
+      let hContent = []
+
+      if (params.row.id !== '1') {
+        hContent.push(
+          h('Button', {
+            props: { type: 'warning', ghost: true },
+            on: { click: () => { this.modifyHandle(params.row) } }
+          }, '编辑')
+        )
+        hContent.push(
+          h('Button', {
+            props: { type: 'error', ghost: true },
+            on: { click: () => { this.deleteHandle(params.row) } }
+          }, '删除')
+        )
+      }
+
+      hContent.push(
         h('Button', {
           props: { type: 'success', ghost: true },
           on: { click: () => { this.authHandle(params.row) } }
         }, '权限')
-      ])
+      )
+      return h('div', hContent)
     },
     /**
      * 获取角色list数据

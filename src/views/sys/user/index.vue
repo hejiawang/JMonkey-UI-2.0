@@ -1,7 +1,7 @@
 <template>
   <Layout v-layoutIn>
     <Row style="height: 60px;">
-      <Button type="primary" @click="raiseHandle">新增</Button>
+      <Button type="primary" @click="raiseHandle" v-if="sys_user_post">新增</Button>
       <Button type="success">导入</Button>
       <Button type="warning">导出</Button>
 
@@ -31,7 +31,6 @@ import CUserSearch from '@/views/sys/user/search'
 import store from '@/store'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-
 import { list, del } from '@/api/sys/user'
 
 export default {
@@ -65,6 +64,7 @@ export default {
   },
   computed: {
     ...mapGetters(['website']),
+    ...mapGetters(['permissions']),
     /**
      * 用户列表高度
      */
@@ -73,10 +73,20 @@ export default {
     }
   },
   created () {
+    this.initPermissions()
     this.initTableColumns()
     this.initList()
   },
   methods: {
+    /**
+     * 获取登录用户权限
+     */
+    initPermissions () {
+      this.sys_user_get = this.permissions['sys_user_get']
+      this.sys_user_post = this.permissions['sys_user_post']
+      this.sys_user_put = this.permissions['sys_user_put']
+      this.sys_user_delete = this.permissions['sys_user_delete']
+    },
     /**
      * 初始化用户列表头
      */
@@ -98,16 +108,17 @@ export default {
             }
           }
         },
-        {title: '用户名称', key: 'username'},
-        {title: '真实姓名', key: 'realName'},
+        {title: '用户名称', key: 'username', tooltip: true},
+        {title: '真实姓名', key: 'realName', tooltip: true},
         {
           title: '用户性别',
           key: 'sex',
           render: (h, params) => { return h('span', this.sexFilter[params.row.sex]) }
         },
-        {title: '手机号码', key: 'phone'},
+        {title: '手机号码', key: 'phone', tooltip: true},
         {
           title: '出生日期',
+          tooltip: true,
           key: 'birthday',
           render: (h, params) => {
             let birthday = ''
@@ -117,6 +128,7 @@ export default {
         },
         {
           title: '归属部门',
+          tooltip: true,
           key: 'dept',
           render: (h, params) => {
             let t = ''
@@ -130,6 +142,7 @@ export default {
         },
         {
           title: '用户角色',
+          tooltip: true,
           key: 'role',
           render: (h, params) => {
             let t = ''
@@ -155,20 +168,36 @@ export default {
      * 用户列表点击事件
      */
     bindTableEvent (h, params) {
-      return h('div', [
-        h('Button', {
+      let hContent = []
+
+      // 没啥事别动admin
+      // 如果有修改权限，添加修改按钮
+      if (this.sys_user_put && params.row.id !== '1') {
+        hContent.push(h('Button', {
           props: { type: 'warning', ghost: true },
           on: { click: () => { this.modifyHandle(params.row) } }
-        }, '编辑'),
-        h('Button', {
-          props: { type: 'error', ghost: true },
-          on: { click: () => { this.deleteHandle(params.row) } }
-        }, '删除'),
+        }, '编辑'))
+      }
+
+      // 添加删除按钮
+      if (this.sys_user_delete && params.row.id !== '1') {
+        hContent.push(
+          h('Button', {
+            props: { type: 'error', ghost: true },
+            on: { click: () => { this.deleteHandle(params.row) } }
+          }, '删除')
+        )
+      }
+
+      // 添加修改密码按钮
+      hContent.push(
         h('Button', {
           props: {},
           on: { click: () => { this.modifyPasswordHandle(params.row) } }
         }, '修改密码')
-      ])
+      )
+
+      return h('div', hContent)
     },
     /**
      * 初始化用户列表
