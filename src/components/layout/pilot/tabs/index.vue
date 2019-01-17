@@ -51,12 +51,7 @@ export default {
 
       let pathArray = [this.currentMunu]
       if (this.currentMunu !== this.currentSystemHome) pathArray.push(this.currentSystemHome)
-      store.getters.menuList.forEach(menu => {
-        if (pathArray.indexOf(menu.path) !== -1) {
-          let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
-          store.commit('SET_TABLIST', tabInfo)
-        }
-      })
+      this.setTablist(pathArray)
     },
     /**
      * 系统或菜单变化时，构建tab页信息
@@ -64,13 +59,18 @@ export default {
     buildTabsInfo () {
       if (!this.checkTab()) return
 
-      let menuInfo = {}
+      this.setTablist([this.currentMunu])
+    },
+    /**
+     * SET_TABLIST
+     */
+    setTablist (pathArray) {
       store.getters.menuList.forEach(menu => {
-        if (menu.path === this.currentMunu) {
-          menuInfo = {name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable}
+        if (pathArray.indexOf(menu.path) !== -1) {
+          let tabInfo = { name: menu.name, path: menu.path, icon: menu.icon, closable: menu._closable }
+          store.commit('SET_TABLIST', tabInfo)
         }
       })
-      store.commit('SET_TABLIST', menuInfo)
     },
     /**
      * 校验是否需要向tab list中添加信息
