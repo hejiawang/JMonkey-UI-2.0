@@ -1,14 +1,14 @@
 <template>
   <Menu :active-name="activeMenu" theme="light" width="auto" accordion @on-select="selectMenu">
     <!-- TODO 最多支持两级菜单 -->
-    <template v-for="menu in menuList" >
+    <template v-for="menu in menuList" v-if="menu.isShow == 'Yes'">
       <!-- 两层菜单的遍历方式 -->
       <Submenu :key="menu.id" v-if="menu.children && menu.children.length > 0" name="1" >
         <template slot="title"> <Icon v-if="menu.icon" :type="menu.icon" />{{menu.name}}</template>
 
         <!-- 遍历第二层菜单 -->
-        <MenuItem v-for="menuChildren in menu.children" :key="menuChildren.id" :name="menuChildren.path"
-                  :to="menuChildren.path" :replace="true">
+        <MenuItem v-for="menuChildren in menu.children" :key="menuChildren.id" v-if="menuChildren.isShow == 'Yes'"
+                  :name="menuChildren.path" :to="menuChildren.path" :replace="true">
           <icon v-if="menuChildren.icon" :type="menuChildren.icon" />{{menuChildren.name}}
         </MenuItem>
       </Submenu>

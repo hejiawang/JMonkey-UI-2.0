@@ -3,7 +3,7 @@
     <CHeader :system="false" />
     <Layout class="content">
       <Row :gutter="120">
-        <Col span="8" class="content-col" v-for="system in systemList" :key="system.id">
+        <Col span="8" class="content-col" v-for="system in systemList" :key="system.id" v-if="system.isShow == 'Yes'">
           <!-- 有子菜单的显示方式 -->
           <Card v-if="system.menuList && system.menuList.length > 0">
             <div class="content-left">
@@ -17,7 +17,7 @@
               <div class="content-menu">
                 <Row :gutter="40">
                   <!-- 遍历系统菜单 -->
-                  <Col span="12" v-for="menu in system.menuList" :key="menu.id">
+                  <Col span="12" v-for="menu in system.menuList" :key="menu.id" v-if="menu.isShow == 'Yes'">
                     <a @click="goIndex(system, menu.path)">
                       <div class="content-menu-detail">
                         <Row><Icon :type="menu.icon" size="50" :color="menu.isAuth | authIconFilter" /></Row>
