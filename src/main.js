@@ -11,6 +11,8 @@ import '@/assets/css/app.scss'
 import '@/assets/css/iview.scss'
 import 'babel-polyfill'
 import store from './store'
+import VOrgTree from 'v-org-tree'
+import 'v-org-tree/dist/v-org-tree.css'
 
 import layoutIn from '@/directive/layoutIn'
 import CPage from '@/components/layout/page'
@@ -26,6 +28,7 @@ Vue.use(iView, {
 Vue.use(animated)
 Vue.use(CDelete)
 Vue.use(CViladate)
+Vue.use(VOrgTree)
 Vue.component('CPage', CPage)
 Vue.directive('layoutIn', layoutIn)
 

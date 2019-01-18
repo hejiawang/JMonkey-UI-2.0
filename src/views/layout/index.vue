@@ -22,6 +22,7 @@ import CFooter from '@/components/layout/footer'
 import CMenu from '@/components/layout/menu'
 import CPilot from '@/components/layout/pilot'
 import { rebuildRouter } from '@/utils/router'
+import { onEvent } from '@/utils/common'
 
 export default {
   name: 'LayoutMain',
@@ -32,19 +33,21 @@ export default {
     this.initSystem()
     this.initRouter()
     this.initIndex()
+    this.setWindowHeight()
   },
   mounted () {
     /**
-     * 将当前窗口高度保存至store，并当窗口大小变化时更新store中的窗口高度
+     * 当窗口大小变化时更新store中的窗口高度
      */
-    store.commit('SET_WINDOWHEIGHT', document.body.clientHeight)
-    window.onresize = () => {
-      return (() => {
-        store.commit('SET_WINDOWHEIGHT', document.body.clientHeight)
-      })()
-    }
+    onEvent(window, 'resize', this.setWindowHeight)
   },
   methods: {
+    /**
+     * 将当前窗口高度保存至store
+     */
+    setWindowHeight () {
+      store.commit('SET_WINDOWHEIGHT', document.body.clientHeight)
+    },
     /**
      * 显示home中的页面
      */

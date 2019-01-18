@@ -1,7 +1,7 @@
 .ivu-layout{
   height: 100%;
   overflow: hidden;
-  background: white;
+  background: #f8f8f9;
 }
 
 .ivu-layout-header{
@@ -24,7 +24,7 @@
 .ivu-layout-content{
   height: calc(100% - 72px);
   padding: 20px;
-  background: #fff;
+  background:#f8f8f9;
 }
 
 /* iview 表单中的lable文字大小 */
