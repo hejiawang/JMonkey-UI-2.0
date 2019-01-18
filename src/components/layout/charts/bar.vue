@@ -36,6 +36,10 @@ export default {
           subtext: this.subtext,
           x: 'center'
         },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c}'
+        },
         xAxis: {
           type: 'category',
           data: xAxisData
