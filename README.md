@@ -36,6 +36,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   <img src="https://raw.githubusercontent.com/hejiawang/JMonkey-UI-2.0/master/src/assets/images/example/q1.png"></img>
 </li>
 <li>
+  <span>系统设置首页</span>
+  <img src="https://raw.githubusercontent.com/hejiawang/JMonkey-UI-2.0/master/src/assets/images/example/b1.png"></img>
+</li>
+<li>
   <span>用户管理</span>
   <img src="https://raw.githubusercontent.com/hejiawang/JMonkey-UI-2.0/master/src/assets/images/example/q2.png"></img>
 </li>
