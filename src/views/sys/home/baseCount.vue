@@ -9,7 +9,9 @@
           </div>
           <div class="right-area">
             <div>
-              <span style="font-size: 65px">{{info.count}}</span>
+              <span style="font-size: 65px">
+                <CCountTo :end="info.count" count-class="count-style"/>
+              </span>
               <p>{{info.title}}</p>
             </div>
           </div>
@@ -23,11 +25,12 @@
   </Row>
 </template>
 <script>
+import CCountTo from '@/components/layout/countTo'
 import Clock from 'vue-clock2' // 时钟插件
 
 export default {
   name: 'SysHomeBaseCount',
-  components: { Clock },
+  components: { Clock, CCountTo },
   created () {
   },
   data () {
