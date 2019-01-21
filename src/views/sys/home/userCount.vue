@@ -7,7 +7,7 @@
     </Col>
     <Col span="15">
       <Card>
-        <ChartBar :value="barData" text="系统用户角色统计" style="height: 280px;" ref="ChartBar"/>
+        <ChartBar :value="userRoleData" text="系统用户角色统计" style="height: 280px;" ref="userRoleChart"/>
       </Card>
     </Col>
   </Row>
@@ -28,23 +28,23 @@ export default {
         {value: 135, name: '测试组'},
         {value: 1548, name: '销售部'}
       ],
-      barData: [
-        {name: '超级管理员', value: 13253},
-        {name: '普通用户', value: 34235},
-        {name: '开发人员', value: 26321},
-        {name: '测试人员', value: 12340},
-        {name: '销售人员', value: 24643}
-      ]
+      userRoleData: []
     }
   },
   created () {
-    userRole().then(data => {
-      this.barData = data.result
+    this.initUserRoleData()
+  },
+  methods: {
+    /**
+     * 获取系统用户角色统计数据
+     */
+    initUserRoleData () {
+      userRole().then(data => {
+        this.userRoleData = data.result
 
-      this.$nextTick(() => {
-        this.$refs.ChartBar.resize()
+        this.$nextTick(() => { this.$refs.userRoleChart.resize() })
       })
-    })
+    }
   }
 }
 </script>

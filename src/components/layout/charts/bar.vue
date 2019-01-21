@@ -21,15 +21,22 @@ export default {
       dom: null
     }
   },
-  methods: {
-    resize () {
-      console.info(1)
-      console.info(this.value)
-      this.dom.resize()
-    }
-  },
   mounted () {
+    /**
+     * 初始化EChart
+     */
     this.$nextTick(() => {
+      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
+      onEvent(window, 'resize', this.resize)
+
+      this.init()
+    })
+  },
+  methods: {
+    /**
+     * 初始化柱状图
+     */
+    init () {
       let xAxisData = this.value.map(_ => _.name)
       let seriesData = this.value.map(_ => _.value)
 
@@ -56,11 +63,15 @@ export default {
         }]
       }
 
-      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
-
-      onEvent(window, 'resize', this.resize)
-    })
+    },
+    /**
+     * 当窗口变化或重新赋值后调用
+     */
+    resize () {
+      this.init()
+      this.dom.resize()
+    }
   },
   beforeDestroy () {
     offEvent(window, 'resize', this.resize)
