@@ -32,8 +32,6 @@ export default {
         } else {
           this.deptTreeData = dataArray
         }
-
-        console.info(this.deptTreeData)
       })
     },
     converOrgTree (data) {

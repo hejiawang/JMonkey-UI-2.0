@@ -12,7 +12,7 @@ echarts.registerTheme('tdTheme', tdTheme)
 export default {
   name: 'ChartBar',
   props: {
-    value: Object,
+    value: Array,
     text: String,
     subtext: String
   },
@@ -23,13 +23,16 @@ export default {
   },
   methods: {
     resize () {
+      console.info(1)
+      console.info(this.value)
       this.dom.resize()
     }
   },
   mounted () {
     this.$nextTick(() => {
-      let xAxisData = Object.keys(this.value)
-      let seriesData = Object.values(this.value)
+      let xAxisData = this.value.map(_ => _.name)
+      let seriesData = this.value.map(_ => _.value)
+
       let option = {
         title: {
           text: this.text,
@@ -52,8 +55,10 @@ export default {
           type: 'bar'
         }]
       }
+
       this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
+
       onEvent(window, 'resize', this.resize)
     })
   },

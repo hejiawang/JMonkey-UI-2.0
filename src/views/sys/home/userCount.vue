@@ -7,19 +7,18 @@
     </Col>
     <Col span="15">
       <Card>
-        <ChartBar :value="barData" text="系统用户角色统计" style="height: 280px;"/>
+        <ChartBar :value="barData" text="系统用户角色统计" style="height: 280px;" ref="ChartBar"/>
       </Card>
     </Col>
   </Row>
 </template>
 <script>
 import { ChartPie, ChartBar } from '@/components/layout/charts'
+import { userRole } from '@/api/sys/count'
 
 export default {
   name: 'SysHomeUserCount',
   components: {ChartPie, ChartBar},
-  created () {
-  },
   data () {
     return {
       pieData: [
@@ -29,14 +28,23 @@ export default {
         {value: 135, name: '测试组'},
         {value: 1548, name: '销售部'}
       ],
-      barData: {
-        '超级管理员': 13253,
-        '普通用户': 34235,
-        '开发人员': 26321,
-        '测试人员': 12340,
-        '销售人员': 24643
-      }
+      barData: [
+        {name: '超级管理员', value: 13253},
+        {name: '普通用户', value: 34235},
+        {name: '开发人员', value: 26321},
+        {name: '测试人员', value: 12340},
+        {name: '销售人员', value: 24643}
+      ]
     }
+  },
+  created () {
+    userRole().then(data => {
+      this.barData = data.result
+
+      this.$nextTick(() => {
+        this.$refs.ChartBar.resize()
+      })
+    })
   }
 }
 </script>

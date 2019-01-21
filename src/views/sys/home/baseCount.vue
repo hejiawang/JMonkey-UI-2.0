@@ -27,20 +27,30 @@
 <script>
 import CCountTo from '@/components/layout/countTo'
 import Clock from 'vue-clock2' // 时钟插件
+import { base } from '@/api/sys/count'
 
 export default {
   name: 'SysHomeBaseCount',
   components: { Clock, CCountTo },
-  created () {
-  },
   data () {
     return {
-      infoCardData: [
-        { title: '系统用户', icon: 'ios-contact', count: 803, color: '#ff9900' },
-        { title: '角色数量', icon: 'md-globe', count: 120, color: '#19be6b' },
-        { title: '部门数量', icon: 'logo-xbox', count: 140, color: '#9A66E4' }
-      ]
+      infoCardData: [],
+      infoCardConver: {
+        'user': { title: '系统用户', icon: 'ios-contact', count: 0, color: '#ff9900' },
+        'role': { title: '角色数量', icon: 'md-globe', count: 0, color: '#19be6b' },
+        'dept': { title: '部门数量', icon: 'logo-xbox', count: 0, color: '#9A66E4' }
+      }
     }
+  },
+  created () {
+    base().then(data => {
+      data.result.forEach(info => {
+        let infoData = this.infoCardConver[info.name]
+        infoData.count = info.value
+
+        this.infoCardData.push(infoData)
+      })
+    })
   }
 }
 </script>
