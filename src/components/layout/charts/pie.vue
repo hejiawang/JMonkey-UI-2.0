@@ -21,13 +21,20 @@ export default {
       dom: null
     }
   },
-  methods: {
-    resize () {
-      this.dom.resize()
-    }
-  },
   mounted () {
     this.$nextTick(() => {
+      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
+      onEvent(window, 'resize', this.resize)
+
+      this.init()
+    })
+  },
+  methods: {
+    resize () {
+      this.init()
+      this.dom.resize()
+    },
+    init () {
       let legend = this.value.map(_ => _.name)
 
       let option = {
@@ -62,11 +69,8 @@ export default {
         ]
       }
 
-      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
-
-      onEvent(window, 'resize', this.resize)
-    })
+    }
   },
   beforeDestroy () {
     offEvent(window, 'resize', this.resize)

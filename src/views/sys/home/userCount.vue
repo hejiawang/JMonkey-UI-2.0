@@ -2,7 +2,7 @@
   <Row :gutter="20" style="margin-top: 20px;">
     <Col span="9">
       <Card>
-        <ChartPie :value="pieData" text="系统用户所属部门分布统计" style="height: 280px;"/>
+        <ChartPie :value="userDeptData" text="系统用户所属部门分布统计" style="height: 280px;" ref="userDeptChart"/>
       </Card>
     </Col>
     <Col span="15">
@@ -14,25 +14,20 @@
 </template>
 <script>
 import { ChartPie, ChartBar } from '@/components/layout/charts'
-import { userRole } from '@/api/sys/count'
+import { userRole, userDept } from '@/api/sys/count'
 
 export default {
   name: 'SysHomeUserCount',
   components: {ChartPie, ChartBar},
   data () {
     return {
-      pieData: [
-        {value: 335, name: '技术部'},
-        {value: 310, name: '财务部'},
-        {value: 234, name: '开发组'},
-        {value: 135, name: '测试组'},
-        {value: 1548, name: '销售部'}
-      ],
+      userDeptData: [],
       userRoleData: []
     }
   },
   created () {
     this.initUserRoleData()
+    this.initUserDeptData()
   },
   methods: {
     /**
@@ -43,6 +38,16 @@ export default {
         this.userRoleData = data.result
 
         this.$nextTick(() => { this.$refs.userRoleChart.resize() })
+      })
+    },
+    /**
+     * 系统用户所属部门分布统计
+     */
+    initUserDeptData () {
+      userDept().then(data => {
+        this.userDeptData = data.result
+
+        this.$nextTick(() => { this.$refs.userDeptChart.resize() })
       })
     }
   }
