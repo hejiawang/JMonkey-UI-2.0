@@ -2,12 +2,12 @@
   <Row :gutter="20" style="margin-top: 20px;">
     <Col span="9">
       <Card>
-        <ChartPie :value="userDeptData" text="系统用户所属部门分布统计" style="height: 280px;" ref="userDeptChart"/>
+        <ChartPie :value="userRoleData" text="系统用户角色统计" style="height: 280px;" ref="userRoleChart"/>
       </Card>
     </Col>
     <Col span="15">
       <Card>
-        <ChartBar :value="userRoleData" text="系统用户角色统计" style="height: 280px;" ref="userRoleChart"/>
+        <ChartBar :value="userDeptData" text="系统用户所属部门分布统计" style="height: 280px;" ref="userDeptChart"/>
       </Card>
     </Col>
   </Row>
