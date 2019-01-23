@@ -12,6 +12,7 @@
 <script>
 import { list, del } from '@/api/sys/log'
 import store from '@/store'
+import moment from 'moment'
 
 export default {
   name: 'SysLog',
@@ -45,13 +46,23 @@ export default {
      */
     initTableColumns () {
       this.logTableColumns = [
-        {title: '角色名称', key: 'user_name'},
+        {title: '用户名称', key: 'userName', width: 120},
         {title: '操作ip', key: 'ip'},
         {title: '请求路径', key: 'url'},
-        {title: '请求方式', key: 'httpMethod'},
+        {title: '请求方式', key: 'httpMethod', width: 120},
         {title: '请求方法', key: 'classMethod'},
         {title: '请求参数', key: 'param'},
-        {title: '操作时长', key: 'handleLength'}
+        {title: '操作时长', key: 'handleLength', width: 120},
+        {
+          title: '操作时间',
+          key: 'createDate',
+          width: 130,
+          render: (h, params) => {
+            let d = ''
+            if (params.row.createDate) d = moment(params.row.createDate).format('YYYY-MM-DD HH:mm:ss')
+            return h('span', d)
+          }
+        }
       ]
     },
     /**
