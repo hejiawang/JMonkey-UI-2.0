@@ -1,10 +1,10 @@
 <template>
   <Layout v-layoutIn class="app-sys-task">
     <Row style="height: 60px;">
-      <Button type="primary">新增</Button>
-      <Button type="warning" :disabled="currentTaskIndex === null">启动</Button>
-      <Button type="error" :disabled="currentTaskIndex === null">暂停</Button>
-      <Button type="success" :disabled="currentTaskIndex === null">立即执行</Button>
+      <Button type="primary" @click="raiseHandle">新增</Button>
+      <Button type="warning" @click="resumeHandle" :disabled="currentTaskIndex === null">恢复</Button>
+      <Button type="error" @click="pauseHandle" :disabled="currentTaskIndex === null">暂停</Button>
+      <Button type="success" @click="startNowHandle" :disabled="currentTaskIndex === null">立即执行</Button>
     </Row>
     <Row>
       <RadioGroup v-model="currentTaskIndex" vertical>
@@ -15,25 +15,39 @@
     <Row>
       <CPage v-model="listQuery" @on-list="initList" ref="taskPage"/>
     </Row>
+
+    <CTaskForm  v-model="showForm" :taskInfo="handleTask" :type="formType" @refresh="initList" />
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import moment from 'moment'
-import { list } from '@/api/sys/task'
+import { list, del, pause, resume, startNow } from '@/api/sys/task'
+import CTaskForm from '@/views/sys/task/form'
 
 export default {
   name: 'SysLog',
+  components: { CTaskForm },
   computed: {
     /**
      * 表格高度
      */
     taskTableHeight () {
       return store.getters.windowHeight - 290
+    },
+    /**
+     * 当前选中的任务信息
+     */
+    currentTask () {
+      if (!this.$CV.isEmpty(this.currentTaskIndex)) return this.taskTableData[this.currentTaskIndex]
+      else return null
     }
   },
   data () {
     return {
+      handleTask: null,
+      formType: '',
+      showForm: false,
       yesOrNo: {'Yes': '启用', 'No': '暂停'},
       listLoading: false,
       taskTableColumns: [],
@@ -51,6 +65,9 @@ export default {
     this.initList()
   },
   methods: {
+    /**
+     * initial table title
+     */
     initTableColumns () {
       this.taskTableColumns = [
         {
@@ -105,6 +122,9 @@ export default {
     clickTable (row, index) {
       this.currentTaskIndex = index
     },
+    /**
+     * table 按钮事件
+     */
     bindEvent (h, params) {
       return h('div', [
         h('Button', {
@@ -121,6 +141,8 @@ export default {
      * 获取列表数据
      */
     initList () {
+      this.currentTaskIndex = null
+
       this.listLoading = true
       list(this.listQuery).then(data => {
         this.taskTableData = data.rows
@@ -129,11 +151,83 @@ export default {
         this.listLoading = false
       })
     },
+    /**
+     * 修改任务信息
+     * @param row 任务信息
+     */
     modifyHandle (row) {
-
+      this.handleTask = row; this.formType = 'modify'; this.showForm = true
     },
+    /**
+     * 新增任务信息
+     */
+    raiseHandle () {
+      this.handleTask = null; this.formType = 'raise'; this.showForm = true
+    },
+    /**
+     * 删除任务信息
+     * @param row 任务信息
+     */
     deleteHandle (row) {
+      this.$CDelete({
+        'content': '<p>名称为 <span style="color: #f60">' + row.name + '</span> 的任务将被删除</p><p>是否继续？</p>',
+        'confirm': () => {
+          del(row).then((data) => {
+            this.initList()
 
+            if (data.result) this.$Message.success('删除成功')
+            else this.$Message.error('删除失败')
+          })
+        }
+      })
+    },
+    /**
+     * 暂停任务
+     */
+    pauseHandle () {
+      this.$CConfig({
+        'content': '暂停该任务？',
+        'confirm': () => {
+          pause(this.currentTask).then((data) => {
+            this.initList()
+
+            if (data.result) this.$Message.success('暂停任务成功')
+            else this.$Message.error('暂停任务失败')
+          })
+        }
+      })
+    },
+    /**
+     * 恢复任务
+     */
+    resumeHandle () {
+      this.$CConfig({
+        'content': '恢复该任务？',
+        'confirm': () => {
+          resume(this.currentTask).then((data) => {
+            this.initList()
+
+            if (data.result) this.$Message.success('恢复任务成功')
+            else this.$Message.error('恢复任务失败')
+          })
+        }
+      })
+    },
+    /**
+     * 立即执行一次任务
+     */
+    startNowHandle () {
+      this.$CConfig({
+        'content': '立即执行该任务？',
+        'confirm': () => {
+          startNow(this.currentTask).then((data) => {
+            this.initList()
+
+            if (data.result) this.$Message.success('立即执行任务成功')
+            else this.$Message.error('立即执行任务失败')
+          })
+        }
+      })
     }
   }
 }

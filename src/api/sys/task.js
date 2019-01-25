@@ -89,11 +89,14 @@ export const checkRule = (rule) => {
  * 校验任务名是否重复
  * @param obj
  */
-export const checkName = (obj) => {
+export const checkName = (id, name) => {
   return request({
     url: '/sys/task/checkName',
     method: 'post',
-    data: obj
+    data: {
+      id: id,
+      name: name
+    }
   })
 }
 

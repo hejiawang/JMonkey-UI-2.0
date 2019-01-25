@@ -1,12 +1,12 @@
 <template>
-  <Modal v-model="isShow" width="360" :styles="{'top':'30%'}">
+  <Modal v-model="isShow" width="360" :styles="{'top':'30%'}" class="delete-modal">
     <p slot="header" style="color:#f60;text-align:center;font-size: 17px;">
       <Icon type="ios-trash" />
       <span>{{title}}</span>
     </p>
     <div class="delete-modal-content" v-html="content"></div>
     <div slot="footer">
-      <Button type="error" long @click="del" class="delete-modal-button">删除</Button>
+      <Button type="error" long @click="del" class="delete-modal-button">删 除</Button>
     </div>
   </Modal>
 </template>
@@ -24,15 +24,24 @@ export default {
 }
 </script>
 <style lang="scss">
-  .delete-modal-content{
-    text-align:center;
-    font-size: 17px
-  }
-  .delete-modal-button{
-    font-size: 17px;
-    span{
-      letter-spacing: 20px !important;
-      margin-left: 25px !important;
+  .delete-modal{
+    .ivu-modal-body{
+      padding: 20px;
+    }
+    .delete-modal-content{
+      text-align:center;
+      font-size: 17px
+    }
+    .delete-modal-button{
+      font-size: 17px;
+      span{
+        letter-spacing: 20px !important;
+        margin-left: 25px !important;
+      }
+    }
+    .ivu-modal-footer{
+      border-top: 0px solid #e8eaec;
+      padding: 0px;
     }
   }
 </style>
