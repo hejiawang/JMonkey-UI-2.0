@@ -4,6 +4,7 @@
       <Col offset="9" span="6">
         <Card class="animated fadeInRight">
           <p slot="title"> {{website.title.login}} </p>
+          <div class="login_aiwrap"/>
           <Form ref="loginForm" :rules="loginRules" :model="loginForm">
             <FormItem prop="username">
               <Input type="text" v-model.trim="loginForm.username" :maxlength="50" @keyup.enter.native="loginHandle"

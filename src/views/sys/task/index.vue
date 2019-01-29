@@ -7,7 +7,7 @@
       <Button type="success" @click="startNowHandle" :disabled="currentTaskIndex === null">立即执行</Button>
     </Row>
     <Row>
-      <RadioGroup v-model="currentTaskIndex" vertical>
+      <RadioGroup v-model="currentTaskIndex" vertical style="width: 100%;">
         <Table :height="taskTableHeight" :loading="listLoading" border
                :columns="taskTableColumns" :data="taskTableData" @on-row-click="clickTable" />
       </RadioGroup>
