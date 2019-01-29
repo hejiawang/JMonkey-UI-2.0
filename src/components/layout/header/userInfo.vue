@@ -7,11 +7,14 @@
     <Row class="menu">
       <Dropdown @on-click="dropHandle">
         <a href="javascript:void(0)">
-          {{currenUser.realName}}
-          <Icon type="ios-arrow-down" />
+          <!-- TODO 没有点击事件, 不完美 -->
+          <Badge :count="messageNum" overflow-count="9" :offset="[10, 0]">
+            {{currenUser.realName}} <Icon type="ios-arrow-down" />
+          </Badge>
         </a>
         <DropdownMenu slot="list">
-          <DropdownItem name="userInfoHandle"><Icon type="md-person" /> 个人信息</DropdownItem>
+          <DropdownItem name="messageHandle"><Icon type="ios-notifications-outline"/> 系统消息</DropdownItem>
+          <DropdownItem name="userInfoHandle"><Icon type="md-person"/> 个人信息</DropdownItem>
           <DropdownItem name="modifyPWHandle"><Icon type="ios-lock-outline"></Icon> 修改密码</DropdownItem>
           <DropdownItem name="layoutHandle" divided style="color: #ed4014"><Icon type="md-power" /> 安全退出</DropdownItem>
         </DropdownMenu>
@@ -23,18 +26,21 @@
 
     <!-- 修改用户信息 -->
     <CUserForm v-model="showForm" :userInfo="currenUser" type="modify" :disabled="true" @refresh="reLogin" />
+
+    <CMessageList v-model="showMessageList" @on-countMessage="countMessage"/>
   </div>
 </template>
 <script>
 import store from '@/store'
 import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
+import CMessageList from '@/views/message/list'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'CHeader_UserInfo',
   components: {
-    CModifyPassword, CUserForm
+    CModifyPassword, CUserForm, CMessageList
   },
   props: {
     system: {type: Boolean, default: true, required: false}
@@ -42,7 +48,9 @@ export default {
   data () {
     return {
       showForm: false,
-      showModifyPassword: false
+      showModifyPassword: false,
+      showMessageList: false,
+      messageNum: 0
     }
   },
   computed: {
@@ -84,6 +92,18 @@ export default {
      */
     modifyPWHandle () {
       this.showModifyPassword = true
+    },
+    /**
+     * 显示消息列表
+     */
+    messageHandle () {
+      this.showMessageList = true
+    },
+    /**
+     * 统计未读消息个数
+     */
+    countMessage () {
+      this.messageNum = 2
     },
     /**
      * 退出登录
