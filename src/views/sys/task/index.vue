@@ -185,7 +185,7 @@ export default {
      * 暂停任务
      */
     pauseHandle () {
-      this.$CConfig({
+      this.$CSure({
         'content': '暂停该任务？',
         'confirm': () => {
           pause(this.currentTask).then((data) => {
@@ -201,7 +201,7 @@ export default {
      * 恢复任务
      */
     resumeHandle () {
-      this.$CConfig({
+      this.$CSure({
         'content': '恢复该任务？',
         'confirm': () => {
           resume(this.currentTask).then((data) => {
@@ -217,7 +217,7 @@ export default {
      * 立即执行一次任务
      */
     startNowHandle () {
-      this.$CConfig({
+      this.$CSure({
         'content': '立即执行该任务？',
         'confirm': () => {
           startNow(this.currentTask).then((data) => {

@@ -1,16 +1,16 @@
-import CConfigComponent from '@/plugins/configModal/component'
+import CSureComponent from '@/plugins/sureModal/component'
 
 let $vm
 
 export default {
   install (Vue, options) {
     if (!$vm) {
-      const ConfigModalPlugin = Vue.extend(CConfigComponent)
-      $vm = new ConfigModalPlugin({ el: document.createElement('div') })
+      const SureModalPlugin = Vue.extend(CSureComponent)
+      $vm = new SureModalPlugin({ el: document.createElement('div') })
       document.body.appendChild($vm.$el)
     }
 
-    let CConfigPlugin = (options) => {
+    let CSurePlugin = (options) => {
       if (!options.confirm) {
         console.error('调用信息提示框插件失败，未提供confirm回调函数')
         return
@@ -25,7 +25,7 @@ export default {
       }
     }
 
-    if (!Vue.$CConfig) Vue.$CConfig = CConfigPlugin
-    Vue.prototype.$CConfig = Vue.$CConfig
+    if (!Vue.$CSure) Vue.$CSure = CSurePlugin
+    Vue.prototype.$CSure = Vue.$CSure
   }
 }

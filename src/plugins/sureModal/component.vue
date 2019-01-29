@@ -1,6 +1,6 @@
 <template>
-  <Modal v-model="isShow" width="360" :styles="{'top':'30%'}" class="config-modal">
-    <div class="config-modal-content" >
+  <Modal v-model="isShow" width="360" :styles="{'top':'30%'}" class="sure-modal">
+    <div class="sure-modal-content" >
       <Row>
         <Col span="6"><Icon type="ios-bulb-outline" size="50" color="#19be6b"/></Col>
         <Col span="18">
@@ -9,13 +9,13 @@
       </Row>
     </div>
     <div slot="footer">
-      <Button type="info" long @click="handle" class="config-modal-button">确 定</Button>
+      <Button type="info" long @click="handle" class="sure-modal-button">确 定</Button>
     </div>
   </Modal>
 </template>
 <script>
 export default {
-  name: 'CConfig',
+  name: 'CSure',
   props: {
     isShow: { type: Boolean, default: false },
     content: { type: String, default: '<p>是否继续操作？</p>' }
@@ -26,15 +26,15 @@ export default {
 }
 </script>
 <style lang="scss">
-  .config-modal{
+  .sure-modal{
     .ivu-modal-body{
       padding: 40px 20px 20px 20px;
     }
-    .config-modal-content{
+    .sure-modal-content{
       text-align: left;
       font-size: 17px;
     }
-    .config-modal-button{
+    .sure-modal-button{
       font-size: 17px;
       span{
         letter-spacing: 20px !important;

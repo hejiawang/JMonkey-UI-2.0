@@ -17,7 +17,7 @@ import 'v-org-tree/dist/v-org-tree.css'
 import layoutIn from '@/directive/layoutIn'
 import CPage from '@/components/layout/page'
 import CDelete from './plugins/deleteModal/index'
-import CConfig from './plugins/configModal/index'
+import CSure from './plugins/sureModal/index'
 import CViladate from './plugins/validate/index'
 
 Vue.config.productionTip = false
@@ -28,7 +28,7 @@ Vue.use(iView, {
 })
 Vue.use(animated)
 Vue.use(CDelete)
-Vue.use(CConfig)
+Vue.use(CSure)
 Vue.use(CViladate)
 Vue.use(VOrgTree)
 Vue.component('CPage', CPage)
