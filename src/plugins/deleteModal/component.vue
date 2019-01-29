@@ -34,6 +34,7 @@ export default {
     }
     .delete-modal-button{
       font-size: 17px;
+      border-radius: 0px;
       span{
         letter-spacing: 20px !important;
         margin-left: 25px !important;

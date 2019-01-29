@@ -14,7 +14,7 @@
             <Row class="message-content-bottom">
               <Col span="8"> <span>发布人： 超级管理员</span> </Col>
               <Col span="9"> <span>发布时间： 2019-01-01</span> </Col>
-              <Col span="7"> <Rate allow-half value="3" disabled/> </Col>
+              <Col span="7"> <Rate allow-half :value="3" disabled/> </Col>
             </Row>
           </div>
         </Card>
@@ -33,7 +33,7 @@
             <Row class="message-content-bottom">
               <Col span="8"> <span>发布人： 超级管理员</span> </Col>
               <Col span="9"> <span>发布时间： 2019-01-01</span> </Col>
-              <Col span="7"> <Rate allow-half value="1.5" disabled/> </Col>
+              <Col span="7"> <Rate allow-half :value="1.5" disabled/> </Col>
             </Row>
           </div>
         </Card>
