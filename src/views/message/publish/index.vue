@@ -128,7 +128,7 @@ export default {
 
     },
     raiseHandle () {
-      this.$router.replace({path: '/message/publish/form'})
+      this.$router.replace({path: '/message/publish/form#publish_main'})
     },
     deleteHandle (row) {
       this.$CDelete({

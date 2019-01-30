@@ -116,4 +116,32 @@
   }
 }
 
+/* alert start */
+.ivu-alert{
+  font-size: 17px;
+  line-height: 17px;
+}
+.ivu-alert-icon{
+  font-size: 17px;
+}
+.ivu-alert-desc{
+  font-size: 14px;
+  line-height: 25px;
+}
+.ivu-alert-with-desc {
+  .ivu-alert-icon{
+    line-height: 30px;
+  }
+  .ivu-alert-message{
+    font-size: 17px;
+  }
+}
+/* alert end */
 
+.ivu-anchor-wrapper{
+  font-size: 14px;
+}
+.ivu-anchor-ink-ball{
+  width: 10px;
+  height: 10px;
+}

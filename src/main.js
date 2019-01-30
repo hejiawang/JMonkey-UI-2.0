@@ -27,6 +27,7 @@ Vue.use(iView, {
   transfer: true,
   size: 'large'
 })
+// Vue.use(VueQuillEditor)
 Vue.use(animated)
 Vue.use(CDelete)
 Vue.use(CSure)
