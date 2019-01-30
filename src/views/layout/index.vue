@@ -65,6 +65,8 @@ export default {
         let systemInfo = this.getFirstSystem()
         store.dispatch('renderSystem', systemInfo).then(() => {
           store.commit('SET_CURRENTMENU', store.getters.currentSystemHome)
+
+          this.initIndex()
         })
       }
     },

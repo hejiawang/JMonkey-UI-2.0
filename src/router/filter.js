@@ -6,7 +6,7 @@ import { validatenull } from '@/utils/validate'
 import { initRouter } from '@/utils/router'
 
 NProgress.configure({ showSpinner: false })
-const whiteList = ['/login', '/guide', '/']
+// const whiteList = ['/login', '/guide', '/']
 
 /**
  * router before
@@ -41,9 +41,11 @@ router.beforeEach((to, from, next) => {
  */
 router.afterEach((to, from) => {
   // 如果用户在浏览器地址栏中随意输入地址，回到当前页
-  if (whiteList.indexOf(to.path) === -1 && to.path !== store.getters.currentMenu) {
+  // TODO 改进方案： 在state.common.menuList中不存在该路径,回到当前页
+  // TODO 存在问题： this.$router.replace({path: '/message/publish/form'}) 时, 不能跳转页面, 改进：能遍历state.common.menuList,
+  /* if (whiteList.indexOf(to.path) === -1 && to.path !== store.getters.currentMenu) {
     router.replace(store.getters.currentMenu)
-  }
+  } */
 
   NProgress.done()
 })

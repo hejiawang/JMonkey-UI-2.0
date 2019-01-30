@@ -25,6 +25,13 @@ module.exports = {
         pathRewrite: {
           '^/sys': '/sys'
         }
+      },
+      '/ms': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ms': '/ms'
+        }
       }
     },
 
