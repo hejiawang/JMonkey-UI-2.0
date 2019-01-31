@@ -25,15 +25,21 @@
     <Row>
       <CPage v-model="listQuery" @on-list="initMessageList" ref="messagePage"/>
     </Row>
+
+    <CMessageView v-model="showView" :messageId="viewMessageId"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import moment from 'moment'
 import { list, del } from '@/api/message/message'
+import CMessageView from '@/views/message/view'
 
 export default {
   name: 'MessagePublish',
+  components: {
+    CMessageView
+  },
   computed: {
     messageTableHeight () {
       return store.getters.windowHeight - 290
@@ -49,7 +55,9 @@ export default {
         total: 0
       },
       messageTableColumns: [ ],
-      messageTableData: [ ]
+      messageTableData: [ ],
+      showView: false,
+      viewMessageId: ''
     }
   },
   created () {
@@ -113,7 +121,8 @@ export default {
     bindEvent (h, params) {
       return h('div', [
         h('Button', {
-          props: { type: 'info', ghost: true }
+          props: { type: 'info', ghost: true },
+          on: { click: () => { this.viewHandle(params.row) } }
         }, '预览'),
         h('Button', {
           props: { type: 'warning', ghost: true }
@@ -172,6 +181,13 @@ export default {
           })
         }
       })
+    },
+    /**
+     * 查看消息
+     * @param row
+     */
+    viewHandle (row) {
+      this.showView = true; this.viewMessageId = row.id
     }
   }
 }
