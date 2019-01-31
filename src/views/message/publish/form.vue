@@ -13,7 +13,7 @@
         <Row style="overflow-y: auto; overflow-x: hidden; height: 100%" >
           <Form ref="messageForm" :model="messageForm" :label-width="120" style="height: 100%">
             <Row id="publish_main">
-              <Divider style="color: #E46CBB">发 布 信 息</Divider>
+              <Row><Divider style="color: #E46CBB">发 布 信 息</Divider></Row>
               <FormItem label="消息标题" prop="title"
                         :rules="{required: true, message: '请填写消息标题', trigger: 'blur'}">
                 <Input type="text" v-model.trim="messageForm.title" :maxlength="100" :autofocus="true"/>
@@ -33,7 +33,7 @@
             </Row>
 
             <Row id="publish_content" style="height: calc(100% - 179px);">
-              <Divider style="color: #E46CBB">发 布 内 容</Divider>
+              <Row><Divider style="color: #E46CBB">发 布 内 容</Divider></Row>
               <CMsEditor v-model="messageForm.content" />
             </Row>
           </Form>
@@ -50,7 +50,7 @@
           </Anchor>
         </Row>
         <Row id="publish_file">
-          <Divider style="color: #E46CBB">消 息 附 件</Divider>
+          <Row><Divider style="color: #E46CBB">消 息 附 件</Divider></Row>
           <CMsFile v-model="messageForm.fileList"/>
         </Row>
       </Col>
