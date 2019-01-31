@@ -10,6 +10,7 @@
     <Upload v-else
       type="drag"
       action="/sys/user/uploadPhoto"
+      :headers="headersObj"
       :show-upload-list="false"
       :max-size="2048"
       :format="['jpg','jpeg','png']"
@@ -26,6 +27,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { getToken } from '@/utils/auth'
 
 /**
  * 上传用户头像组件
@@ -40,7 +42,13 @@ export default {
     photoPath (val) { this.$emit('input', val) }
   },
   computed: {
-    ...mapGetters(['website'])
+    ...mapGetters(['website']),
+    /**
+     * token
+     */
+    headersObj () {
+      return { Authorization: 'Bearer ' + getToken() }
+    }
   },
   data () {
     return {

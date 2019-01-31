@@ -3,7 +3,7 @@
     <Row :gutter="32">
       <Col span="20"><Alert show-icon>消 息 发 布</Alert></Col>
       <Col span="2"><Button long type="info" icon="ios-undo" @click="goBack">取 消</Button></Col>
-      <Col span="2"><Button long type="success" icon="ios-chatbubbles-outline">发 布</Button></Col>
+      <Col span="2"><Button long type="success" icon="ios-chatbubbles-outline" @click="publishhandle">发 布</Button></Col>
     </Row>
 
     <Row :gutter="32" style="height: calc(100% - 50px);" id="anchor_container">
@@ -13,7 +13,7 @@
             <Row id="publish_main">
               <Divider style="color: #E46CBB">发 布 信 息</Divider>
               <FormItem label="消息标题" prop="title">
-                <Input type="text" v-model.trim="messageForm.title"/>
+                <Input type="text" v-model.trim="messageForm.title" :autofocus="true"/>
               </FormItem>
               <Row :gutter="32">
                 <Col span="14">
@@ -31,9 +31,7 @@
 
             <Row id="publish_content" style="height: calc(100% - 179px);">
               <Divider style="color: #E46CBB">发 布 内 容</Divider>
-              <quillEditor ref="myTextEditor"
-                            v-model="messageForm.content"
-                            :config="editorOption" />
+              <CMsEditor v-model="messageForm.content" />
             </Row>
           </Form>
         </Row>
@@ -50,54 +48,58 @@
         </Row>
         <Row id="publish_file">
           <Divider style="color: #E46CBB">消 息 附 件</Divider>
-          <Upload
-            multiple
-            type="drag"
-            action="//jsonplaceholder.typicode.com/posts/">
-            <div style="padding: 20px 0">
-              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-              <p>点 击 或 拖 拽 上 传 附 件 </p>
-            </div>
-          </Upload>
+          <CMsFile v-model="messageForm.fileList"/>
         </Row>
       </Col>
     </Row>
   </Layout>
 </template>
 <script>
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import CMsEditor from '@/views/message/publish/formEditor'
+import CMsFile from '@/views/message/publish/formFile'
 
 export default {
   name: 'MessagePublishForm',
   components: {
-    quillEditor
+    CMsEditor, CMsFile
   },
   data () {
     return {
-      editorOption: {},
       messageForm: {
         title: null,
         audit: null,
         rate: 5,
-        content: ''
+        content: '',
+        fileList: []
       },
       messageRules: {}
     }
   },
   methods: {
+    /**
+     * 放弃编辑内容,返回消息发布列表页
+     */
     goBack () {
-      this.$router.replace({path: '/message/publish'})
+      this.$CSure({
+        'content': '放弃本次编辑内容？',
+        'confirm': () => {
+          this.$router.replace({path: '/message/publish'})
+        }
+      })
+    },
+    /**
+     * 发布消息,成功后返回消息发布列表页
+     */
+    publishhandle () {
+      this.$CSure({
+        'content': '已检查无误, 准备发布？',
+        'confirm': () => {
+          console.info(this.messageForm)
+
+          this.$router.replace({path: '/message/publish'})
+        }
+      })
     }
   }
 }
 </script>
-<style lang="scss">
-  .message-publish-form{
-    .quill-editor{
-      height: calc(100% - 130px);
-    }
-  }
-</style>
