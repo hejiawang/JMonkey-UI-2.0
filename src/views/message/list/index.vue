@@ -1,5 +1,5 @@
 <template>
-  <Drawer title="系统信息列表" width="600" v-model="isShow" @on-visible-change="showDrawer" placement="left" class="app-message-list">
+  <Drawer title="系统信息列表" width="800" v-model="isShow" @on-visible-change="showDrawer" placement="left" class="app-message-list">
     <div class="message-body">
       <Row class="message-content">
         <Card style="width: 100%">

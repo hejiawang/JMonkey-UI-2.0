@@ -30,7 +30,7 @@
 <script>
 import store from '@/store'
 import moment from 'moment'
-import { list } from '@/api/message/message'
+import { list, del } from '@/api/message/message'
 
 export default {
   name: 'MessagePublish',
@@ -57,10 +57,13 @@ export default {
     this.initMessageList()
   },
   methods: {
+    /**
+     * init table header
+     */
     initMessageTableColumns () {
       this.messageTableColumns = [
         {title: '消息标题', key: 'title'},
-        {title: '发布人', key: 'createBy', width: 200},
+        {title: '发布人', key: 'createName', width: 200},
         {
           title: '发布日期',
           key: 'createDate',
@@ -96,13 +99,22 @@ export default {
           key: 'action',
           align: 'center',
           fixed: 'right',
-          width: 200,
+          width: 250,
           render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
     },
+    /**
+     * bind table event
+     * @param h
+     * @param params
+     * @returns {*}
+     */
     bindEvent (h, params) {
       return h('div', [
+        h('Button', {
+          props: { type: 'info', ghost: true }
+        }, '预览'),
         h('Button', {
           props: { type: 'warning', ghost: true }
         }, '编辑'),
@@ -112,6 +124,9 @@ export default {
         }, '删除')
       ])
     },
+    /**
+     * init message data list
+     */
     initMessageList () {
       this.listLoading = true
       list(this.listQuery).then(data => {
@@ -121,20 +136,40 @@ export default {
         this.listLoading = false
       })
     },
+    /**
+     * search
+     */
     search () {
-
+      this.$refs.messagePage.rest()
+      this.initMessageList()
     },
+    /**
+     * rest seach
+     */
     restSearch () {
-
+      ['title'].forEach(param => (
+        this.listQuery[param] = null
+      ))
+      this.search()
     },
+    /**
+     * 新增消息
+     */
     raiseHandle () {
       this.$router.replace({path: '/message/publish/form#publish_main'})
     },
+    /**
+     * 删除消息
+     * @param row
+     */
     deleteHandle (row) {
       this.$CDelete({
         'content': '<p>该消息将被删除是否继续？</p>',
         'confirm': () => {
-          console.info(1)
+          del(row.id).then(() => {
+            this.restSearch()
+            this.$Message.success('删除成功')
+          })
         }
       })
     }

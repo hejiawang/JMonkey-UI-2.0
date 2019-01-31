@@ -3,17 +3,20 @@
     <Row :gutter="32">
       <Col span="20"><Alert show-icon>消 息 发 布</Alert></Col>
       <Col span="2"><Button long type="info" icon="ios-undo" @click="goBack">取 消</Button></Col>
-      <Col span="2"><Button long type="success" icon="ios-chatbubbles-outline" @click="publishhandle">发 布</Button></Col>
+      <Col span="2">
+        <Button long type="success" icon="ios-chatbubbles-outline" @click="publishHandle" :loading="loading">发 布</Button>
+      </Col>
     </Row>
 
     <Row :gutter="32" style="height: calc(100% - 50px);" id="anchor_container">
       <Col span="18" style="height: 100%">
         <Row style="overflow-y: auto; overflow-x: hidden; height: 100%" >
-          <Form ref="messageForm" :model="messageForm" :rules="messageRules" :label-width="120" style="height: 100%">
+          <Form ref="messageForm" :model="messageForm" :label-width="120" style="height: 100%">
             <Row id="publish_main">
               <Divider style="color: #E46CBB">发 布 信 息</Divider>
-              <FormItem label="消息标题" prop="title">
-                <Input type="text" v-model.trim="messageForm.title" :autofocus="true"/>
+              <FormItem label="消息标题" prop="title"
+                        :rules="{required: true, message: '请填写消息标题', trigger: 'blur'}">
+                <Input type="text" v-model.trim="messageForm.title" :maxlength="100" :autofocus="true"/>
               </FormItem>
               <Row :gutter="32">
                 <Col span="14">
@@ -57,6 +60,7 @@
 <script>
 import CMsEditor from '@/views/message/publish/formEditor'
 import CMsFile from '@/views/message/publish/formFile'
+import { save } from '@/api/message/message'
 
 export default {
   name: 'MessagePublishForm',
@@ -72,7 +76,7 @@ export default {
         content: '',
         fileList: []
       },
-      messageRules: {}
+      loading: false
     }
   },
   methods: {
@@ -82,21 +86,36 @@ export default {
     goBack () {
       this.$CSure({
         'content': '放弃本次编辑内容？',
-        'confirm': () => {
-          this.$router.replace({path: '/message/publish'})
-        }
+        'confirm': () => { this.$router.replace({path: '/message/publish'}) }
       })
     },
     /**
      * 发布消息,成功后返回消息发布列表页
      */
-    publishhandle () {
+    publishHandle () {
+      this.loading = true
+
+      this.$refs.messageForm.validate((valid) => {
+        if (valid) {
+          this.savehandle()
+        } else {
+          this.loading = false
+        }
+      })
+    },
+    /**
+     * 发布消息
+     */
+    savehandle () {
       this.$CSure({
         'content': '已检查无误, 准备发布？',
         'confirm': () => {
-          console.info(this.messageForm)
-
-          this.$router.replace({path: '/message/publish'})
+          save(this.messageForm).then(data => {
+            if (data.isSuccess) {
+              this.$Message.success('发布成功')
+              this.$router.replace({path: '/message/publish'})
+            }
+          })
         }
       })
     }
