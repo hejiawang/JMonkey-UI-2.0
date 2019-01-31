@@ -12,6 +12,14 @@ export const list = (query) => {
   })
 }
 
+export const readList = (query) => {
+  return request({
+    url: '/ms/message/readList',
+    method: 'get',
+    params: query
+  })
+}
+
 /**
  * 保存消息
  * @param obj 消息

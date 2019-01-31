@@ -36,6 +36,7 @@ import CModifyPassword from '@/views/sys/user/modifyPasswordForm'
 import CUserForm from '@/views/sys/user/form'
 import CMessageList from '@/views/message/list'
 import { mapGetters } from 'vuex'
+import { count } from '@/api/message/read'
 
 export default {
   name: 'CHeader_UserInfo',
@@ -79,6 +80,9 @@ export default {
       return userDto
     }
   },
+  created () {
+    this.countMessage()
+  },
   methods: {
     dropHandle (name) {
       this[name]()
@@ -103,7 +107,7 @@ export default {
      * 统计未读消息个数
      */
     countMessage () {
-      this.messageNum = 2
+      count().then((data) => { this.messageNum = data.result })
     },
     /**
      * 退出登录
