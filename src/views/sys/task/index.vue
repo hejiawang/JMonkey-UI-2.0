@@ -25,6 +25,9 @@ import moment from 'moment'
 import { list, del, pause, resume, startNow } from '@/api/sys/task'
 import CTaskForm from '@/views/sys/task/form'
 
+/**
+ * TODO bug：table中有单选按钮，记录的是当前条的index，这样会导致在翻页时第二页还显示相同index的数据，
+ */
 export default {
   name: 'SysLog',
   components: { CTaskForm },

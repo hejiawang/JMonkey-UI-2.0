@@ -34,6 +34,7 @@ export const treeToArray = (data, expandAll, show = true, level = null, indexArr
 }
 
 /**
+ * // TODO obj参数 有待商榷,传递的参数太多了
  * 在iview中有些组件显示的key必须按照iview制定名称命名，
  * 该方法将指定的old key 赋值到新的 novel key上
  * 如果数据有子节点，按照指定的子节点childrenKey key遍历修改子节点信息

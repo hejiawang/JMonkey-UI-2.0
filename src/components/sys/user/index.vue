@@ -28,15 +28,22 @@
           <Tree :data="treeDate" ref="deptTree" @on-select-change="selectDept" style="height: 100%; overflow-y: auto"/>
         </Col>
         <Col span="19">
-          <Table :height="400" border :columns="userTableColumns" :data="userTableData" :loading="listLoading" stripe />
+          <RadioGroup v-model="currentUserId" vertical style="width: 100%;">
+            <Table :height="400" border :columns="userTableColumns" :data="userTableData"
+                   :loading="listLoading" stripe @on-row-click="clickTable"/>
+          </RadioGroup>
         </Col>
       </Row>
 
       <div slot="footer">
         <Row>
-          <Col span="15" offset="5"><CPage v-model="listQuery" @on-list="initList" ref="userPage" style="float: left"/></Col>
-          <Col span="2" style="margin-top: 5px;"> <Button type="text">取消</Button> </Col>
-          <Col span="2" style="margin-top: 5px;"> <Button type="primary">确定</Button> </Col>
+          <Col span="20" ><CPage v-model="listQuery" @on-list="initList" ref="userPage" style="float: left"/></Col>
+          <Col span="2" style="margin-top: 5px;">
+            <Button type="text" @click="closeModal">取消</Button>
+          </Col>
+          <Col span="2" style="margin-top: 5px;">
+            <Button type="primary" @click="selectUserHandle">确定</Button>
+          </Col>
         </Row>
       </div>
     </Modal>
@@ -45,7 +52,7 @@
 <script>
 import { tree } from '@/api/sys/dept'
 import CRole from '@/components/sys/role'
-import { list } from '@/api/sys/user'
+import { list, findDto } from '@/api/sys/user'
 import { mapGetters } from 'vuex'
 import { converKey } from '@/utils/common'
 
@@ -53,8 +60,13 @@ export default {
   name: 'CUser',
   components: { CRole },
   props: {
+    value: {required: true},
     title: {type: String, default: '请选择用户', required: false},
     disabled: {type: Boolean, default: false, required: false}
+  },
+  watch: {
+    value (val) { this.userId = val },
+    userId (val) { this.$emit('input', val) }
   },
   computed: {
     ...mapGetters(['website']),
@@ -70,10 +82,12 @@ export default {
   },
   data: function () {
     return {
+      currentUserId: null,
       listLoading: false,
       userTableColumns: [],
       userTableData: [],
       userName: null,
+      userId: null,
       deptTreeDate: [],
       isShow: false,
       listQuery: {
@@ -93,8 +107,22 @@ export default {
     this.initList()
   },
   methods: {
+    /**
+     * user table header
+     */
     initTableColumns () {
       this.userTableColumns = [
+        {
+          title: ' ',
+          key: 'id',
+          width: 60,
+          align: 'center',
+          render: (h, params) => {
+            return h('Radio', {
+              props: { label: params.row.id }
+            }, '  ')
+          }
+        },
         {
           title: '头像',
           key: 'photo',
@@ -143,6 +171,9 @@ export default {
         }
       ]
     },
+    /**
+     * init user table data
+     */
     initList () {
       this.listLoading = true
       list(this.listQuery).then(data => {
@@ -152,16 +183,64 @@ export default {
         this.listLoading = false
       })
     },
+    /**
+     * init dept tree data
+     */
     initDept () {
       tree().then(data => { this.deptTreeDate = data.result })
     },
-    clearUser () {},
+    clearUser () {
+      this.userId = null
+      this.userName = null
+    },
+    /**
+     * show select user modal
+     */
     showUserModal () {
       this.isShow = true
     },
-    selectDept () {},
-    search () {},
-    restSearch () {}
+    /**
+     * close select user modal
+     */
+    closeModal () {
+      this.isShow = false
+    },
+    selectDept () {
+
+    },
+    /**
+     * search user table data
+     */
+    search () {
+      this.$refs.userPage.rest()
+      this.initList()
+    },
+    /**
+     * clear search user data
+     */
+    restSearch () {
+      ['username', 'realName', 'roleId', 'deptId'].forEach(param => (
+        this.listQuery[param] = null
+      ))
+      this.search()
+    },
+    /**
+     * 点击table一行时触发
+     */
+    clickTable (row, index) {
+      this.currentUserId = row.id
+    },
+    /**
+     * 选择用户
+     */
+    selectUserHandle () {
+      findDto(this.currentUserId).then(data => {
+        this.userId = this.currentUserId
+        this.userName = data.result.realName
+
+        this.closeModal()
+      })
+    }
   }
 }
 </script>
