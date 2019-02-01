@@ -41,14 +41,16 @@ export const treeToArray = (data, expandAll, show = true, level = null, indexArr
  * @param old 后台返回的key
  * @param novel 将要转换适应iview的key
  * @param childrenKey 子节点key
+ * @param obj [{key: 'expand', value: true}]
  * @returns {*} 转换后的数据（原来的数据也变化了）
  */
-export const converKey = (data, old = 'name', novel = 'title', childrenKey = 'children') => {
+export const converKey = (data, old = 'name', novel = 'title', childrenKey = 'children', obj = []) => {
   Array.from(data).forEach(tData => {
     Vue.set(tData, novel, tData[old])
+    obj.forEach(o => { Vue.set(tData, o.key, o.value) })
 
     // 过滤子节点key
-    if (tData[childrenKey] && tData[childrenKey].length > 0) converKey(tData.children, old, novel, childrenKey)
+    if (tData[childrenKey] && tData[childrenKey].length > 0) converKey(tData.children, old, novel, childrenKey, obj)
   })
 
   return data

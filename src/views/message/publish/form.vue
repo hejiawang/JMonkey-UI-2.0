@@ -21,7 +21,7 @@
               <Row :gutter="32">
                 <Col span="14">
                   <FormItem label="审核人员" prop="audit">
-                    <Input type="text" v-model.trim="messageForm.audit"/>
+                    <CUser v-model="messageForm.audit" title="选择审核人员"/>
                   </FormItem>
                 </Col>
                 <Col span="10">
@@ -61,11 +61,12 @@
 import CMsEditor from '@/views/message/publish/formEditor'
 import CMsFile from '@/views/message/publish/formFile'
 import { save } from '@/api/message/message'
+import CUser from '@/components/sys/user'
 
 export default {
   name: 'MessagePublishForm',
   components: {
-    CMsEditor, CMsFile
+    CMsEditor, CMsFile, CUser
   },
   data () {
     return {
