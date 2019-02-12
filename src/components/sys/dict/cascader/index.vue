@@ -3,7 +3,7 @@
     <Col :span="colSpan" v-for="index in steps" :key="index">
       <span style="height: 0px; width: 0px;display: none">{{temp}}</span>
 
-      <Select v-model="dictValue[index - 1]" @on-change="changeDict($event, index)">
+      <Select v-model="dictValue[index - 1]" @on-change="changeDict($event, index)" clearable :disabled="disabled">
         <Option v-for="item in dictList(index - 1)" :value="item.value" :key="item.value">{{ item.lable }}</Option>
       </Select>
     </Col>
@@ -14,6 +14,7 @@ import { findChildren } from '@/api/sys/dict'
 
 /**
  * 字典组件——级联字典.
+ * 例子：<CDictCascader :steps="3" dict="1" v-model="dictVC"/>  data中的dictVC是数组
  * TODO 感觉不好
  */
 export default {
@@ -21,7 +22,8 @@ export default {
   props: {
     value: {required: true}, // v-model
     dict: {type: String, default: '', required: true}, // 父字典value
-    steps: {type: Number, default: 1, required: false} // 字典级数
+    steps: {type: Number, default: 1, required: false}, // 字典级数
+    disabled: {type: Boolean, default: false, required: false}
   },
   watch: {
     value (val) { this.dictValue = val },
@@ -64,6 +66,9 @@ export default {
     this.initDictList()
   },
   methods: {
+    /**
+     * vue mounted option
+     */
     mounteDictValue () {
       this.dictValue = this.value
 
