@@ -4,7 +4,7 @@
       <Col span="20"><Alert show-icon>消 息 发 布</Alert></Col>
       <Col span="2"><Button long type="info" icon="ios-undo" @click="goBack">取 消</Button></Col>
       <Col span="2">
-        <Button long type="success" icon="ios-chatbubbles-outline" @click="publishHandle" :loading="loading">发 布</Button>
+        <Button long type="success" icon="ios-chatbubbles-outline" @click="publishHandle">发 布</Button>
       </Col>
     </Row>
 
@@ -60,13 +60,21 @@
 <script>
 import CMsEditor from '@/views/message/publish/formEditor'
 import CMsFile from '@/views/message/publish/formFile'
-import { save } from '@/api/message/message'
+import { save, find } from '@/api/message/message'
 import CUser from '@/components/sys/user'
 
 export default {
   name: 'MessagePublishForm',
   components: {
     CMsEditor, CMsFile, CUser
+  },
+  computed: {
+    /**
+     * 是否是修改消息 true 是
+     */
+    isModify () {
+      return !this.$CV.isEmpty(this.$route.query.messageId)
+    }
   },
   data () {
     return {
@@ -76,11 +84,24 @@ export default {
         rate: 5,
         content: '',
         fileList: []
-      },
-      loading: false
+      }
     }
   },
+  created () {
+    this.initMessage()
+  },
   methods: {
+    /**
+     * init message info
+     */
+    initMessage () {
+      if (this.isModify) {
+        find(this.$route.query.messageId).then(data => {
+          this.messageForm = data.result
+          this.messageForm.rate = parseInt(data.result.rate)
+        })
+      }
+    },
     /**
      * 放弃编辑内容,返回消息发布列表页
      */
@@ -94,13 +115,10 @@ export default {
      * 发布消息,成功后返回消息发布列表页
      */
     publishHandle () {
-      this.loading = true
-
       this.$refs.messageForm.validate((valid) => {
         if (valid) {
-          this.savehandle()
-        } else {
-          this.loading = false
+          if (this.isModify) this.modifyhandle()
+          else this.savehandle()
         }
       })
     },
@@ -117,6 +135,17 @@ export default {
               this.$router.replace({path: '/message/publish'})
             }
           })
+        }
+      })
+    },
+    /**
+     * 修改后发布消息
+     */
+    modifyhandle () {
+      this.$CSure({
+        'content': '已修改完毕, 准备发布？',
+        'confirm': () => {
+          // TODO
         }
       })
     }

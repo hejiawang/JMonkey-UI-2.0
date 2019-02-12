@@ -119,19 +119,31 @@ export default {
      * @returns {*}
      */
     bindEvent (h, params) {
-      return h('div', [
+      let eventArray = []
+      eventArray.push(
         h('Button', {
           props: { type: 'info', ghost: true },
           on: { click: () => { this.viewHandle(params.row) } }
-        }, '预览'),
-        h('Button', {
-          props: { type: 'warning', ghost: true }
-        }, '编辑'),
+        }, '预览')
+      )
+
+      if (params.row.state !== 'Yes') {
+        eventArray.push(
+          h('Button', {
+            props: { type: 'warning', ghost: true },
+            on: { click: () => { this.modifyHandle(params.row) } }
+          }, '编辑')
+        )
+      }
+
+      eventArray.push(
         h('Button', {
           props: { type: 'error', ghost: true },
           on: { click: () => { this.deleteHandle(params.row) } }
         }, '删除')
-      ])
+      )
+
+      return h('div', eventArray)
     },
     /**
      * init message data list
@@ -181,6 +193,14 @@ export default {
           })
         }
       })
+    },
+    /**
+     * modify message
+     * @param row
+     */
+    modifyHandle (row) {
+      // TODO 在浏览器地址栏看见messageId了
+      this.$router.replace({path: '/message/publish/form#publish_main', query: {messageId: row.id}})
     },
     /**
      * 查看消息

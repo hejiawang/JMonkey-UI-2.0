@@ -3,7 +3,7 @@
     <Input type="text" v-model="userName" icon="ios-close"
            @on-focus="showUserModal" @on-click="clearUser" readonly :disabled="disabled"/>
 
-    <Modal v-model="isShow" :title="title" width="1000">
+    <Modal v-model="isShow" :title="title" width="1000" @on-visible-change="visibleChange">
       <Row style="height: 60px;">
         <Form ref="userSearchForm" :model="listQuery" :label-width="80" inline>
           <FormItem label="用户名称">
@@ -205,8 +205,13 @@ export default {
     closeModal () {
       this.isShow = false
     },
-    selectDept () {
+    /**
+     * 点击部门树节点后时查询用户信息
+     */
+    selectDept (depts, cDept) {
+      this.listQuery.deptId = depts.length > 0 ? cDept.id : null
 
+      this.search()
     },
     /**
      * search user table data
@@ -219,7 +224,7 @@ export default {
      * clear search user data
      */
     restSearch () {
-      ['username', 'realName', 'roleId', 'deptId'].forEach(param => (
+      ['username', 'realName', 'roleId'].forEach(param => (
         this.listQuery[param] = null
       ))
       this.search()
@@ -240,6 +245,15 @@ export default {
 
         this.closeModal()
       })
+    },
+    /**
+     * modal open
+     * @param isOpen true is open
+     */
+    visibleChange (isOpen) {
+      if (isOpen && !this.$CV.isEmpty(this.userId)) {
+        this.currentUserId = this.userId
+      }
     }
   }
 }
