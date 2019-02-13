@@ -57,7 +57,12 @@ export default {
       messageTableColumns: [ ],
       messageTableData: [ ],
       showView: false,
-      viewMessageId: ''
+      viewMessageId: '',
+      tagColor: {
+        auditMessage: 'warning',
+        publish: 'error',
+        endPublish: 'success'
+      }
     }
   },
   created () {
@@ -97,9 +102,7 @@ export default {
           key: 'state',
           width: 200,
           render: (h, params) => {
-            if (params.row.state === 'No') return h('Tag', { props: { color: 'error' } }, '审核拒绝')
-            else if (params.row.state === 'Yes') return h('Tag', { props: { color: 'success' } }, '审核通过')
-            return h('Tag', { props: { color: 'warning' } }, '正在审核')
+            return h('Tag', { props: { color: this.tagColor[params.row.taskKey] } }, params.row.taskName)
           }
         },
         {
