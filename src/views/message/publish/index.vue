@@ -110,7 +110,7 @@ export default {
           key: 'action',
           align: 'center',
           fixed: 'right',
-          width: 250,
+          width: 300,
           render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
@@ -130,12 +130,12 @@ export default {
         }, '预览')
       )
 
-      if (params.row.state !== 'Yes') {
+      if (params.row.taskKey === 'publish') {
         eventArray.push(
           h('Button', {
             props: { type: 'warning', ghost: true },
             on: { click: () => { this.modifyHandle(params.row) } }
-          }, '编辑')
+          }, '重新发布')
         )
       }
 

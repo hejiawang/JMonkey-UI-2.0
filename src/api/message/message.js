@@ -12,11 +12,44 @@ export const list = (query) => {
   })
 }
 
+/**
+ * 读取消息列表
+ * @param query
+ */
 export const readList = (query) => {
   return request({
     url: '/ms/message/readList',
     method: 'get',
     params: query
+  })
+}
+
+/**
+ * 审核消息列表
+ * @param query
+ */
+export const auditList = (query) => {
+  return request({
+    url: '/ms/message/auditList',
+    method: 'get',
+    params: query
+  })
+}
+
+/**
+ * 审核消息
+ * @param state true 通过 false 拒绝
+ * @param taskId 任务id
+ */
+export const audit = (state, taskId, messageId) => {
+  return request({
+    url: '/ms/message/audit',
+    method: 'get',
+    params: {
+      state: state,
+      taskId: taskId,
+      messageId: messageId
+    }
   })
 }
 
