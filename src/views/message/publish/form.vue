@@ -99,6 +99,9 @@ export default {
         find(this.$route.query.messageId).then(data => {
           this.messageForm = data.result
           this.messageForm.rate = parseInt(data.result.rate)
+
+          // 重新赋值, 使选择用户组件watch到变化
+          this.messageForm.audit = data.result.audit
         })
       }
     },

@@ -65,7 +65,15 @@ export default {
     disabled: {type: Boolean, default: false, required: false}
   },
   watch: {
-    value (val) { this.userId = val },
+    value (val) {
+      this.userId = val
+
+      if (!this.$CV.isEmpty(this.userId)) {
+        findDto(this.userId).then(data => {
+          this.userName = data.result.realName
+        })
+      }
+    },
     userId (val) { this.$emit('input', val) }
   },
   computed: {
