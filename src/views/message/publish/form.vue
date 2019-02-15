@@ -60,7 +60,7 @@
 <script>
 import CMsEditor from '@/views/message/publish/formEditor'
 import CMsFile from '@/views/message/publish/formFile'
-import { save, find } from '@/api/message/message'
+import { save, find, modify } from '@/api/message/message'
 import CUser from '@/components/sys/user'
 
 export default {
@@ -148,7 +148,12 @@ export default {
       this.$CSure({
         'content': '已修改完毕, 准备发布？',
         'confirm': () => {
-          // TODO
+          modify(this.messageForm).then(data => {
+            if (data.isSuccess) {
+              this.$Message.success('发布成功')
+              this.$router.replace({path: '/message/publish'})
+            }
+          })
         }
       })
     }

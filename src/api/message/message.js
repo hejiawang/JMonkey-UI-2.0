@@ -66,6 +66,18 @@ export const save = (obj) => {
 }
 
 /**
+ * 重新发布消息信息
+ * @param obj 消息细腻些
+ */
+export const modify = (obj) => {
+  return request({
+    url: '/ms/message/modify',
+    method: 'put',
+    data: obj
+  })
+}
+
+/**
  * 删除消息
  * @param id 消息id
  */
