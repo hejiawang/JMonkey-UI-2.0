@@ -32,6 +32,55 @@ module.exports = {
         pathRewrite: {
           '^/ms': '/ms'
         }
+      },
+      '/poserver.zz': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/poserver.zz': '/poserver.zz'
+        }
+      },
+      '/posetup.exe': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/posetup.exe': '/posetup.exe'
+        }
+      },
+      '/pageoffice.js': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/pageoffice.js': '/pageoffice.js'
+        }
+      },
+      '/jquery.min.js': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/jquery.min.js': '/jquery.min.js'
+        }
+      },
+      '/pobstyle.css': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/pobstyle.css': '/pobstyle.css'
+        }
+      },
+      '/sealsetup.exe': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/sealsetup.exe': '/sealsetup.exe'
+        }
+      },
+      '/assets': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/assets': '/assets'
+        }
       }
     },
 

@@ -98,3 +98,13 @@ export const find = (id) => {
     method: 'get'
   })
 }
+
+/**
+ * pageOffice test
+ */
+export const pageOfficeTest = () => {
+  return request({
+    url: '/ms/assets/pageOfficeTest',
+    method: 'get'
+  })
+}
