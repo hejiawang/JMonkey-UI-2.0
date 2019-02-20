@@ -3,12 +3,13 @@
     <Row class="title">
       <Col span="6" class="pre">
         <Icon color="#ff9900" type="ios-arrow-back" size="30" @click="preMouth"/>
+        <Icon color="#ff9900" type="ios-arrow-forward" size="30" @click="nextMouth"/>
       </Col>
       <Col span="12" class="center">
         {{currentYear}} 年 {{currentMonth}} 月
       </Col>
       <Col span="6" class="next">
-        <Icon color="#ff9900" type="ios-arrow-forward" size="30" @click="nextMouth"/>
+        <span style="color: #ff9900; cursor:pointer;" @click="goNow">今日</span>
       </Col>
     </Row>
 
@@ -52,6 +53,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * return 每月周数 * 7
+     */
     weekDayNum () {
       var str = new Date(this.formatDate(this.currentYear, this.currentMonth, 1))
 
@@ -186,6 +190,21 @@ export default {
       d.setDate(45)
       this.initDatas(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1))
     },
+    /**
+     * 定位到今天
+     */
+    goNow () {
+      let data = new Date()
+      this.selectDay = data.getDate()
+      this.selectMonth = data.getMonth() + 1
+      this.selectYear = data.getFullYear()
+
+      this.initDatas(null)
+    },
+    /**
+     * 日期选择事件
+     * @param dayObject dayObject
+     */
     clickDay (dayObject) {
       let data = dayObject.day
       this.selectDay = data.getDate()
@@ -193,6 +212,7 @@ export default {
       this.selectYear = data.getFullYear()
 
       // 如果选择的日期不在本月
+      // TODO 算法好像不太对
       if (this.selectYear === this.currentYear) {
         if (this.selectMonth < this.currentMonth) this.preMouth()
         if (this.selectMonth > this.currentMonth) this.nextMouth()
@@ -217,6 +237,9 @@ export default {
       color: #f8f8f9;
       .pre {
         padding-left: 10px;
+        .ivu-icon {
+          cursor:pointer;
+        }
       }
       .center {
         text-align: center
