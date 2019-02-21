@@ -6,19 +6,27 @@
         <Icon color="#ff9900" type="ios-arrow-forward" size="30" @click="nextMouth"/>
       </Col>
       <Col span="12" class="center">
-        <span class="span-text">{{currentYear}} 年 </span>
-        <span class="span-text">{{currentMonth}} 月 </span>
+        <span class="span-text" @click="goYear">{{currentYear}} 年 </span>
+        <span class="span-text" @click="goMonth">{{currentMonth}} 月 </span>
       </Col>
       <Col span="6" class="next">
         <span class="span-text" @click="goNow">今日</span>
       </Col>
     </Row>
 
-    <Row class="week">
+    <Row class="year_month" v-if="showYear">
+      <div v-for="(y, index) in years" :key="index" @click="clickYear(y)">{{y}} 年</div>
+    </Row>
+
+    <Row class="year_month" v-if="showMonth">
+      <div v-for="(m, index) in months" :key="index" @click="clickMonth(index)">{{m}}</div>
+    </Row>
+
+    <Row class="week" v-if="showDay">
       <div class="float-div" v-for="week in weeks" :key="week">{{week}}</div>
     </Row>
 
-    <Row class="day">
+    <Row class="day" v-if="showDay">
       <template v-for="(dayobject, index) in days">
         <div :key="index" v-if="dayobject.day.getMonth() + 1 != currentMonth" class="float-div day-p-color" @click="clickDay(dayobject)">
           {{ dayobject.day.getDate() }}
@@ -51,7 +59,11 @@ export default {
       currentYear: 1970,
       currentWeek: 1,
       days: [],
-      weeks: ['一', '二', '三', '四', '五', '六', '日']
+      showDay: true,
+      showMonth: false,
+      showYear: false,
+      weeks: ['一', '二', '三', '四', '五', '六', '日'],
+      months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
     }
   },
   computed: {
@@ -70,6 +82,19 @@ export default {
       days = days - first
 
       return (1 + Math.ceil(days / 7)) * 7
+    },
+    /**
+     * years
+     */
+    years () {
+      let yearsArray = []
+
+      let miniYear = this.currentYear - 4
+      for (let i = miniYear; i < miniYear + 12; i++) {
+        yearsArray.push(i)
+      }
+
+      return yearsArray
     }
   },
   created () {
@@ -201,6 +226,8 @@ export default {
       this.selectMonth = data.getMonth() + 1
       this.selectYear = data.getFullYear()
 
+      this.showDay = true; this.showMonth = false; this.showYear = false
+
       this.initDatas(null)
     },
     /**
@@ -214,7 +241,7 @@ export default {
       this.selectYear = data.getFullYear()
 
       // 如果选择的日期不在本月
-      // TODO 算法好像不太对
+      // TODO 算法好像不太对 bug高危区
       if (this.selectYear === this.currentYear) {
         if (this.selectMonth < this.currentMonth) this.preMouth()
         if (this.selectMonth > this.currentMonth) this.nextMouth()
@@ -225,6 +252,34 @@ export default {
       }
 
       this.$emit('click', dayObject.day)
+    },
+    /**
+     * 显示月份选择页面
+     */
+    goMonth () {
+      this.showDay = false; this.showMonth = true; this.showYear = false
+    },
+    /**
+     * 选择月份
+     * @param month month
+     */
+    clickMonth (month) {
+      this.showDay = true; this.showMonth = false; this.showYear = false
+      this.initDatas(this.formatDate(this.currentYear, month + 1, 1))
+    },
+    /**
+     * 显示年份选择页面
+     */
+    goYear () {
+      this.showDay = false; this.showMonth = false; this.showYear = true
+    },
+    /**
+     * 选择年份
+     * @param year year
+     */
+    clickYear (year) {
+      this.showDay = true; this.showMonth = false; this.showYear = false
+      this.initDatas(this.formatDate(year, this.currentMonth, 1))
     }
   }
 }
@@ -253,6 +308,23 @@ export default {
       .span-text {
         color: #ff9900;
         cursor:pointer;
+      }
+    }
+
+    .year_month {
+      border: 1px solid #5cadff;
+      font-size: 20px;
+      line-height: 65px;
+      text-align: center;
+      div {
+        height: 65px;
+        cursor: pointer;
+        width: 33.33%;
+        float: left;
+      }
+      div:hover {
+        background: #2db7f5;
+        color: #f8f8f9;
       }
     }
 
