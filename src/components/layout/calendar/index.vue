@@ -6,10 +6,11 @@
         <Icon color="#ff9900" type="ios-arrow-forward" size="30" @click="nextMouth"/>
       </Col>
       <Col span="12" class="center">
-        {{currentYear}} 年 {{currentMonth}} 月
+        <span class="span-text">{{currentYear}} 年 </span>
+        <span class="span-text">{{currentMonth}} 月 </span>
       </Col>
       <Col span="6" class="next">
-        <span style="color: #ff9900; cursor:pointer;" @click="goNow">今日</span>
+        <span class="span-text" @click="goNow">今日</span>
       </Col>
     </Row>
 
@@ -35,6 +36,7 @@
 </template>
 <script>
 /**
+ * TODO 代码太乱
  * 日历组件
  */
 export default {
@@ -247,6 +249,10 @@ export default {
       .next {
         padding-right: 10px;
         text-align: right;
+      }
+      .span-text {
+        color: #ff9900;
+        cursor:pointer;
       }
     }
 
