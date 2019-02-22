@@ -11,11 +11,14 @@
     <CHeaderUser :system="system" />
 
     <CHeaderSystem :system="system" />
+
+    <CChat :system="system" />
   </Header>
 </template>
 <script>
 import CHeaderUser from '@/components/layout/header/userInfo'
 import CHeaderSystem from '@/components/layout/header/systemInfo'
+import CChat from '@/components/layout/chat'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -24,7 +27,7 @@ export default {
     ...mapGetters(['website'])
   },
   components: {
-    CHeaderUser, CHeaderSystem
+    CHeaderUser, CHeaderSystem, CChat
   },
   props: {
     system: {type: Boolean, default: true, required: false}
