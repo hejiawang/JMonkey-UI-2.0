@@ -18,41 +18,43 @@
       <Row class="chat-main-content">
         <Tabs>
           <TabPane icon="md-person">
-            <Collapse simple class="chat-mian-content-single">
-              <Panel name="1">
-                技术部 <span>(1)</span>
-                <div slot="content">
-                  <div class="chat-user-info">
-                    <Avatar shape="square" icon="ios-person" size="default" />
-                    <span class="chat-user-info-name">超级管理员</span>
+            <div>
+              <Collapse simple class="chat-mian-content-single">
+                <Panel name="1">
+                  技术部 <span>(1)</span>
+                  <div slot="content">
+                    <div class="chat-user-info">
+                      <Avatar shape="square" icon="ios-person" size="default" />
+                      <span class="chat-user-info-name">超级管理员</span>
+                    </div>
+                    <div class="chat-user-info">
+                      <Avatar shape="square" icon="ios-person" size="default" />
+                      <span class="chat-user-info-name">办案好几十</span>
+                    </div>
+                    <div class="chat-user-info">
+                      <Avatar shape="square" icon="ios-person" size="default" />
+                      <span class="chat-user-info-name">张三</span>
+                    </div>
                   </div>
-                  <div class="chat-user-info">
-                    <Avatar shape="square" icon="ios-person" size="default" />
-                    <span class="chat-user-info-name">办案好几十</span>
+                </Panel>
+                <Panel name="2">
+                  研发部 <span>(0)</span>
+                  <div slot="content">
+                    <div class="chat-user-none">
+                      <span>该部门暂无人员</span>
+                    </div>
                   </div>
-                  <div class="chat-user-info">
-                    <Avatar shape="square" icon="ios-person" size="default" />
-                    <span class="chat-user-info-name">张三</span>
+                </Panel>
+                <Panel name="3">
+                  开发部 <span>(0)</span>
+                  <div slot="content">
+                    <div class="chat-user-none">
+                      <span>该部门暂无人员</span>
+                    </div>
                   </div>
-                </div>
-              </Panel>
-              <Panel name="2">
-                研发部 <span>(0)</span>
-                <div slot="content">
-                  <div class="chat-user-none">
-                    <span>该部门暂无人员</span>
-                  </div>
-                </div>
-              </Panel>
-              <Panel name="3">
-                开发部 <span>(0)</span>
-                <div slot="content">
-                  <div class="chat-user-none">
-                    <span>该部门暂无人员</span>
-                  </div>
-                </div>
-              </Panel>
-            </Collapse>
+                </Panel>
+              </Collapse>
+            </div>
           </TabPane>
 
           <TabPane icon="md-contacts">
