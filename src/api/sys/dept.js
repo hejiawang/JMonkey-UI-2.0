@@ -71,3 +71,13 @@ export const checkCode = (id, code) => {
     method: 'post'
   })
 }
+
+/**
+ * 部门中有哪些用户
+ */
+export const deptUserList = () => {
+  return request({
+    url: '/sys/dept/deptUserList',
+    method: 'get'
+  })
+}

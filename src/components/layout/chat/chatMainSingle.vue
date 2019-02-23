@@ -1,36 +1,18 @@
 <template>
   <div>
     <Collapse simple class="chat-mian-content-single">
-      <Panel name="1">
-        技术部 <span>(1)</span>
+      <Panel v-for="(deptUser, index) in deptUserList" :key="index" :name="deptUser.name">
+        {{deptUser.name}} <span>( {{deptUser.userList.length}} )</span>
         <div slot="content">
-          <div class="chat-user-info">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="chat-user-info-name">超级管理员</span>
-          </div>
-          <div class="chat-user-info">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="chat-user-info-name">办案好几十</span>
-          </div>
-          <div class="chat-user-info">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="chat-user-info-name">张三</span>
-          </div>
-        </div>
-      </Panel>
-      <Panel name="2">
-        研发部 <span>(0)</span>
-        <div slot="content">
-          <div class="chat-user-none">
+          <div class="chat-user-none" v-if="deptUser.userList.length <= 0">
             <span>该部门暂无人员</span>
           </div>
-        </div>
-      </Panel>
-      <Panel name="3">
-        开发部 <span>(0)</span>
-        <div slot="content">
-          <div class="chat-user-none">
-            <span>该部门暂无人员</span>
+
+          <div class="chat-user-info" v-else v-for="(user, i) in deptUser.userList" :key="i">
+            <Avatar v-if="user.photo" shape="square" size="default" :src="website.filePath + user.photo" />
+            <Avatar v-else shape="square" icon="ios-person" size="default" />
+
+            <span class="chat-user-info-name">{{user.realName}}</span>
           </div>
         </div>
       </Panel>
@@ -38,8 +20,33 @@
   </div>
 </template>
 <script>
+import { deptUserList } from '@/api/sys/dept'
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'CChatMainSingle'
+  name: 'CChatMainSingle',
+  data () {
+    return {
+      deptUserList: []
+    }
+  },
+  computed: {
+    ...mapGetters(['website'])
+  },
+  created () {
+    this.initDeptUserList()
+  },
+  methods: {
+    /**
+     * init deptUserList
+     */
+    initDeptUserList () {
+      deptUserList().then(data => {
+        this.deptUserList = data.result
+        console.info(this.deptUserList)
+      })
+    }
+  }
 }
 </script>
 <style lang="scss">
