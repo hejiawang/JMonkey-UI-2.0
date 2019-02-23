@@ -3,7 +3,7 @@
     <div class="app-layout-chat-main" v-if="isShow" >
       <Row class="chat-main-title">
         <Col span="22">
-          <span>超级管理员</span>
+          <span>{{realName}}</span>
           <Icon type="ios-chatbubbles" color="#19be6b"/>
         </Col>
         <Col span="2" class="close">
@@ -17,80 +17,8 @@
 
       <Row class="chat-main-content">
         <Tabs>
-          <TabPane icon="md-person">
-            <div>
-              <Collapse simple class="chat-mian-content-single">
-                <Panel name="1">
-                  技术部 <span>(1)</span>
-                  <div slot="content">
-                    <div class="chat-user-info">
-                      <Avatar shape="square" icon="ios-person" size="default" />
-                      <span class="chat-user-info-name">超级管理员</span>
-                    </div>
-                    <div class="chat-user-info">
-                      <Avatar shape="square" icon="ios-person" size="default" />
-                      <span class="chat-user-info-name">办案好几十</span>
-                    </div>
-                    <div class="chat-user-info">
-                      <Avatar shape="square" icon="ios-person" size="default" />
-                      <span class="chat-user-info-name">张三</span>
-                    </div>
-                  </div>
-                </Panel>
-                <Panel name="2">
-                  研发部 <span>(0)</span>
-                  <div slot="content">
-                    <div class="chat-user-none">
-                      <span>该部门暂无人员</span>
-                    </div>
-                  </div>
-                </Panel>
-                <Panel name="3">
-                  开发部 <span>(0)</span>
-                  <div slot="content">
-                    <div class="chat-user-none">
-                      <span>该部门暂无人员</span>
-                    </div>
-                  </div>
-                </Panel>
-              </Collapse>
-            </div>
-          </TabPane>
-
-          <TabPane icon="md-contacts">
-            <div class="chat-mian-content-group">
-              <div class="chat-group-info" >
-                <div class="chat-group-img">
-                  <Avatar shape="square" icon="ios-people" size="default" />
-                </div>
-                <div class="chat-group-name">
-                  <a href="#" @click="handleIM">第不知道几次会议交流群</a>
-                </div>
-                <div class="chat-group-option">
-                  <span>创建人: </span>
-                  <span> 超级管理员 </span>
-
-                  <Icon type="ios-trash-outline" size="17" @click="handleIMClear"/>
-                  <Icon type="ios-build" size="17" @click="handleIMSetting"/>
-                </div>
-              </div>
-
-              <div class="chat-group-info">
-                <div class="chat-group-img">
-                  <Avatar shape="square" icon="ios-people" size="default" />
-                </div>
-                <div class="chat-group-name">
-                  <a href="#" @click="handleIM">没事聊一聊</a>
-                </div>
-                <div class="chat-group-option">
-                  <span>创建人: </span>
-                  <span> 里斯 </span>
-
-                  <Icon type="ios-trash-outline" size="17"/>
-                </div>
-              </div>
-            </div>
-          </TabPane>
+          <TabPane icon="md-person"> <CChatMainSingle /> </TabPane>
+          <TabPane icon="md-contacts">  <CChatMainGroup /> </TabPane>
         </Tabs>
       </Row>
 
@@ -100,11 +28,14 @@
 </template>
 <script>
 import CChatMainFooter from '@/components/layout/chat/chatMainFooter'
+import CChatMainSingle from '@/components/layout/chat/chatMainSingle'
+import CChatMainGroup from '@/components/layout/chat/chatMainGroup'
+import store from '@/store'
 
 export default {
   name: 'CChatMain',
   components: {
-    CChatMainFooter
+    CChatMainFooter, CChatMainSingle, CChatMainGroup
   },
   props: {
     value: {type: Boolean, default: false, required: true}
@@ -118,18 +49,14 @@ export default {
       isShow: false
     }
   },
+  computed: {
+    realName () {
+      return store.getters.user.realName
+    }
+  },
   methods: {
     closeChat () {
       this.isShow = false
-    },
-    handleIM () {
-      console.info('handleIM')
-    },
-    handleIMClear () {
-      console.info('handleIMClear')
-    },
-    handleIMSetting () {
-      console.info('handleIMSetting')
     }
   }
 }
@@ -192,106 +119,6 @@ export default {
           padding: 0px 10px;
           height: 420px;
           overflow-y: auto;
-        }
-      }
-
-      .chat-mian-content-single {
-        border: 0px;
-
-        .ivu-collapse-item {
-          border: 0px;
-          .ivu-collapse-header {
-            margin-right: 10px;
-            font-size: 17px;
-            padding-left: 0px;
-            .ivu-icon {
-              margin-right: 5px;
-            }
-            span {
-              color: #c5c8ce;
-            }
-          }
-
-          .ivu-collapse-content{
-            .chat-user-info {
-              padding: 0px 15px;
-              cursor:pointer;
-              height: 40px;
-              line-height: 40px;
-              .chat-user-info-name {
-                margin-left: 10px;
-                font-size: 17px;
-              }
-            }
-            .chat-user-info:hover {
-              background: #e8eaec;
-              color: #17233d;
-            }
-            .chat-user-none {
-              padding: 0px 15px;
-              height: 30px;
-              line-height: 30px;
-              span {
-                font-size: 14px;
-                color: #c5c8ce;
-              }
-            }
-          }
-        }
-      }
-
-      .chat-mian-content-group {
-        .chat-group-info {
-          height: 60px;
-          margin-bottom: 10px;
-          .chat-group-img {
-            float: left;
-            line-height: 60px;
-            .ivu-avatar {
-              width: 40px;
-              height: 40px;
-              font-size: 30px;
-              line-height: 40px;
-              background: #5cadff;
-            }
-          }
-
-          .chat-group-name{
-            margin-left: 10px;
-            height: 30px;
-            float: left;
-            width: 200px;
-            font-size: 17px;
-            line-height: 40px;
-            a{
-              color: #17233d;
-            }
-            a:hover {
-              color: #5cadff;
-            }
-          }
-
-          .chat-group-option{
-            margin-left: 10px;
-            color: #808695;
-            float: left;
-            width: 200px;
-            height: 30px;
-            font-size: 14px;
-            line-height: 30px;
-            .ivu-icon {
-              float: right;
-              line-height: 30px;
-              margin-left: 10px;
-              cursor:pointer;
-            }
-            .ivu-icon:hover {
-              color: #ff9900;
-            }
-          }
-        }
-        .chat-group-info:hover {
-          background: #e8eaec;
         }
       }
     }
