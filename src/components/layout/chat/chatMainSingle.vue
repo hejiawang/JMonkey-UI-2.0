@@ -52,7 +52,7 @@ export default {
 <style lang="scss">
   .chat-mian-content-single {
     border: 0px;
-
+    background: #f8f8f9;
     .ivu-collapse-item {
       border: 0px;
       .ivu-collapse-header {
@@ -68,6 +68,7 @@ export default {
       }
 
       .ivu-collapse-content{
+        background: #f8f8f9;
         .chat-user-info {
           padding: 0px 15px;
           cursor:pointer;

@@ -2,7 +2,6 @@
   <Row>
     <Row class="chat-main-footer">
       <Icon type="ios-add-circle-outline" size="20" @click="handleGroup"/>
-      <Icon type="ios-trash-outline" size="20" @click="handleDelete"/>
       <Icon type="ios-information-circle-outline" size="20" @click="handleWarning"/>
     </Row>
 
@@ -29,15 +28,6 @@ export default {
     handleWarning () {
       this.$CSure({
         'content': '重要信息请及时存储！！！',
-        'confirm': () => { }
-      })
-    },
-    /**
-     * 清空聊天记录
-     */
-    handleDelete () {
-      this.$CDelete({
-        'content': '<p>聊天记录将被清空</p><p>是否继续？</p>',
         'confirm': () => { }
       })
     },
