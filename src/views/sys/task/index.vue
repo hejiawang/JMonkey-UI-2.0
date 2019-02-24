@@ -101,6 +101,7 @@ export default {
         {
           title: '创建时间',
           key: 'createDate',
+          width: 200,
           tooltip: true,
           render: (h, params) => {
             let d = ''
