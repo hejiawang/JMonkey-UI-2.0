@@ -13,7 +13,7 @@
             <Input type="password" v-model.trim="userForm.password" :maxlength="20" :clearable="type != 'modify'" :disabled="type === 'modify'"/>
           </FormItem>
           <FormItem label="真实姓名" prop="realName">
-            <Input type="text" v-model.trim="userForm.realName" :maxlength="50" clearable />
+            <Input type="text" v-model.trim="userForm.realName" :maxlength="5" clearable />
           </FormItem>
           <FormItem label="手机号码" prop="phone">
             <Input type="text" v-model.trim="userForm.phone" :maxlength="11" clearable />

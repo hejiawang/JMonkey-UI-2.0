@@ -1,5 +1,7 @@
 <template>
-  <Page :total="pageQuery.total" :current="pageQuery.current" :page-size="pageQuery.size" @on-change="changeCurrent" @on-page-size-change="changePageSize" show-sizer show-elevator show-total></Page>
+  <Page :total="pageQuery.total" :current="pageQuery.current" :page-size="pageQuery.size"
+        @on-change="changeCurrent" @on-page-size-change="changePageSize" :page-size-opts="sizeOpts"
+        show-sizer show-elevator show-total />
 </template>
 <script>
 /**
@@ -14,10 +16,19 @@ export default {
     value: {
       type: Object,
       default: () => ({
-        current: 1, size: 10, total: 0
+        current: 1, size: 10, total: 1
       }),
       required: true
+    },
+    sizeOpts: {
+      type: Array,
+      default: () => ([10, 20, 30, 40]),
+      required: false
     }
+  },
+  mounted () {
+    // 有默认值时
+    this.pageQuery = this.value
   },
   watch: {
     value (val) {

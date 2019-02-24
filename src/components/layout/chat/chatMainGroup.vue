@@ -6,7 +6,7 @@
           <Avatar shape="square" icon="ios-people" size="default" />
         </div>
         <div class="chat-group-name">
-          <a href="#" @click="handleIM">第不知道几次会议交流群</a>
+          <a href="#" @click="handleIM">第不知道几次会议交流</a>
         </div>
         <div class="chat-group-option">
           <span>创建人: </span>
