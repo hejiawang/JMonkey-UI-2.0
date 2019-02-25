@@ -18,11 +18,11 @@
       <Row class="chat-main-content">
         <Tabs>
           <TabPane icon="md-person"> <CChatMainSingle /> </TabPane>
-          <TabPane icon="md-contacts">  <CChatMainGroup /> </TabPane>
+          <TabPane icon="md-contacts">  <CChatMainGroup ref="ChatMainGroup" /> </TabPane>
         </Tabs>
       </Row>
 
-      <CChatMainFooter />
+      <CChatMainFooter @refreshGroup="refreshGroupList"/>
     </div>
   </div>
 </template>
@@ -57,6 +57,9 @@ export default {
   methods: {
     closeChat () {
       this.isShow = false
+    },
+    refreshGroupList () {
+      this.$refs.ChatMainGroup.initGroupList()
     }
   }
 }

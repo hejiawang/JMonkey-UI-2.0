@@ -45,7 +45,7 @@ import { tree } from '@/api/sys/dept'
 import { list } from '@/api/sys/user'
 import CChatGroupImage from '@/components/layout/chat/chatGroupImage'
 import store from '@/store'
-import { save } from '@/api/message/chatGroup'
+import { save, modify, find } from '@/api/message/chatGroup'
 
 export default {
   name: 'CChatGroup',
@@ -54,7 +54,8 @@ export default {
   },
   props: {
     value: {type: Boolean, default: false, required: true},
-    disabled: {type: Boolean, default: false, required: false}
+    disabled: {type: Boolean, default: false, required: false},
+    cGroup: {type: Object, default: null, required: false}
   },
   watch: {
     value (val) { this.isShow = val },
@@ -187,10 +188,6 @@ export default {
     initDept () {
       tree().then(data => { this.deptTreeDate = data.result })
     },
-    initCreator () {
-      this.chatGroupForm.creator = store.getters.user.id
-      this.chatGroupForm.userList.push(store.getters.user.id)
-    },
     /**
      * select dept
      * @param depts dept list
@@ -220,16 +217,33 @@ export default {
       this.submitLoading = true
       this.$refs.chatGroupForm.validate((valid) => {
         if (valid) {
-          save(this.chatGroupForm).then(data => {
-            if (data.isSuccess) {
-              this.$Message.success('新建群组成功')
-              this.cancel()
-            }
-          })
+          if (this.$CV.isEmpty(this.cGroup)) this.saveHandle()
+          else this.modifyHandle()
         } else {
           this.submitLoading = false
         }
       })
+    },
+    /**
+     * modify group info
+     */
+    modifyHandle () {
+      modify(this.chatGroupForm).then(data => {
+        if (data.isSuccess) this.cancelHandle('修改群组成功')
+      })
+    },
+    /**
+     * save group info
+     */
+    saveHandle () {
+      save(this.chatGroupForm).then(data => {
+        if (data.isSuccess) this.cancelHandle('新建群组成功')
+      })
+    },
+    cancelHandle (ms) {
+      this.$Message.success(ms)
+      this.$emit('refresh', null)
+      this.cancel()
     },
     /**
      * close modal
@@ -251,8 +265,19 @@ export default {
      * @param isOpen 'true' is open
      */
     visibleChange (isOpen) {
-      if (isOpen) this.initCreator()
+      if (isOpen) this.initGroupInfo()
       else this.cancel()
+    },
+    /**
+     * init group info
+     */
+    initGroupInfo () {
+      if (this.$CV.isEmpty(this.cGroup)) {
+        this.chatGroupForm.creator = store.getters.user.id
+        this.chatGroupForm.userList.push(store.getters.user.id)
+      } else {
+        find(this.cGroup.id).then(data => { this.chatGroupForm = data.result })
+      }
     }
   }
 }

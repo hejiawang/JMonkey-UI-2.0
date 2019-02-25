@@ -5,7 +5,7 @@
       <Icon type="ios-information-circle-outline" size="20" @click="handleWarning"/>
     </Row>
 
-    <CChatGroup v-model="showGroup"/>
+    <CChatGroup v-model="showGroup" @refresh="refreshGroupList"/>
   </Row>
 </template>
 <script>
@@ -36,6 +36,9 @@ export default {
      */
     handleGroup () {
       this.showGroup = true
+    },
+    refreshGroupList () {
+      this.$emit('refreshGroup', null)
     }
   }
 }

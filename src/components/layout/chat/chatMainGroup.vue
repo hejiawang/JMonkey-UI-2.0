@@ -14,24 +14,29 @@
           <span> {{group.creatorName}} </span>
 
           <template v-if="group.creator === userId">
-            <Icon type="ios-trash-outline" size="17" @click="handleIMClear"/>
-            <Icon type="ios-build" size="17" @click="handleIMSetting"/>
+            <Icon type="ios-trash-outline" size="17" @click="handleDelete(group)"/>
+            <Icon type="ios-build" size="17" @click="handleIMSetting(group)"/>
           </template>
           <template v-else>
-            <Icon type="ios-trash-outline" size="17" @click="handleIMOut"/>
+            <Icon type="ios-trash-outline" size="17" @click="handleIMOut(group)"/>
           </template>
         </div>
       </div>
     </div>
+
+    <CChatGroup v-model="showGroup" :cGroup="cGroup" @refresh="initGroupList"/>
   </div>
 </template>
 <script>
-import { list } from '@/api/message/chatGroup'
+import { list, del } from '@/api/message/chatGroup'
+import { outGroup } from '@/api/message/chatGroupMember'
 import { mapGetters } from 'vuex'
 import store from '@/store'
+import CChatGroup from '@/components/layout/chat/chatGroup'
 
 export default {
   name: 'CChatMainGroup',
+  components: { CChatGroup },
   computed: {
     ...mapGetters(['website']),
     /**
@@ -43,6 +48,8 @@ export default {
   },
   data () {
     return {
+      showGroup: false,
+      cGroup: null,
       groupList: []
     }
   },
@@ -54,21 +61,43 @@ export default {
      * init deptUserList
      */
     initGroupList () {
-      list().then(data => {
-        this.groupList = data.result
-      })
+      list().then(data => { this.groupList = data.result })
     },
     handleIM () {
       console.info('handleIM')
     },
-    handleIMClear () {
-      console.info('handleIMClear')
+    /**
+     * 删除群组信息
+     * @param group 群组信息
+     */
+    handleDelete (group) {
+      this.$CDelete({
+        'content': '<p>该群组将被删除是否继续？</p>',
+        'confirm': () => {
+          del(group.id).then(() => {
+            this.$Message.success('删除成功')
+            this.initGroupList()
+          })
+        }
+      })
     },
-    handleIMSetting () {
-      console.info('handleIMSetting')
+    handleIMSetting (group) {
+      this.cGroup = group; this.showGroup = true
     },
-    handleIMOut () {
-      console.info('handleIMOut')
+    /**
+     * 退出群组
+     * @param group 群组信息
+     */
+    handleIMOut (group) {
+      this.$CSure({
+        'content': '退出该群组？',
+        'confirm': () => {
+          outGroup(group.id, this.userId).then((data) => {
+            this.$Message.success('退出成功')
+            this.initGroupList()
+          })
+        }
+      })
     }
   }
 }
