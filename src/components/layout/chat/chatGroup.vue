@@ -1,16 +1,9 @@
 <template>
-  <Modal v-model="isShow" title="新增群组" :loading="loading" @on-visible-change="visibleChange" width="1000">
+  <Modal v-model="isShow" title="新增群组" :loading="loading" width="1000"  @on-visible-change="visibleChange">
     <Form ref="chatGroupForm" :model="chatGroupForm" :rules="chatGroupRules" label-position="top">
       <Row  :gutter="20">
         <Col span="2">
-          <Upload
-            multiple
-            type="drag"
-            action="//jsonplaceholder.typicode.com/posts/">
-            <div style="padding: 20px 0">
-              <Icon type="logo-instagram" size="20" style="color: #3399ff"></Icon>
-            </div>
-          </Upload>
+          <CChatGroupImage v-model="chatGroupForm.img"/>
         </Col>
         <Col span="22">
           <FormItem label="群组名称" prop="name">
@@ -24,8 +17,10 @@
           <Tree :data="treeDate" ref="deptTree" @on-select-change="selectDept" style="height: 100%; overflow-y: auto"/>
         </Col>
         <Col span="19">
+          <CheckboxGroup v-model="chatGroupForm.userList">
             <Table :height="400" border :columns="userTableColumns" :data="userTableData"
                    :loading="listLoading" stripe @on-row-click="clickTable"/>
+          </CheckboxGroup>
         </Col>
       </Row>
     </Form>
@@ -37,7 +32,7 @@
           <Button type="text" @click="cancel">取消</Button>
         </Col>
         <Col span="2" style="margin-top: 5px;">
-          <Button type="primary" @click="ok">确定</Button>
+          <Button type="primary" @click="ok" :disabled="submitLoading">确定</Button>
         </Col>
       </Row>
     </div>
@@ -48,9 +43,15 @@ import { mapGetters } from 'vuex'
 import { converKey } from '@/utils/common'
 import { tree } from '@/api/sys/dept'
 import { list } from '@/api/sys/user'
+import CChatGroupImage from '@/components/layout/chat/chatGroupImage'
+import store from '@/store'
+import { save } from '@/api/message/chatGroup'
 
 export default {
   name: 'CChatGroup',
+  components: {
+    CChatGroupImage
+  },
   props: {
     value: {type: Boolean, default: false, required: true},
     disabled: {type: Boolean, default: false, required: false}
@@ -61,6 +62,7 @@ export default {
   },
   data () {
     return {
+      submitLoading: false,
       listLoading: false,
       userTableColumns: [],
       userTableData: [],
@@ -74,10 +76,14 @@ export default {
       loading: true,
       isShow: false,
       chatGroupForm: {
+        creator: null,
         name: null,
-        img: null
+        img: null,
+        userList: []
       },
-      chatGroupRules: {}
+      chatGroupRules: {
+        name: { required: true, message: '请输入群组名称', trigger: 'blur' }
+      }
     }
   },
   computed: {
@@ -103,9 +109,17 @@ export default {
     initTableColumns () {
       this.userTableColumns = [
         {
-          type: 'selection',
+          title: ' ',
+          key: 'id',
           width: 60,
-          align: 'center'
+          align: 'center',
+          render: (h, params) => {
+            let prop
+            if (params.row.id === store.getters.user.id) prop = { props: { label: params.row.id, disabled: true } }
+            else prop = { props: { label: params.row.id } }
+
+            return h('Checkbox', prop, '  ')
+          }
         },
         {
           title: '头像',
@@ -173,17 +187,73 @@ export default {
     initDept () {
       tree().then(data => { this.deptTreeDate = data.result })
     },
+    initCreator () {
+      this.chatGroupForm.creator = store.getters.user.id
+      this.chatGroupForm.userList.push(store.getters.user.id)
+    },
+    /**
+     * select dept
+     * @param depts dept list
+     * @param cDept current dept
+     */
     selectDept (depts, cDept) {
+      this.listQuery.deptId = depts.length > 0 ? cDept.id : null
+      this.$refs.userPage.rest()
 
+      this.initList()
     },
-    clickTable () {
+    /**
+     * click user table
+     * @param row
+     * @param index
+     */
+    clickTable (row, index) {
+      if (row.id === store.getters.user.id) return
 
+      if (this.chatGroupForm.userList.indexOf(row.id) < 0) this.chatGroupForm.userList.push(row.id)
+      else this.chatGroupForm.userList.splice(this.chatGroupForm.userList.indexOf(row.id), 1)
     },
-    ok () {},
+    /**
+     * 确认
+     */
+    ok () {
+      this.submitLoading = true
+      this.$refs.chatGroupForm.validate((valid) => {
+        if (valid) {
+          save(this.chatGroupForm).then(data => {
+            if (data.isSuccess) {
+              this.$Message.success('新建群组成功')
+              this.cancel()
+            }
+          })
+        } else {
+          this.submitLoading = false
+        }
+      })
+    },
+    /**
+     * close modal
+     */
     cancel () {
+      this.$refs.chatGroupForm.resetFields()
+      this.chatGroupForm = {
+        creator: null,
+        name: null,
+        img: null,
+        userList: []
+      }
+
+      this.submitLoading = false
       this.isShow = false
     },
-    visibleChange (isOpen) {}
+    /**
+     * modal visible change
+     * @param isOpen 'true' is open
+     */
+    visibleChange (isOpen) {
+      if (isOpen) this.initCreator()
+      else this.cancel()
+    }
   }
 }
 </script>
