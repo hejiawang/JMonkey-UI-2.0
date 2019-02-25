@@ -15,7 +15,8 @@
       </Form>
     </Row>
     <Row :style="heightStyle" :gutter="32">
-      <CChatGroupCard :groupTableData="groupTableData" />
+      <Spin size="large" fix v-if="loading"/>
+      <CChatGroupCard :groupTableData="groupTableData" v-else/>
     </Row>
     <Row>
       <CPage v-model="listQuery" @on-list="initGroupList" ref="groupPage" :sizeOpts="sizeOpts"/>
@@ -43,6 +44,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       listQuery: {
         name: null,
         current: 1,
@@ -58,9 +60,12 @@ export default {
   },
   methods: {
     initGroupList () {
+      this.loading = true
       pageList(this.listQuery).then(data => {
         this.groupTableData = data.rows
         this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
+
+        this.loading = false
       })
     },
     /**

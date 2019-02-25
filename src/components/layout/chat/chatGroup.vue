@@ -7,7 +7,7 @@
         </Col>
         <Col span="22">
           <FormItem label="群组名称" prop="name">
-            <Input type="text" v-model.trim="chatGroupForm.name" :maxlength="12" :clearable="!disabled" :disabled="disabled"/>
+            <Input type="text" v-model.trim="chatGroupForm.name" :maxlength="10" :clearable="!disabled" :disabled="disabled"/>
           </FormItem>
         </Col>
       </Row>

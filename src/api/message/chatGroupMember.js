@@ -15,3 +15,14 @@ export const outGroup = (groupId, userId) => {
     }
   })
 }
+
+/**
+ * 群组成员信息
+ * @param groupId
+ */
+export const deptUserList = (groupId) => {
+  return request({
+    url: '/ms/chat/group/member/deptUserList/' + groupId,
+    method: 'get'
+  })
+}

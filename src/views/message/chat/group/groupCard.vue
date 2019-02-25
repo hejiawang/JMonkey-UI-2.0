@@ -32,11 +32,14 @@
           </Row>
 
           <Row class="group-user-more">
-            <Icon type="ios-more" size="30" color="#ff9900" v-if="group.memberList.length > 4"/>
+            <Icon type="ios-more" size="30" color="#ff9900"
+                  v-if="group.memberList.length > 4" @click="showMemberList(group.id)"/>
           </Row>
         </div>
       </Card>
     </Col>
+
+    <CChatMemberList v-model="isShow" :groupId="cGroupId"/>
   </div>
 
   <div v-else style="text-align: center; line-height: 200px;font-size: 20px; color: #c5c8ce;">
@@ -46,9 +49,11 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import CChatMemberList from '@/components/layout/chat/chatMemberList'
 
 export default {
   name: 'ChatGroupCard',
+  components: { CChatMemberList },
   props: {
     groupTableData: {
       type: Array,
@@ -63,6 +68,17 @@ export default {
   },
   computed: {
     ...mapGetters(['website'])
+  },
+  data () {
+    return {
+      isShow: false,
+      cGroupId: ''
+    }
+  },
+  methods: {
+    showMemberList (id) {
+      this.cGroupId = id; this.isShow = true
+    }
   }
 }
 </script>
