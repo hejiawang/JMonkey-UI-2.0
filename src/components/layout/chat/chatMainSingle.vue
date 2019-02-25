@@ -43,7 +43,6 @@ export default {
     initDeptUserList () {
       deptUserList().then(data => {
         this.deptUserList = data.result
-        console.info(this.deptUserList)
       })
     }
   }

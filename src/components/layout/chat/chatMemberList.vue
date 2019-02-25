@@ -1,8 +1,11 @@
 <template>
   <Drawer title="群组成员信息" width="400" v-model="isShow" @on-visible-change="showDrawer">
     <template v-for="(memberDept, index) in memberList">
-      <Row :key="index" style="margin-top: 20px;"> <Divider>{{memberDept.name}} ( {{memberDept.userList.length}} )</Divider> </Row>
-      <Row :key="index">
+      <Row :key="index" style="margin-top: 20px;">
+        <Divider>{{memberDept.name}} ( <span style="color: #5cadff;">{{memberDept.userList.length}}</span> )</Divider>
+      </Row>
+
+      <Row :key="memberDept.id">
         <Col span="6" v-for="member in memberDept.userList" :key="member.id" style="text-align: center">
           <Row>
             <Avatar v-if="member.photo" shape="square" size="default" :src="website.filePath + member.photo" />

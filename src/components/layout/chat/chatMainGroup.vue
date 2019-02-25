@@ -1,43 +1,63 @@
 <template>
   <div>
     <div class="chat-mian-content-group">
-      <div class="chat-group-info" >
+      <div class="chat-group-info" v-for="(group, index) in groupList" :key="index">
         <div class="chat-group-img">
-          <Avatar shape="square" icon="ios-people" size="default" />
+          <Avatar v-if="group.img" shape="square" size="default" :src="website.filePath + group.img" />
+          <Avatar v-else shape="square" icon="ios-people" size="default" />
         </div>
         <div class="chat-group-name">
-          <a href="#" @click="handleIM">第不知道几次会议交流</a>
+          <a href="#" @click="handleIM">{{group.name}}</a>
         </div>
         <div class="chat-group-option">
           <span>创建人: </span>
-          <span> 超级管理员 </span>
+          <span> {{group.creatorName}} </span>
 
-          <Icon type="ios-trash-outline" size="17" @click="handleIMClear"/>
-          <Icon type="ios-build" size="17" @click="handleIMSetting"/>
-        </div>
-      </div>
-
-      <div class="chat-group-info">
-        <div class="chat-group-img">
-          <Avatar shape="square" icon="ios-people" size="default" />
-        </div>
-        <div class="chat-group-name">
-          <a href="#" @click="handleIM">没事聊一聊</a>
-        </div>
-        <div class="chat-group-option">
-          <span>创建人: </span>
-          <span> 里斯 </span>
-
-          <Icon type="ios-trash-outline" size="17"/>
+          <template v-if="group.creator === userId">
+            <Icon type="ios-trash-outline" size="17" @click="handleIMClear"/>
+            <Icon type="ios-build" size="17" @click="handleIMSetting"/>
+          </template>
+          <template v-else>
+            <Icon type="ios-trash-outline" size="17" @click="handleIMOut"/>
+          </template>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { list } from '@/api/message/chatGroup'
+import { mapGetters } from 'vuex'
+import store from '@/store'
+
 export default {
   name: 'CChatMainGroup',
+  computed: {
+    ...mapGetters(['website']),
+    /**
+     * current user id
+     */
+    userId () {
+      return store.getters.user.id
+    }
+  },
+  data () {
+    return {
+      groupList: []
+    }
+  },
+  created () {
+    this.initGroupList()
+  },
   methods: {
+    /**
+     * init deptUserList
+     */
+    initGroupList () {
+      list().then(data => {
+        this.groupList = data.result
+      })
+    },
     handleIM () {
       console.info('handleIM')
     },
@@ -46,6 +66,9 @@ export default {
     },
     handleIMSetting () {
       console.info('handleIMSetting')
+    },
+    handleIMOut () {
+      console.info('handleIMOut')
     }
   }
 }
