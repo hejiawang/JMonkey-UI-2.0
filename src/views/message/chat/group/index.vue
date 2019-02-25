@@ -1,350 +1,37 @@
 <template>
   <Layout v-layoutIn class="app-ms-chat-group">
     <Row style="height: 60px;">
-      <Button type="primary" @click="raiseHandle">新增</Button>
+      <Form ref="searchForm" :model="listQuery" :label-width="80" inline>
+        <FormItem label="群组名称">
+          <Input type="text" v-model="listQuery.name" style="width: 320px;"/>
+        </FormItem>
+
+        <FormItem :label-width="0">
+          <ButtonGroup>
+            <Button icon="ios-search" @click="search" />
+            <Button icon="ios-trash-outline" @click="restSearch" />
+          </ButtonGroup>
+        </FormItem>
+      </Form>
     </Row>
     <Row :style="heightStyle" :gutter="32">
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col span="6" class="group-content-col">
-        <Card>
-          <div class="group-content">
-            <Row class="group-info">
-              <Col span="6">
-                <Avatar shape="square" icon="ios-people" size="default"/>
-              </Col>
-              <Col span="18">
-                <Row class="group-name">
-                  <span class="name">第不知道几次会议交流</span>
-                </Row>
-                <Row class="group-other">
-                  <Col span="12"><span>超级管理员</span></Col>
-                  <Col span="12"><span>2019-01-01</span></Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              <Divider>群组成员</Divider>
-            </Row>
-
-            <Row>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">超级管理元</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">藏三大</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-              <Col span="6" class="group-user">
-                <Row> <Avatar shape="square" icon="ios-people" size="default"/> </Row>
-                <Row> <span class="group-user-name">私立</span> </Row>
-              </Col>
-            </Row>
-
-            <Row class="group-user-more">
-              <Icon type="ios-more" size="30" color="#ff9900"/>
-            </Row>
-          </div>
-        </Card>
-      </Col>
+      <CChatGroupCard :groupTableData="groupTableData" />
     </Row>
     <Row>
-      <CPage v-model="listQuery" @on-list="initGroupList" ref="messagePage" :sizeOpts="sizeOpts"/>
+      <CPage v-model="listQuery" @on-list="initGroupList" ref="groupPage" :sizeOpts="sizeOpts"/>
     </Row>
   </Layout>
 </template>
 <script>
 import store from '@/store'
+import { pageList } from '@/api/message/chatGroup'
+import CChatGroupCard from '@/views/message/chat/group/groupCard'
 
 export default {
   name: 'MessageChatGroup',
+  components: {
+    CChatGroupCard
+  },
   computed: {
     /**
      * 卡片区域高度
@@ -357,6 +44,7 @@ export default {
   data () {
     return {
       listQuery: {
+        name: null,
         current: 1,
         size: 8,
         total: 10
@@ -370,60 +58,27 @@ export default {
   },
   methods: {
     initGroupList () {
-
+      pageList(this.listQuery).then(data => {
+        this.groupTableData = data.rows
+        this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
+      })
     },
-    raiseHandle () {
-
+    /**
+     * search
+     */
+    search () {
+      this.$refs.groupPage.rest()
+      this.initGroupList()
+    },
+    /**
+     * rest seach
+     */
+    restSearch () {
+      ['name'].forEach(param => (
+        this.listQuery[param] = null
+      ))
+      this.search()
     }
   }
 }
 </script>
-<style lang="scss">
-  .app-ms-chat-group {
-    .group-content-col{
-      margin-bottom: 20px;
-
-      .group-content {
-        .group-info{
-          .ivu-avatar {
-            width: 60px;
-            height: 60px;
-            font-size: 40px;
-            line-height: 60px;
-            background: #5cadff;
-          }
-          .group-name {
-            height: 30px;
-            line-height: 30px;
-            color: #17233d;
-            font-size: 20px;
-          }
-          .group-other {
-            height: 30px;
-            line-height: 30px;
-            color: #c5c8ce;
-            font-size: 14px;
-          }
-        }
-        .group-user{
-          text-align: center;
-          .group-user-name {
-            font-size: 12px;
-            color: #c5c8ce;
-          }
-        }
-        .group-user-more {
-          margin-top: 5px;
-          text-align: center;
-          .ivu-row{
-            height: 57px;
-            line-height: 57px;
-          }
-          .ivu-icon {
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
-</style>

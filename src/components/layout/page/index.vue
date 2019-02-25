@@ -56,7 +56,7 @@ export default {
     },
     rest () {
       this.pageQuery.current = 1
-      this.pageQuery.size = 10
+      // this.pageQuery.size = 10
     }
   }
 }
