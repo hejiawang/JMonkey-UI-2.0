@@ -43,7 +43,7 @@ import { mapGetters } from 'vuex'
 import { converKey } from '@/utils/common'
 import { tree } from '@/api/sys/dept'
 import { list } from '@/api/sys/user'
-import CChatGroupImage from '@/components/layout/chat/chatGroupImage'
+import CChatGroupImage from '@/components/layout/chat/group/chatGroupImage'
 import store from '@/store'
 import { save, modify, find } from '@/api/message/chatGroup'
 

@@ -27,9 +27,9 @@
   </div>
 </template>
 <script>
-import CChatMainFooter from '@/components/layout/chat/chatMainFooter'
-import CChatMainSingle from '@/components/layout/chat/chatMainSingle'
-import CChatMainGroup from '@/components/layout/chat/chatMainGroup'
+import CChatMainFooter from '@/components/layout/chat/main/chatMainFooter'
+import CChatMainSingle from '@/components/layout/chat/main/chatMainSingle'
+import CChatMainGroup from '@/components/layout/chat/main/chatMainGroup'
 import store from '@/store'
 
 export default {

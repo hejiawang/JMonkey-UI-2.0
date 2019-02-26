@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import CChatMain from '@/components/layout/chat/chatMain'
+import CChatMain from '@/components/layout/chat/main/chatMain'
 
 export default {
   name: 'CChat',

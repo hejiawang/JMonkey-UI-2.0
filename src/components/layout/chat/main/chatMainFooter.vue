@@ -9,7 +9,7 @@
   </Row>
 </template>
 <script>
-import CChatGroup from '@/components/layout/chat/chatGroup'
+import CChatGroup from '@/components/layout/chat/group/chatGroup'
 
 export default {
   name: 'CChatMainFooter',

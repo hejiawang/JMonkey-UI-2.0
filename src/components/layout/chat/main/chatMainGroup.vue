@@ -32,7 +32,7 @@ import { list, del } from '@/api/message/chatGroup'
 import { outGroup } from '@/api/message/chatGroupMember'
 import { mapGetters } from 'vuex'
 import store from '@/store'
-import CChatGroup from '@/components/layout/chat/chatGroup'
+import CChatGroup from '@/components/layout/chat/group/chatGroup'
 
 export default {
   name: 'CChatMainGroup',

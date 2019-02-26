@@ -49,7 +49,7 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import CChatMemberList from '@/components/layout/chat/chatMemberList'
+import CChatMemberList from '@/components/layout/chat/member/chatMemberList'
 
 export default {
   name: 'ChatGroupCard',
