@@ -1,64 +1,75 @@
 <template>
-  <Modal v-model="isShow" width="900" :mask-closable="false" :draggable="true"
-         :footer-hide="true" @on-cancel="cancel" class="app-chat-im-index" @on-visible-change="visibleChange">
-    <div slot="header" class="header">
-      <Avatar shape="square" icon="ios-person" size="default" />
-      <span class="member">张三李四张三李四一个</span>
-      <Icon type="ios-people" size="25" color="#19be6b"/>
-    </div>
-    <Row class="main">
-      <Col span="5" class="main-left">
-        <div class="member-info" >
-          <div @click="selectMember" class="member-select">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="member-name" style="">张三李四张是<Icon type="ios-more" /></span>
+  <div>
+    <Modal v-model="isShow" width="900" :mask-closable="false" :draggable="true"
+           :footer-hide="true" @on-cancel="cancel" class="app-chat-im-index" @on-visible-change="visibleChange">
+      <div slot="header" class="header">
+        <Avatar shape="square" icon="ios-person" size="default" />
+        <span class="member">张三李四张三李四一个</span>
+        <Icon type="ios-people" size="25" color="#19be6b"/>
+      </div>
+      <Row class="main">
+        <Col span="5" class="main-left">
+          <div class="member-info" >
+            <div @click="selectMember" class="member-select">
+              <Avatar shape="square" icon="ios-person" size="default" />
+              <span class="member-name" style="">张三李四张是<Icon type="ios-more" /></span>
+            </div>
+            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
           </div>
-          <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
-        </div>
 
-        <div class="member-info" style="background: #F3F3F3;">
-          <div @click="selectMember" class="member-select">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="member-name" style="">张三</span>
+          <div class="member-info" style="background: #F3F3F3;">
+            <div @click="selectMember" class="member-select">
+              <Avatar shape="square" icon="ios-person" size="default" />
+              <span class="member-name" style="">张三</span>
+            </div>
+            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
           </div>
-          <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
-        </div>
-        <div class="member-info" >
-          <div @click="selectMember" class="member-select">
-            <Avatar shape="square" icon="ios-person" size="default" />
-            <span class="member-name" style="">李四</span>
+          <div class="member-info" >
+            <div @click="selectMember" class="member-select">
+              <Avatar shape="square" icon="ios-person" size="default" />
+              <span class="member-name" style="">李四</span>
+            </div>
+            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
           </div>
-          <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
-        </div>
-      </Col>
+        </Col>
 
-      <Col span="19" class="main-right">
-        <Row class="chat-im-record"></Row>
-        <Row class="chat-im-tools">
-          <Col span="20">
-            <Icon type="ios-image-outline"  size="25"/>
-            <Icon type="ios-folder-outline" size="25"/>
-          </Col>
-          <Col span="4">
-            <Icon type="md-attach" size="25" />
-            <span style="font-size: 14px;">历史纪录</span>
-          </Col>
-        </Row>
-        <Row class="chat-im-textarea">
-          <Input v-model="content" type="textarea" :rows="3" ref="chatImContent"
-                 :autofocus="true" placeholder="请输入发送内容 ..." />
-        </Row>
-        <Row class="chat-im-bootom">
-          <Button type="success">发 送</Button>
-          <Button type="text">关 闭</Button>
-        </Row>
-      </Col>
-    </Row>
-  </Modal>
+        <Col span="19" class="main-right">
+          <Row class="chat-im-record"></Row>
+          <Row class="chat-im-tools">
+            <Col span="20">
+              <Icon type="ios-image-outline"  size="25"/>
+              <Icon type="ios-folder-outline" size="25"/>
+            </Col>
+            <Col span="4">
+              <div class="chat-im-history" @click="showHistoryHandle">
+                <Icon type="md-attach" size="25" />
+                <span style="font-size: 14px;">历史纪录</span>
+              </div>
+            </Col>
+          </Row>
+          <Row class="chat-im-textarea">
+            <Input v-model="content" type="textarea" :rows="3" ref="chatImContent"
+                   :autofocus="true" placeholder="请输入发送内容 ..." />
+          </Row>
+          <Row class="chat-im-bootom">
+            <Button type="success" icon="md-paper-plane">发 送</Button>
+            <Button type="text">关 闭</Button>
+          </Row>
+        </Col>
+      </Row>
+    </Modal>
+
+    <CChatHistory v-model="showHistory" />
+  </div>
 </template>
 <script>
+import CChatHistory from '@/components/layout/chat/im/history'
+
 export default {
   name: 'CChatIm',
+  components: {
+    CChatHistory
+  },
   props: {
     value: {type: Boolean, default: false, required: true}
   },
@@ -68,6 +79,7 @@ export default {
   },
   data () {
     return {
+      showHistory: false,
       isShow: false,
       content: null
     }
@@ -84,6 +96,9 @@ export default {
     },
     closeMember () {
       console.info('closeMember')
+    },
+    showHistoryHandle () {
+      this.showHistory = true
     }
   }
 }
@@ -163,6 +178,15 @@ export default {
           line-height: 40px;
           .ivu-icon{
             margin-left: 20px;
+          }
+          .chat-im-history{
+            cursor:pointer;
+          }
+          .chat-im-history:hover span{
+            color: #2b85e4;
+          }
+          .chat-im-history:hover i{
+            color: #2b85e4;
           }
         }
         .chat-im-textarea{

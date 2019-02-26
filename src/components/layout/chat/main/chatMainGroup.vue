@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Spin size="large" fix v-if="loading"/>
     <div class="chat-mian-content-group">
       <div class="chat-group-info" v-for="(group, index) in groupList" :key="index">
         <div class="chat-group-left" @click="handleIM">
@@ -56,6 +57,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       showIm: false,
       showGroup: false,
       cGroup: null,
@@ -70,7 +72,11 @@ export default {
      * init deptUserList
      */
     initGroupList () {
-      list().then(data => { this.groupList = data.result })
+      this.loading = true
+      list().then(data => {
+        this.groupList = data.result
+        this.loading = false
+      })
     },
     handleIM () {
       this.showIm = true
