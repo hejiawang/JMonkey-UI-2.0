@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Spin size="large" fix v-if="loading"/>
     <Collapse simple class="chat-mian-content-single">
       <Panel v-for="(deptUser, index) in deptUserList" :key="index" :name="deptUser.name">
         {{deptUser.name}} <span>( {{deptUser.userList.length}} )</span>
@@ -27,6 +28,7 @@ export default {
   name: 'CChatMainSingle',
   data () {
     return {
+      loading: false,
       deptUserList: []
     }
   },
@@ -41,8 +43,10 @@ export default {
      * init deptUserList
      */
     initDeptUserList () {
+      this.loading = true
       deptUserList().then(data => {
         this.deptUserList = data.result
+        this.loading = false
       })
     }
   }

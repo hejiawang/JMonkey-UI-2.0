@@ -25,6 +25,8 @@
     </div>
 
     <CChatGroup v-model="showGroup" :cGroup="cGroup" @refresh="initGroupList"/>
+
+    <CChatIm  v-model="showIm"/>
   </div>
 </template>
 <script>
@@ -33,10 +35,11 @@ import { outGroup } from '@/api/message/chatGroupMember'
 import { mapGetters } from 'vuex'
 import store from '@/store'
 import CChatGroup from '@/components/layout/chat/group/chatGroup'
+import CChatIm from '@/components/layout/chat/im'
 
 export default {
   name: 'CChatMainGroup',
-  components: { CChatGroup },
+  components: { CChatGroup, CChatIm },
   computed: {
     ...mapGetters(['website']),
     /**
@@ -48,6 +51,7 @@ export default {
   },
   data () {
     return {
+      showIm: false,
       showGroup: false,
       cGroup: null,
       groupList: []
@@ -64,7 +68,7 @@ export default {
       list().then(data => { this.groupList = data.result })
     },
     handleIM () {
-      console.info('handleIM')
+      this.showIm = true
     },
     /**
      * 删除群组信息
