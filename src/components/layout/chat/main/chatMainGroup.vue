@@ -2,23 +2,28 @@
   <div>
     <div class="chat-mian-content-group">
       <div class="chat-group-info" v-for="(group, index) in groupList" :key="index">
-        <div class="chat-group-img">
-          <Avatar v-if="group.img" shape="square" size="default" :src="website.filePath + group.img" />
-          <Avatar v-else shape="square" icon="ios-people" size="default" />
+        <div class="chat-group-left" @click="handleIM">
+          <div class="chat-group-img">
+            <Avatar v-if="group.img" shape="square" size="default" :src="website.filePath + group.img" />
+            <Avatar v-else shape="square" icon="ios-people" size="default" />
+          </div>
+          <div class="chat-group-name"> {{group.name}} </div>
+          <div class="chat-group-creator"> <span>创建人: {{group.creatorName}}</span> </div>
         </div>
-        <div class="chat-group-name">
-          <a href="#" @click="handleIM">{{group.name}}</a>
-        </div>
-        <div class="chat-group-option">
-          <span>创建人: </span>
-          <span> {{group.creatorName}} </span>
 
+        <div class="chat-group-right">
           <template v-if="group.creator === userId">
-            <Icon type="ios-trash-outline" size="17" @click="handleDelete(group)"/>
-            <Icon type="ios-build" size="17" @click="handleIMSetting(group)"/>
+            <Row style="line-height: 30px;">
+              <Icon type="ios-trash-outline" size="17" @click="handleDelete(group)"/>
+            </Row>
+            <Row style="line-height: 30px;">
+              <Icon type="ios-build" size="17" @click="handleIMSetting(group)"/>
+            </Row>
           </template>
           <template v-else>
-            <Icon type="ios-trash-outline" size="17" @click="handleIMOut(group)"/>
+            <Row style="line-height: 50px;">
+              <Icon type="ios-trash-outline" size="17" @click="handleIMOut(group)"/>
+            </Row>
           </template>
         </div>
       </div>
@@ -109,49 +114,56 @@ export default {
 <style lang="scss">
   .chat-mian-content-group {
     .chat-group-info {
+      cursor:pointer;
       height: 60px;
       margin-bottom: 10px;
-      .chat-group-img {
+      .chat-group-left{
+        height: 60px;
         float: left;
-        line-height: 60px;
-        .ivu-avatar {
-          width: 40px;
-          height: 40px;
-          font-size: 30px;
-          line-height: 40px;
-          background: #5cadff;
+        width: 230px;
+        .chat-group-img {
+          float: left;
+          line-height: 60px;
+          .ivu-avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 30px;
+            line-height: 40px;
+            background: #5cadff;
+          }
         }
-      }
 
-      .chat-group-name{
-        margin-left: 10px;
-        height: 30px;
-        float: left;
-        width: 200px;
-        font-size: 17px;
-        line-height: 40px;
-        a{
-          color: #17233d;
-        }
-        a:hover {
-          color: #5cadff;
-        }
-      }
-
-      .chat-group-option{
-        margin-left: 10px;
-        color: #808695;
-        float: left;
-        width: 200px;
-        height: 30px;
-        font-size: 14px;
-        line-height: 30px;
-        .ivu-icon {
-          float: right;
-          line-height: 30px;
+        .chat-group-name{
           margin-left: 10px;
-          cursor:pointer;
+          height: 30px;
+          float: left;
+          width: 180px;
+          font-size: 17px;
+          line-height: 40px;
+          a{
+            color: #17233d;
+          }
+          a:hover {
+            color: #5cadff;
+          }
         }
+
+        .chat-group-creator{
+          margin-left: 10px;
+          color: #808695;
+          float: left;
+          width: 180px;
+          height: 30px;
+          font-size: 14px;
+          line-height: 30px;
+        }
+      }
+
+      .chat-group-right{
+        height: 60px;
+        float: right;
+        margin-right: 10px;
+        display: none;
         .ivu-icon:hover {
           color: #ff9900;
         }
@@ -159,6 +171,10 @@ export default {
     }
     .chat-group-info:hover {
       background: #e8eaec;
+    }
+    .chat-group-info:hover .chat-group-right{
+      background: #e8eaec;
+      display: block;
     }
   }
 </style>
