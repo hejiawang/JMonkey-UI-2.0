@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="chat-im-record-text">
-                  1
+                  <img src="http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg" preview="0" preview-text="1efsfe">
                 </div>
               </div>
             </Row>
@@ -78,6 +78,40 @@
 
                 <div class="chat-im-record-text">
                   这是
+                </div>
+              </div>
+            </Row>
+            <Row class="chat-im-record-right">
+              <div class="chat-im-record-image">
+                <Avatar shape="square" icon="ios-person" size="default" />
+              </div>
+              <div class="chat-im-record-content">
+                <div class="chat-im-record-user">
+                  <span class="chat-im-record-user-name">李四</span>
+                  <span>2019-02-27 12:21:00</span>
+                </div>
+
+                <div class="chat-im-record-text">
+                  <Tooltip content="重要文件请及时单击下载保存" placement="top">
+                    <a ><Icon type="ios-folder-outline" size="25"/><span>要下载的文.txt</span></a>
+                  </Tooltip>
+                </div>
+              </div>
+            </Row>
+            <Row class="chat-im-record-left">
+              <div class="chat-im-record-image">
+                <Avatar shape="square" icon="ios-person" size="default" />
+              </div>
+              <div class="chat-im-record-content">
+                <div class="chat-im-record-user">
+                  <span class="chat-im-record-user-name">李四</span>
+                  <span>2019-02-27 12:21:00</span>
+                </div>
+
+                <div class="chat-im-record-text">
+                  <Tooltip content="重要文件请及时单击下载保存" placement="top">
+                    <a ><Icon type="ios-folder-outline" size="25"/><span>要下载的文.txt</span></a>
+                  </Tooltip>
                 </div>
               </div>
             </Row>
@@ -255,6 +289,16 @@ export default {
                 border-radius: 3px;
                 margin-top: 5px;
                 max-width: 500px;
+                img {
+                  max-height: 200px;
+                  max-width: 200px;
+                }
+                a {
+                  color: white;
+                  span{
+                    margin-left: 10px;
+                  }
+                }
               }
               .chat-im-record-text:after {
                 content: '';
@@ -294,6 +338,16 @@ export default {
                 border-radius: 3px;
                 margin-top: 5px;
                 max-width: 500px;
+                img {
+                  max-height: 200px;
+                  max-width: 200px;
+                }
+                a {
+                  color: #515a6e;
+                  span{
+                    margin-left: 10px;
+                  }
+                }
               }
               .chat-im-record-text:after {
                 content: '';
