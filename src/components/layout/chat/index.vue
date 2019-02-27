@@ -7,23 +7,26 @@
 
     <CChatMain v-model="isShow"/>
 
-    <div v-if="showWaring" class="app-layout-chat-waring animated wobble">
-      <Icon type="ios-chatbubbles-outline" size="30" color="#f8f8f9"/>
+    <div v-if="showWaring" class="app-layout-chat-waring animated wobble" @click="imHandle">
+      <Icon type="md-notifications-outline" size="30" color="#f8f8f9"/>
       <span class="chat-waring-text">您有新的消息</span>
     </div>
 
+    <CChatIm v-model="showIm"/>
   </div>
 </template>
 <script>
 import CChatMain from '@/components/layout/chat/main/chatMain'
+import CChatIm from '@/components/layout/chat/im'
 
 export default {
   name: 'CChat',
   components: {
-    CChatMain
+    CChatMain, CChatIm
   },
   data () {
     return {
+      showIm: false,
       showWaring: false,
       isShow: false
     }
@@ -32,6 +35,9 @@ export default {
     showChat () {
       this.isShow = true
       this.showWaring = true
+    },
+    imHandle () {
+      this.showIm = true
     }
   }
 }

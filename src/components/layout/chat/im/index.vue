@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="chat-im-record-text">
-                  这是一些聊天,这是一些聊天,这是一些聊天
+                  1
                 </div>
               </div>
             </Row>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="chat-im-record-text">
-                  这是一些聊天内同，不算太多，就是做个
+                  这是
                 </div>
               </div>
             </Row>
@@ -247,6 +247,7 @@ export default {
                 }
               }
               .chat-im-record-text{
+                float: right;
                 color: white;
                 font-size: 14px;
                 background: #19be6b;
@@ -286,6 +287,7 @@ export default {
                 }
               }
               .chat-im-record-text{
+                float: left;
                 font-size: 14px;
                 background: #e8eaec;
                 padding: 10px;
