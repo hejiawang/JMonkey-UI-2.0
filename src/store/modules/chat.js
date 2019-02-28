@@ -7,7 +7,41 @@ const chat = {
     memberC: getStore({ name: 'memberC' }) || {}
   },
   actions: {
+    /**
+     * 关闭即时通讯的聊天modal
+     * @param commit
+     * @param state
+     * @returns {Promise<any>}
+     */
+    closeChatIm ({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        commit('SET_SHOWIM', false)
+        commit('CLEAR_MEMBERLIST')
 
+        resolve()
+      })
+    },
+    /**
+     * 关闭与登陆人聊天的人或群组
+     * @param commit
+     * @param state
+     * @param member
+     * @returns {Promise<any>}
+     */
+    closeChatImMember ({ commit, state }, member) {
+      return new Promise((resolve, reject) => {
+        if (state.memberList.length === 1) {
+          commit('SET_SHOWIM', false)
+          commit('CLEAR_MEMBERLIST')
+        } else {
+          commit('DELETE_MEMBER', member.id)
+
+          if (member.id === state.memberC.id) commit('SET_MEMBERC', state.memberList[0])
+        }
+
+        resolve()
+      })
+    }
   },
   mutations: {
     /**
