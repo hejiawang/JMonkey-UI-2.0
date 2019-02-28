@@ -1,5 +1,5 @@
 <template>
-  <Drawer title="群组成员信息" width="400" v-model="isShow" @on-visible-change="showDrawer">
+  <Drawer :title="'群组成员信息 (' + groupName + ')'" width="400" v-model="isShow" @on-visible-change="showDrawer">
     <template v-for="(memberDept, index) in memberList">
       <Row :key="index" style="margin-top: 20px;">
         <Divider>{{memberDept.name}} ( <span style="color: #5cadff;">{{memberDept.userList.length}}</span> )</Divider>
@@ -25,11 +25,15 @@ export default {
   name: 'CChatMemberList',
   watch: {
     value (val) { this.isShow = val },
-    isShow (val) { this.$emit('input', val) }
+    isShow (val) { this.$emit('input', val) },
+    groupId (val) {
+      deptUserList(val).then(data => { this.memberList = data.result })
+    }
   },
   props: {
     value: {type: Boolean, default: false, required: true},
-    groupId: {type: String, default: '', required: true}
+    groupId: {type: String, default: '', required: true},
+    groupName: {type: String, default: '群组成员信息', required: true}
   },
   computed: {
     ...mapGetters(['website'])

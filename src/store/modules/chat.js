@@ -44,6 +44,26 @@ const chat = {
       }
     },
     /**
+     * 从memberList中删除一个聊天用户或群组
+     * @param state
+     * @param h
+     * @constructor
+     */
+    DELETE_MEMBER: (state, h) => {
+      let mIndex = -1
+      state.memberList.forEach((member, index) => {
+        if (member.id === h) mIndex = index
+      })
+
+      if (mIndex > -1) state.memberList.splice(mIndex, 1)
+
+      setStore({
+        name: 'memberList',
+        content: state.memberList,
+        type: 'session'
+      })
+    },
+    /**
      * 清除与当前用户聊天的所有人或群组
      * @param state
      * @constructor

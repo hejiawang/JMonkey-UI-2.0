@@ -33,13 +33,13 @@
 
           <Row class="group-user-more">
             <Icon type="ios-more" size="30" color="#ff9900"
-                  v-if="group.memberList.length > 4" @click="showMemberList(group.id)"/>
+                  v-if="group.memberList.length > 4" @click="showMemberList(group)"/>
           </Row>
         </div>
       </Card>
     </Col>
 
-    <CChatMemberList v-model="isShow" :groupId="cGroupId"/>
+    <CChatMemberList v-model="isShow" :groupId="cGroupId" :groupName="cGroupName"/>
   </div>
 
   <div v-else style="text-align: center; line-height: 200px;font-size: 20px; color: #c5c8ce;">
@@ -72,12 +72,13 @@ export default {
   data () {
     return {
       isShow: false,
-      cGroupId: ''
+      cGroupId: '',
+      cGroupName: ''
     }
   },
   methods: {
-    showMemberList (id) {
-      this.cGroupId = id; this.isShow = true
+    showMemberList (group) {
+      this.cGroupId = group.id; this.cGroupName = group.name; this.isShow = true
     }
   }
 }

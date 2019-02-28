@@ -2,38 +2,28 @@
   <div>
     <Modal v-model="isShow" width="900" :mask-closable="false" :draggable="true"
            :footer-hide="true" @on-cancel="cancel" class="app-chat-im-index" @on-visible-change="visibleChange">
-      <div slot="header" class="header">
-        <Avatar shape="square" icon="ios-person" size="default" />
-        <span class="member">{{memberC.name}}</span>
-        <Icon type="ios-people" size="25" color="#19be6b" v-if="memberC.type === 'Group'"/>
-      </div>
-      <Row class="main">
-        <Col span="5" class="main-left">
-          <div class="member-info" >
-            <div @click="selectMember" class="member-select">
-              <Avatar shape="square" icon="ios-person" size="default" />
-              <span class="member-name" style="">张三李四张是<Icon type="ios-more" /></span>
-            </div>
-            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
-          </div>
+      <div slot="header" > <CChatImHeader /> </div>
 
-          <div class="member-info" style="background: #F3F3F3;">
-            <div @click="selectMember" class="member-select">
-              <Avatar shape="square" icon="ios-person" size="default" />
-              <span class="member-name" style="">张三</span>
+      <Row class="main">
+        <Col :span="mainSpan" class="main-left" v-if="mainSpan !== 0">
+          <div class="member-info" v-for="(member, index) in memberList" :key="index" :style="memberInfoB(member)">
+            <div @click="selectMember(member)" class="member-select">
+              <template v-if="member.type === 'Group'">
+                <Avatar v-if="member.img" shape="square" size="default" :src="website.filePath + member.img" />
+                <Avatar v-else shape="square" icon="ios-person" size="default" style="background-color: #5cadff"/>
+              </template>
+              <template v-else>
+                <Avatar v-if="member.img" shape="square" size="default" :src="website.filePath + member.img" />
+                <Avatar v-else shape="square" icon="ios-person" size="default" />
+              </template>
+
+              <span class="member-name"> {{member.name}} </span>
             </div>
-            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
-          </div>
-          <div class="member-info" >
-            <div @click="selectMember" class="member-select">
-              <Avatar shape="square" icon="ios-person" size="default" />
-              <span class="member-name" style="">李四</span>
-            </div>
-            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember"/>
+            <Icon type="md-close" size="20" color="#ff9900" class="member-close" @click="closeMember(member)"/>
           </div>
         </Col>
 
-        <Col span="19" class="main-right">
+        <Col :span="24 - mainSpan" class="main-right">
           <Row class="chat-im-record">
             <Row class="chat-im-record-left">
               <div class="chat-im-record-image">
@@ -137,7 +127,7 @@
 
           <Row class="chat-im-bootom">
             <Button type="success" icon="md-paper-plane"> 发 送 </Button>
-            <Button type="text"> 关 闭 </Button>
+            <Button type="text" @click="closeMember(memberC)"> 关 闭 </Button>
           </Row>
         </Col>
       </Row>
@@ -148,17 +138,48 @@
 </template>
 <script>
 import CChatHistory from '@/components/layout/chat/im/history'
+import CChatImHeader from '@/components/layout/chat/im/chatImHeader'
 import store from '@/store'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'CChatIm',
   components: {
-    CChatHistory
+    CChatHistory, CChatImHeader
   },
   computed: {
+    ...mapGetters(['website']),
+    /**
+     * is show im modal
+     */
     isShow () { return store.getters.showIm },
+    /**
+     * memberList
+     */
     memberList () { return store.getters.memberList },
-    memberC () { return store.getters.memberC }
+    /**
+     * 当前聊天的人
+     */
+    memberC () { return store.getters.memberC },
+    /**
+     * 选中的聊天人背景色
+     * @param member
+     * @returns {Function}
+     */
+    memberInfoB (member) {
+      return function (member) {
+        if (member.id === store.getters.memberC.id) return 'background: #F3F3F3;'
+        else return ''
+      }
+    },
+    /**
+     * main-left col span
+     * @returns {number}
+     */
+    mainSpan () {
+      if (store.getters.memberList.length > 1) return 5
+      else return 0
+    }
   },
   data () {
     return {
@@ -174,11 +195,17 @@ export default {
       store.commit('SET_SHOWIM', false)
       store.commit('CLEAR_MEMBERLIST')
     },
-    selectMember () {
-      console.info('selectMember')
+    selectMember (member) {
+      store.commit('SET_MEMBERC', member)
     },
-    closeMember () {
-      console.info('closeMember')
+    closeMember (member) {
+      if (this.memberList.length === 1) {
+        this.cancel()
+      } else {
+        store.commit('DELETE_MEMBER', member.id)
+
+        if (member.id === this.memberC.id) store.commit('SET_MEMBERC', this.memberList[0])
+      }
     },
     showHistoryHandle () {
       this.showHistory = true
@@ -198,23 +225,6 @@ export default {
       padding: 0px;
     }
 
-    .header{
-      height: 35px;
-      line-height: 35px;
-      .member {
-        margin: 0px 10px;
-        font-size: 20px;
-        color: #17233d;
-        display: inline-block;
-        text-align: center;
-        white-space: nowrap;
-        position: relative;
-        overflow: hidden;
-        vertical-align: middle;
-        height: 32px;
-      }
-    }
-
     .main {
       height: 500px;
       .main-left{
@@ -228,7 +238,10 @@ export default {
           font-size: 15px;
           height: 48px;
           .member-select{
-            width: 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 130px;
             float: left;
             height: 32px;
           }
