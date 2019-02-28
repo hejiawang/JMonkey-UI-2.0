@@ -9,7 +9,7 @@
             <span>该部门暂无人员</span>
           </div>
 
-          <div class="chat-user-info" v-else v-for="(user, i) in deptUser.userList" :key="i" @click="handleIM">
+          <div class="chat-user-info" v-else v-for="(user, i) in deptUser.userList" :key="i" @click="handleIM(user)">
             <Avatar v-if="user.photo" shape="square" size="default" :src="website.filePath + user.photo" />
             <Avatar v-else shape="square" icon="ios-person" size="default" />
 
@@ -50,8 +50,12 @@ export default {
         this.loading = false
       })
     },
-    handleIM () {
+    handleIM (user) {
       store.commit('SET_SHOWIM', true)
+
+      let o = {type: 'Single', id: user.id, name: user.realName, img: user.photo}
+      store.commit('SET_MEMBERLIST', o)
+      store.commit('SET_MEMBERC', o)
     }
   }
 }

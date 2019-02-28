@@ -6,6 +6,7 @@ const getters = {
   currentSystem: state => state.common.currentSystem,
   currentSystemHome: state => state.common.currentSystemHome,
   tabList: state => state.common.tabList,
+
   access_token: state => state.user.access_token,
   user: state => state.user.user,
   roleList: state => state.user.roleList,
@@ -14,7 +15,9 @@ const getters = {
   isGuide: state => state.user.isGuide,
   systemList: state => state.user.systemList,
 
-  showIm: state => state.chat.showIm
+  showIm: state => state.chat.showIm,
+  memberList: state => state.chat.memberList,
+  memberC: state => state.chat.memberC
 }
 
 export default getters

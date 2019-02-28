@@ -3,7 +3,7 @@
     <Spin size="large" fix v-if="loading"/>
     <div class="chat-mian-content-group">
       <div class="chat-group-info" v-for="(group, index) in groupList" :key="index">
-        <div class="chat-group-left" @click="handleIM">
+        <div class="chat-group-left" @click="handleIM(group)">
           <div class="chat-group-img">
             <Avatar v-if="group.img" shape="square" size="default" :src="website.filePath + group.img" />
             <Avatar v-else shape="square" icon="ios-people" size="default" />
@@ -75,8 +75,12 @@ export default {
         this.loading = false
       })
     },
-    handleIM () {
+    handleIM (group) {
       store.commit('SET_SHOWIM', true)
+
+      let o = {type: 'Group', id: group.id, name: group.name, img: group.img}
+      store.commit('SET_MEMBERLIST', o)
+      store.commit('SET_MEMBERC', o)
     },
     /**
      * 删除群组信息

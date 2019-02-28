@@ -4,8 +4,8 @@
            :footer-hide="true" @on-cancel="cancel" class="app-chat-im-index" @on-visible-change="visibleChange">
       <div slot="header" class="header">
         <Avatar shape="square" icon="ios-person" size="default" />
-        <span class="member">张三李四张三李四一个</span>
-        <Icon type="ios-people" size="25" color="#19be6b"/>
+        <span class="member">{{memberC.name}}</span>
+        <Icon type="ios-people" size="25" color="#19be6b" v-if="memberC.type === 'Group'"/>
       </div>
       <Row class="main">
         <Col span="5" class="main-left">
@@ -156,9 +156,9 @@ export default {
     CChatHistory
   },
   computed: {
-    isShow () {
-      return store.getters.showIm
-    }
+    isShow () { return store.getters.showIm },
+    memberList () { return store.getters.memberList },
+    memberC () { return store.getters.memberC }
   },
   data () {
     return {
@@ -172,7 +172,7 @@ export default {
     },
     cancel () {
       store.commit('SET_SHOWIM', false)
-      console.info('cancel')
+      store.commit('CLEAR_MEMBERLIST')
     },
     selectMember () {
       console.info('selectMember')
