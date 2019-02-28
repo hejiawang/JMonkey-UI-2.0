@@ -148,23 +148,21 @@
 </template>
 <script>
 import CChatHistory from '@/components/layout/chat/im/history'
+import store from '@/store'
 
 export default {
   name: 'CChatIm',
   components: {
     CChatHistory
   },
-  props: {
-    value: {type: Boolean, default: false, required: true}
-  },
-  watch: {
-    value (val) { this.isShow = val },
-    isShow (val) { this.$emit('input', val) }
+  computed: {
+    isShow () {
+      return store.getters.showIm
+    }
   },
   data () {
     return {
       showHistory: false,
-      isShow: false,
       content: null
     }
   },
@@ -173,6 +171,7 @@ export default {
       // if (isOpen) this.$refs.chatImContent.focus()
     },
     cancel () {
+      store.commit('SET_SHOWIM', false)
       console.info('cancel')
     },
     selectMember () {
@@ -290,6 +289,7 @@ export default {
                 margin-top: 5px;
                 max-width: 500px;
                 img {
+                  cursor: pointer;
                   max-height: 200px;
                   max-width: 200px;
                 }
@@ -339,6 +339,7 @@ export default {
                 margin-top: 5px;
                 max-width: 500px;
                 img {
+                  cursor: pointer;
                   max-height: 200px;
                   max-width: 200px;
                 }

@@ -9,7 +9,7 @@
             <span>该部门暂无人员</span>
           </div>
 
-          <div class="chat-user-info" v-else v-for="(user, i) in deptUser.userList" :key="i">
+          <div class="chat-user-info" v-else v-for="(user, i) in deptUser.userList" :key="i" @click="handleIM">
             <Avatar v-if="user.photo" shape="square" size="default" :src="website.filePath + user.photo" />
             <Avatar v-else shape="square" icon="ios-person" size="default" />
 
@@ -23,6 +23,7 @@
 <script>
 import { deptUserList } from '@/api/sys/dept'
 import { mapGetters } from 'vuex'
+import store from '@/store'
 
 export default {
   name: 'CChatMainSingle',
@@ -48,6 +49,9 @@ export default {
         this.deptUserList = data.result
         this.loading = false
       })
+    },
+    handleIM () {
+      store.commit('SET_SHOWIM', true)
     }
   }
 }

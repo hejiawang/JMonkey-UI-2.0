@@ -12,7 +12,9 @@ const getters = {
   deptList: state => state.user.deptList,
   permissions: state => state.user.permissions,
   isGuide: state => state.user.isGuide,
-  systemList: state => state.user.systemList
+  systemList: state => state.user.systemList,
+
+  showIm: state => state.chat.showIm
 }
 
 export default getters

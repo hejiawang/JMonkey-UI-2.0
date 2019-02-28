@@ -76,7 +76,7 @@ export default {
       })
     },
     handleIM () {
-
+      store.commit('SET_SHOWIM', true)
     },
     /**
      * 删除群组信息

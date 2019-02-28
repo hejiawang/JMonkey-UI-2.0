@@ -12,7 +12,7 @@
       <span class="chat-waring-text">您有新的消息</span>
     </div>
 
-    <CChatIm v-model="showIm"/>
+    <CChatIm />
   </div>
 </template>
 <script>
@@ -26,7 +26,6 @@ export default {
   },
   data () {
     return {
-      showIm: false,
       showWaring: false,
       isShow: false
     }
@@ -37,7 +36,6 @@ export default {
       this.showWaring = true
     },
     imHandle () {
-      this.showIm = true
     }
   }
 }
