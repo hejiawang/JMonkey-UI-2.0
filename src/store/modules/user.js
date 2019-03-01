@@ -80,6 +80,9 @@ const user = {
         commit('SET_CURRENTSYSTEMHOME', [])
         commit('CLEAR_TABLIST')
 
+        commit('SET_SHOWIM', false)
+        commit('CLEAR_MEMBERLIST')
+
         resolve()
       })
     }

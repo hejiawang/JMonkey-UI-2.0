@@ -2,86 +2,18 @@
   <div>
     <Col :span="24 - mainSpan" class="app-chat-im-main-right">
       <Row class="chat-im-record">
-        <Row class="chat-im-record-left">
-          <div class="chat-im-record-image">
-            <Avatar shape="square" icon="ios-person" size="default" />
-          </div>
-          <div class="chat-im-record-content">
-            <div class="chat-im-record-user">
-              <span class="chat-im-record-user-name">张三</span>
-              <span>2019-02-27 12:21:00</span>
-            </div>
+        <CChatImContentLeft name="章第三" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
+        <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
 
-            <div class="chat-im-record-text">
-              这是一些聊天
-            </div>
-          </div>
-        </Row>
-        <Row class="chat-im-record-left">
-          <div class="chat-im-record-image">
-            <Avatar shape="square" icon="ios-person" size="default" />
-          </div>
-          <div class="chat-im-record-content">
-            <div class="chat-im-record-user">
-              <span class="chat-im-record-user-name">张三</span>
-              <span>2019-02-27 12:21:00</span>
-            </div>
+        <CChatImContentLeft name="章第三" img="" sendDate="2019-02-27 12:21:00"
+                            content="<img src='http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg' preview='0' preview-text='1efsfe'>"/>
+        <CChatImContentRight name="章第三" img="" sendDate="2019-02-27 12:21:00"
+                            content="<img src='http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg' preview='0' preview-text='1efsfe'>"/>
 
-            <div class="chat-im-record-text">
-              <img src="http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg" preview="0" preview-text="1efsfe">
-            </div>
-          </div>
-        </Row>
-
-        <Row class="chat-im-record-right">
-          <div class="chat-im-record-image">
-            <Avatar shape="square" icon="ios-person" size="default" />
-          </div>
-          <div class="chat-im-record-content">
-            <div class="chat-im-record-user">
-              <span class="chat-im-record-user-name">李四</span>
-              <span>2019-02-27 12:21:00</span>
-            </div>
-
-            <div class="chat-im-record-text">
-              这是
-            </div>
-          </div>
-        </Row>
-        <Row class="chat-im-record-right">
-          <div class="chat-im-record-image">
-            <Avatar shape="square" icon="ios-person" size="default" />
-          </div>
-          <div class="chat-im-record-content">
-            <div class="chat-im-record-user">
-              <span class="chat-im-record-user-name">李四</span>
-              <span>2019-02-27 12:21:00</span>
-            </div>
-
-            <div class="chat-im-record-text">
-              <Tooltip content="重要文件请及时单击下载保存" placement="top">
-                <a ><Icon type="ios-folder-outline" size="25"/><span>要下载的文.txt</span></a>
-              </Tooltip>
-            </div>
-          </div>
-        </Row>
-        <Row class="chat-im-record-left">
-          <div class="chat-im-record-image">
-            <Avatar shape="square" icon="ios-person" size="default" />
-          </div>
-          <div class="chat-im-record-content">
-            <div class="chat-im-record-user">
-              <span class="chat-im-record-user-name">李四</span>
-              <span>2019-02-27 12:21:00</span>
-            </div>
-
-            <div class="chat-im-record-text">
-              <Tooltip content="重要文件请及时单击下载保存" placement="top">
-                <a ><Icon type="ios-folder-outline" size="25"/><span>要下载的文.txt</span></a>
-              </Tooltip>
-            </div>
-          </div>
-        </Row>
+        <CChatImContentLeft name="里斯" img="" sendDate="2019-02-27 12:21:00"
+                             content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
+        <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00"
+                            content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
       </Row>
 
       <Row class="chat-im-tools">
@@ -102,7 +34,7 @@
       </Row>
 
       <Row class="chat-im-bootom">
-        <Button type="success" icon="md-paper-plane"> 发 送 </Button>
+        <Button type="success" icon="md-paper-plane" @click="sendImHadnle"> 发 送 </Button>
         <Button type="text" @click="closeMember"> 关 闭 </Button>
       </Row>
     </Col>
@@ -114,11 +46,13 @@
 import store from '@/store'
 import { mapGetters } from 'vuex'
 import CChatHistory from '@/components/layout/chat/im/history'
+import CChatImContentLeft from '@/components/layout/chat/im/chatImContent/chatImContentLeft'
+import CChatImContentRight from '@/components/layout/chat/im/chatImContent/chatImContentRight'
 
 export default {
   name: 'CChatImContent',
   components: {
-    CChatHistory
+    CChatHistory, CChatImContentLeft, CChatImContentRight
   },
   computed: {
     ...mapGetters(['website']),
@@ -146,6 +80,9 @@ export default {
     }
   },
   methods: {
+    sendImHadnle () {
+      console.info('sendImHadnle')
+    },
     closeMember () {
       store.dispatch('closeChatImMember', this.memberC)
     },
@@ -161,115 +98,6 @@ export default {
     .chat-im-record{
       height: 350px;
       overflow-y: auto;
-      .chat-im-record-right{
-        margin: 15px;
-        .chat-im-record-image{
-          float: right;
-          height: 40px;
-          width: 50px;
-          span{
-            float: right;
-          }
-        }
-        .chat-im-record-content{
-          float: right;
-          .chat-im-record-user{
-            height: 21px;
-            font-size: 14px;
-            span{
-              float: right;
-
-            }
-            .chat-im-record-user-name{
-              color: #17233d;
-              margin-left: 10px;
-            }
-          }
-          .chat-im-record-text{
-            float: right;
-            color: white;
-            font-size: 14px;
-            background: #19be6b;
-            padding: 10px;
-            border-radius: 3px;
-            margin-top: 5px;
-            max-width: 500px;
-            img {
-              cursor: pointer;
-              max-height: 200px;
-              max-width: 200px;
-            }
-            a {
-              color: white;
-              span{
-                margin-left: 10px;
-              }
-            }
-          }
-          .chat-im-record-text:after {
-            content: '';
-            position: absolute;
-            right: 40px;
-            top: 40px;
-            width: 0;
-            height: 0;
-            border-style: solid dashed dashed;
-            border-color: #19be6b transparent transparent;
-            overflow: hidden;
-            border-width: 10px;
-          }
-        }
-      }
-      .chat-im-record-left{
-        margin: 15px;
-        .chat-im-record-image{
-          float: left;
-          height: 40px;
-          width: 50px;
-        }
-        .chat-im-record-content{
-          float: left;
-          .chat-im-record-user{
-            font-size: 14px;
-            .chat-im-record-user-name{
-              color: #17233d;
-              margin-right: 10px;
-            }
-          }
-          .chat-im-record-text{
-            float: left;
-            font-size: 14px;
-            background: #e8eaec;
-            padding: 10px;
-            border-radius: 3px;
-            margin-top: 5px;
-            max-width: 500px;
-            img {
-              cursor: pointer;
-              max-height: 200px;
-              max-width: 200px;
-            }
-            a {
-              color: #515a6e;
-              span{
-                margin-left: 10px;
-              }
-            }
-          }
-          .chat-im-record-text:after {
-            content: '';
-            position: absolute;
-            left: 40px;
-            top: 40px;
-            width: 0;
-            height: 0;
-            border-style: solid dashed dashed;
-            border-color: #e8eaec transparent transparent;
-            overflow: hidden;
-            border-width: 10px;
-          }
-        }
-      }
     }
     .chat-im-tools{
       border-top: 1px solid #F1F1F1;
@@ -308,157 +136,5 @@ export default {
         float: right;
       }
     }
-  }.main-right{
-     height: 500px;
-     .chat-im-record{
-       height: 350px;
-       overflow-y: auto;
-       .chat-im-record-right{
-         margin: 15px;
-         .chat-im-record-image{
-           float: right;
-           height: 40px;
-           width: 50px;
-           span{
-             float: right;
-           }
-         }
-         .chat-im-record-content{
-           float: right;
-           .chat-im-record-user{
-             height: 21px;
-             font-size: 14px;
-             span{
-               float: right;
-
-             }
-             .chat-im-record-user-name{
-               color: #17233d;
-               margin-left: 10px;
-             }
-           }
-           .chat-im-record-text{
-             float: right;
-             color: white;
-             font-size: 14px;
-             background: #19be6b;
-             padding: 10px;
-             border-radius: 3px;
-             margin-top: 5px;
-             max-width: 500px;
-             img {
-               cursor: pointer;
-               max-height: 200px;
-               max-width: 200px;
-             }
-             a {
-               color: white;
-               span{
-                 margin-left: 10px;
-               }
-             }
-           }
-           .chat-im-record-text:after {
-             content: '';
-             position: absolute;
-             right: 40px;
-             top: 40px;
-             width: 0;
-             height: 0;
-             border-style: solid dashed dashed;
-             border-color: #19be6b transparent transparent;
-             overflow: hidden;
-             border-width: 10px;
-           }
-         }
-       }
-       .chat-im-record-left{
-         margin: 15px;
-         .chat-im-record-image{
-           float: left;
-           height: 40px;
-           width: 50px;
-         }
-         .chat-im-record-content{
-           float: left;
-           .chat-im-record-user{
-             font-size: 14px;
-             .chat-im-record-user-name{
-               color: #17233d;
-               margin-right: 10px;
-             }
-           }
-           .chat-im-record-text{
-             float: left;
-             font-size: 14px;
-             background: #e8eaec;
-             padding: 10px;
-             border-radius: 3px;
-             margin-top: 5px;
-             max-width: 500px;
-             img {
-               cursor: pointer;
-               max-height: 200px;
-               max-width: 200px;
-             }
-             a {
-               color: #515a6e;
-               span{
-                 margin-left: 10px;
-               }
-             }
-           }
-           .chat-im-record-text:after {
-             content: '';
-             position: absolute;
-             left: 40px;
-             top: 40px;
-             width: 0;
-             height: 0;
-             border-style: solid dashed dashed;
-             border-color: #e8eaec transparent transparent;
-             overflow: hidden;
-             border-width: 10px;
-           }
-         }
-       }
-     }
-     .chat-im-tools{
-       border-top: 1px solid #F1F1F1;
-       height: 40px;
-       line-height: 40px;
-       .ivu-icon{
-         margin-left: 20px;
-       }
-       .chat-im-history{
-         cursor:pointer;
-       }
-       .chat-im-history:hover span{
-         color: #2b85e4;
-       }
-       .chat-im-history:hover i{
-         color: #2b85e4;
-       }
-     }
-     .chat-im-textarea{
-       height: 70px;
-       .ivu-input{
-         border: 0px;
-         resize: none;
-       }
-       .ivu-input:hover{
-         border: 0px;
-       }
-       .ivu-input:focus{
-         border: 0px;
-         box-shadow: 0 0 0 0px rgba(45,140,240,.2);
-       }
-     }
-     .chat-im-bootom{
-       height: 40px;
-       button{
-         float: right;
-       }
-     }
-   }
+  }
 </style>
