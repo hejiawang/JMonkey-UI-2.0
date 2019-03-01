@@ -3,7 +3,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-var baseUrl = 'http://49.4.54.245:8080'
+let baseUrl = 'http://49.4.54.245:8080'
+let wsUrl = 'ws://49.4.54.245:8080'
 
 module.exports = {
   dev: {
@@ -12,6 +13,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/socket/**': {
+        target: wsUrl,
+        ws: true,
+        secure: false,
+        logLevel: 'debug',
+      },
       '/oauth': {
         target: baseUrl,
         changeOrigin: true,
