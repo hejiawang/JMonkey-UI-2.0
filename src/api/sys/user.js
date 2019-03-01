@@ -100,3 +100,15 @@ export const getCurrentUserInfo = () => {
     method: 'get'
   })
 }
+
+/**
+ * 获取登录错误次数
+ * @param userName userName
+ */
+export const loginErrorNum = (userName) => {
+  return request({
+    url: '/sys/user/loginErrorNum',
+    method: 'get',
+    params: {userName: userName}
+  })
+}

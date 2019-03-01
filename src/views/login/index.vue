@@ -8,7 +8,7 @@
           <Form ref="loginForm" :rules="loginRules" :model="loginForm">
             <FormItem prop="username">
               <Input type="text" v-model.trim="loginForm.username" :maxlength="50" @keyup.enter.native="loginHandle"
-                     :autofocus="true" prefix="ios-person-outline" placeholder="请输入登陆名称" />
+                     :autofocus="true" @on-blur="checkLoginErrorNum" prefix="ios-person-outline" placeholder="请输入登陆名称" />
             </FormItem>
             <FormItem prop="password">
               <Input :type="pwType" suffix="ios-eye-outline" v-model.trim="loginForm.password" :maxlength="20"
@@ -39,6 +39,7 @@
 <script>
 import store from '@/store'
 import { mapGetters } from 'vuex'
+import { loginErrorNum } from '@/api/sys/user'
 
 export default {
   name: 'Login',
@@ -88,6 +89,14 @@ export default {
         } else {
           this.isDisabled = false
         }
+      })
+    },
+    /**
+     * 获取登录错误次数
+     */
+    checkLoginErrorNum () {
+      loginErrorNum(this.loginForm.username).then(data => {
+        console.info(data)
       })
     }
   }
