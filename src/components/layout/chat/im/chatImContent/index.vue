@@ -16,18 +16,7 @@
                             content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
       </Row>
 
-      <Row class="chat-im-tools">
-        <Col span="20">
-          <Icon type="ios-image-outline"  size="25"/>
-          <Icon type="ios-folder-outline" size="25"/>
-        </Col>
-        <Col span="4">
-          <div class="chat-im-history" @click="showHistoryHandle">
-            <Icon type="md-attach" size="25" />
-            <span style="font-size: 14px;">历史纪录</span>
-          </div>
-        </Col>
-      </Row>
+      <CChatImTools />
 
       <Row class="chat-im-textarea">
         <Input v-model="content" type="textarea" :rows="3" ref="chatImContent" :autofocus="true" placeholder="请输入发送内容 ..." />
@@ -38,28 +27,22 @@
         <Button type="text" @click="closeMember"> 关 闭 </Button>
       </Row>
     </Col>
-
-    <CChatHistory v-model="showHistory" />
   </div>
 </template>
 <script>
 import store from '@/store'
 import { mapGetters } from 'vuex'
-import CChatHistory from '@/components/layout/chat/im/history'
 import CChatImContentLeft from '@/components/layout/chat/im/chatImContent/chatImContentLeft'
 import CChatImContentRight from '@/components/layout/chat/im/chatImContent/chatImContentRight'
+import CChatImTools from '@/components/layout/chat/im/chatImContent/chatImTools'
 
 export default {
   name: 'CChatImContent',
   components: {
-    CChatHistory, CChatImContentLeft, CChatImContentRight
+    CChatImContentLeft, CChatImContentRight, CChatImTools
   },
   computed: {
     ...mapGetters(['website']),
-    /**
-     * memberList
-     */
-    memberList () { return store.getters.memberList },
     /**
      * 当前聊天的人
      */
@@ -75,7 +58,6 @@ export default {
   },
   data () {
     return {
-      showHistory: false,
       content: null
     }
   },
@@ -85,9 +67,6 @@ export default {
     },
     closeMember () {
       store.dispatch('closeChatImMember', this.memberC)
-    },
-    showHistoryHandle () {
-      this.showHistory = true
     }
   }
 }
@@ -98,23 +77,6 @@ export default {
     .chat-im-record{
       height: 350px;
       overflow-y: auto;
-    }
-    .chat-im-tools{
-      border-top: 1px solid #F1F1F1;
-      height: 40px;
-      line-height: 40px;
-      .ivu-icon{
-        margin-left: 20px;
-      }
-      .chat-im-history{
-        cursor:pointer;
-      }
-      .chat-im-history:hover span{
-        color: #2b85e4;
-      }
-      .chat-im-history:hover i{
-        color: #2b85e4;
-      }
     }
     .chat-im-textarea{
       height: 70px;
