@@ -2,19 +2,6 @@
   <div>
     <Col :span="24 - mainSpan" class="app-chat-im-main-right">
       <Row class="chat-im-record" ref="testT">
-        <CChatImContentLeft name="章第三" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
-        <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
-
-        <CChatImContentLeft name="章第三" img="" sendDate="2019-02-27 12:21:00"
-                            content="<img src='http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg' preview='0' preview-text='1efsfe'>"/>
-        <CChatImContentRight name="章第三" img="" sendDate="2019-02-27 12:21:00"
-                            content="<img src='http://49.4.54.245:8080/assets/message/chat/image/c05be91f7f1149b8933993fc83c265dd_42.jpg' preview='0' preview-text='1efsfe'>"/>
-
-        <CChatImContentLeft name="里斯" img="" sendDate="2019-02-27 12:21:00"
-                             content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
-        <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00"
-                            content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
-
         <template v-for="(c, index) in contentList">
           <CChatImContentLeft :key="index" v-if="c.senderId !== userC.id"
                               :name="c.senderName" :img="c.senderPhoto" :sendDate="c.senderDate" :content="c.msg"/>
@@ -24,15 +11,15 @@
         </template>
       </Row>
 
-      <CChatImTools />
+      <CChatImTools @uploadCallBack="sendImFileHandle"/>
 
       <Row class="chat-im-textarea">
         <Input v-model.trim="content" type="textarea" :rows="3" ref="chatImContent"
-               :autofocus="true" placeholder="请输入发送内容 ..." @keyup.enter.native="sendImHadnle"/>
+               :autofocus="true" placeholder="请输入发送内容 ..." @keyup.enter.native="sendImHandle"/>
       </Row>
 
       <Row class="chat-im-bootom">
-        <Button type="success" icon="md-paper-plane" @click="sendImHadnle"> 发 送 </Button>
+        <Button type="success" icon="md-paper-plane" @click="sendImHandle"> 发 送 </Button>
         <Button type="text" @click="closeMember"> 关 闭 </Button>
       </Row>
     </Col>
@@ -113,11 +100,18 @@ export default {
         this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
       })
     },
-    sendImHadnle () {
+    sendImHandle () {
       if (!this.$CV.isEmpty(this.content)) {
         this.webSocket.send(this.memberC.id + '_msg_' + this.content)
         this.content = null
       }
+    },
+    /**
+     * sendImFileHandle
+     * @param msgContent
+     */
+    sendImFileHandle (msgContent) {
+      this.webSocket.send(this.memberC.id + '_msg_' + msgContent)
     },
     closeMember () {
       store.dispatch('closeChatImMember', this.memberC)
