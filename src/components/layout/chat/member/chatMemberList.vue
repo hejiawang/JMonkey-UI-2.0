@@ -27,7 +27,9 @@ export default {
     value (val) { this.isShow = val },
     isShow (val) { this.$emit('input', val) },
     groupId (val) {
-      deptUserList(val).then(data => { this.memberList = data.result })
+      if (this.isShow) {
+        deptUserList(val).then(data => { this.memberList = data.result })
+      }
     }
   },
   props: {

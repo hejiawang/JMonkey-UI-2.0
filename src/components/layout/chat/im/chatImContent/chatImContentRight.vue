@@ -64,6 +64,7 @@ export default {
         border-radius: 3px;
         margin-top: 5px;
         max-width: 500px;
+        word-wrap: break-word;
         img {
           cursor: pointer;
           max-height: 200px;
