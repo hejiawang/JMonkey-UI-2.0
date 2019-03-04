@@ -27,12 +27,8 @@ export default {
   data () {
     return {
       showWaring: false,
-      isShow: false,
-      webSocket: null
+      isShow: false
     }
-  },
-  created () {
-    this.registerWebSocket()
   },
   methods: {
     showChat () {
@@ -40,22 +36,6 @@ export default {
       this.showWaring = true
     },
     imHandle () {
-    },
-    registerWebSocket () {
-      if ('WebSocket' in window) {
-        var wsUrl = 'ws://' + window.document.location.host + '/socket/ms/chat/im'
-        this.webSocket = new WebSocket(wsUrl)
-
-        this.webSocket.onerror = function (event) {
-          console.info('webSocket.onerror')
-        }
-
-        this.webSocket.onmessage = function (event) {
-          console.info(event)
-        }
-      } else {
-        this.$Message.error('您使用的浏览器版本不支持WebSocket技术,无法进行快捷通讯,请更换浏览器')
-      }
     }
   }
 }

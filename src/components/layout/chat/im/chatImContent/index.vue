@@ -1,7 +1,7 @@
 <template>
   <div>
     <Col :span="24 - mainSpan" class="app-chat-im-main-right">
-      <Row class="chat-im-record">
+      <Row class="chat-im-record" ref="testT">
         <CChatImContentLeft name="章第三" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
         <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00" content="发送一个内同"/>
 
@@ -14,12 +14,21 @@
                              content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
         <CChatImContentRight name="里斯" img="" sendDate="2019-02-27 12:21:00"
                             content="<a > <div></div><span>要下载as的文要文.txt</span></a>"/>
+
+        <template v-for="(c, index) in contentList">
+          <CChatImContentLeft :key="index" v-if="c.senderId !== userC.id"
+                              :name="c.senderName" :img="c.senderPhoto" :sendDate="c.senderDate" :content="c.msg"/>
+
+          <CChatImContentRight :key="index" v-else
+                              :name="c.senderName" :img="c.senderPhoto" :sendDate="c.senderDate" :content="c.msg"/>
+        </template>
       </Row>
 
       <CChatImTools />
 
       <Row class="chat-im-textarea">
-        <Input v-model="content" type="textarea" :rows="3" ref="chatImContent" :autofocus="true" placeholder="请输入发送内容 ..." />
+        <Input v-model.trim="content" type="textarea" :rows="3" ref="chatImContent"
+               :autofocus="true" placeholder="请输入发送内容 ..." @keyup.enter.native="sendImHadnle"/>
       </Row>
 
       <Row class="chat-im-bootom">
@@ -48,6 +57,10 @@ export default {
      */
     memberC () { return store.getters.memberC },
     /**
+     * 当前登录人
+     */
+    userC () { return store.getters.user },
+    /**
      * main-left col span
      * @returns {number}
      */
@@ -58,12 +71,53 @@ export default {
   },
   data () {
     return {
-      content: null
+      contentList: [],
+      content: null,
+      webSocket: null
     }
   },
+  watch: {
+    memberC (val) {
+      this.contentList = []
+    }
+  },
+  created () {
+    this.registerWebSocket()
+  },
   methods: {
+    registerWebSocket () {
+      if ('WebSocket' in window) {
+        let _t = this
+        let wsUrl = 'ws://' + window.document.location.host + '/socket/ms/chat/im?userId=' + this.userC.id + '&realName=' + this.userC.realName + '&userPhoto=' + this.userC.photo
+        this.webSocket = new WebSocket(wsUrl)
+
+        this.webSocket.onerror = function (event) { this.$Message.error('服务器异常, 请联系管理员') }
+        // this.webSocket.onclose = function (event) { console.info('onclose') }
+        // this.webSocket.onopen = function (event) { console.info('onopen ') }
+
+        this.webSocket.onmessage = function (event) {
+          _t.receiveMessage(JSON.parse(event.data))
+        }
+      } else {
+        this.$Message.error('您使用的浏览器版本不支持WebSocket技术,无法进行快捷通讯,请更换浏览器')
+      }
+    },
+    /**
+     * 接收消息
+     * @param msgObject
+     */
+    receiveMessage (msgObject) {
+      this.contentList.push(msgObject)
+
+      this.$nextTick(() => {
+        this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
+      })
+    },
     sendImHadnle () {
-      console.info('sendImHadnle')
+      if (!this.$CV.isEmpty(this.content)) {
+        this.webSocket.send(this.memberC.id + '_msg_' + this.content)
+        this.content = null
+      }
     },
     closeMember () {
       store.dispatch('closeChatImMember', this.memberC)

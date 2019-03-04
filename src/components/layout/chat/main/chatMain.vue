@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="app-layout-chat-main" v-if="isShow" >
+    <div class="app-layout-chat-main" v-show="isShow" >
       <Row class="chat-main-title">
         <Col span="22">
           <span>{{realName}}</span>
