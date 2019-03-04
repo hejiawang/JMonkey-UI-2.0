@@ -100,7 +100,7 @@ export default {
      * 修改密码输入框可见类型
      */
     changePWType () {
-      this.pwType = this.pwType === 'password' ? 'test' : 'password'
+      this.pwType = this.pwType === 'password' ? 'text' : 'password'
     },
     /**
      * 登陆
