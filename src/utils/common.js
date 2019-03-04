@@ -94,3 +94,15 @@ export const offEvent = (function () {
     }
   }
 })()
+
+/**
+ * 生成随机len位数字
+ * @param len
+ * @param date
+ * @returns {string}
+ */
+export const randomLenNum = (len, date) => {
+  let random = Math.ceil(Math.random() * 100000000000000).toString().substr(0, typeof len === 'number' ? len : 4)
+  if (date) random = random + Date.now()
+  return random
+}

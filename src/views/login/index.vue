@@ -8,7 +8,7 @@
           <Form ref="loginForm" :rules="loginRules" :model="loginForm">
             <FormItem prop="username">
               <Input type="text" v-model.trim="loginForm.username" :maxlength="50" @keyup.enter.native="loginHandle"
-                     :autofocus="true" @on-blur="checkLoginErrorNum" prefix="ios-person-outline" placeholder="请输入登陆名称" />
+                     :autofocus="true" prefix="ios-person-outline" placeholder="请输入登陆名称" />
             </FormItem>
             <FormItem prop="password">
               <Input :type="pwType" suffix="ios-eye-outline" v-model.trim="loginForm.password" :maxlength="20"
@@ -16,14 +16,14 @@
                 <Icon slot="suffix" type="md-eye" @click="changePWType"/>
               </Input>
             </FormItem>
-            <FormItem prop="code" v-if="isCode">
+            <FormItem prop="code" v-show="isCode">
               <Row :gutter="6">
                 <Col span="16">
                   <Input type="text" v-model="loginForm.code" prefix="logo-html5" @keyup.enter.native="loginHandle"
                          placeholder="请输入验证码" />
                 </Col>
                 <Col span="8">
-                  <img src="../../assets/images/login/code.jpg" alt="验证码" class="login-code-img"/>
+                  <img :src="codePath" alt="验证码" @click="refreshCode" class="login-code-img"/>
                 </Col>
               </Row>
             </FormItem>
@@ -40,6 +40,7 @@
 import store from '@/store'
 import { mapGetters } from 'vuex'
 import { loginErrorNum } from '@/api/sys/user'
+import { randomLenNum } from '@/utils/common'
 
 export default {
   name: 'Login',
@@ -47,20 +48,52 @@ export default {
     ...mapGetters(['website'])
   },
   data () {
+    /**
+     * 校验是否需要输入验证码
+     * @param rule
+     * @param value
+     * @param callback
+     */
+    const validateLoginError = (rule, value, callback) => {
+      if (!this.$CV.isEmpty(this.loginForm.username)) {
+        loginErrorNum(this.loginForm.username).then(data => {
+          if (data.result >= 3) {
+            this.isCode = true
+
+            if (this.$CV.isEmpty(value)) callback(new Error('请输入验证码'))
+            else callback()
+          } else {
+            callback()
+          }
+        })
+      } else {
+        callback()
+      }
+    }
+
     return {
+      codePath: '',
       isDisabled: false,
       isCode: false,
       pwType: 'password',
       loginForm: {
         username: 'admin',
         password: '123456',
-        code: ''
+        code: '',
+        randomStr: ''
       },
       loginRules: {
         username: {required: true, message: '请输入登陆名称', trigger: 'blur'},
-        password: {required: true, message: '请输入登陆密码', trigger: 'blur'}
+        password: {required: true, message: '请输入登陆密码', trigger: 'blur'},
+        code: [
+          {required: false, validator: validateLoginError, trigger: 'blur'},
+          {min: 4, max: 4, message: '验证码长度为4位', trigger: 'blur'}
+        ]
       }
     }
+  },
+  created () {
+    this.refreshCode()
   },
   methods: {
     /**
@@ -84,6 +117,7 @@ export default {
             },
             error => { // eslint-disable-line
               this.isDisabled = false
+              this.refreshCode()
             }
           )
         } else {
@@ -92,12 +126,12 @@ export default {
       })
     },
     /**
-     * 获取登录错误次数
+     * refreshCode
      */
-    checkLoginErrorNum () {
-      loginErrorNum(this.loginForm.username).then(data => {
-        console.info(data)
-      })
+    refreshCode () {
+      this.loginForm.code = ''
+      this.loginForm.randomStr = randomLenNum(4, true)
+      this.codePath = `/oauth/code/${this.loginForm.randomStr}`
     }
   }
 }
