@@ -78,16 +78,24 @@ export default {
      */
     registerWebSocket () {
       if ('WebSocket' in window) {
-        let _t = this
         let wsUrl = 'ws://' + window.document.location.host + '/socket/ms/chat/im?userId=' + this.userC.id + '&realName=' + this.userC.realName + '&userPhoto=' + this.userC.photo
         this.webSocket = new WebSocket(wsUrl)
 
-        this.webSocket.onerror = function (event) { _t.$Message.error('服务器异常, 请联系管理员') }
-        this.webSocket.onopen = function (event) { _t.webSocketOpening = false }
-        this.webSocket.onmessage = function (event) { _t.receiveMessage(JSON.parse(event.data)) }
+        this.bindSocketEvent()
       } else {
         this.$Message.error('您使用的浏览器版本不支持WebSocket技术,无法进行快捷通讯,请更换浏览器')
       }
+    },
+    /**
+     * 设置websocket事件
+     */
+    bindSocketEvent () {
+      let _t = this
+
+      _t.webSocket.onerror = function (event) { _t.$Message.error('服务器异常, 请联系管理员') }
+      _t.webSocket.onopen = function (event) { _t.webSocketOpening = false }
+      _t.webSocket.onclose = function (event) { _t.$Message.error('即时通讯功能已关闭, 请重新登录') }
+      _t.webSocket.onmessage = function (event) { _t.receiveMessage(JSON.parse(event.data)) }
     },
     /**
      * 接收消息
@@ -113,8 +121,8 @@ export default {
     sendImHandle () {
       if (!this.$CV.isEmpty(this.content)) {
         this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + this.content)
-        this.content = null
       }
+      this.content = null
     },
     /**
      * 发送图片或文件消息
