@@ -4,7 +4,8 @@ const chat = {
   state: {
     showIm: getStore({ name: 'showIm' }) || false,
     memberList: getStore({ name: 'memberList' }) || [],
-    memberC: getStore({ name: 'memberC' }) || {}
+    memberC: getStore({ name: 'memberC' }) || {}, // {type: 'Group', id: group.id, name: group.name, img: group.img}
+    memberNotifyList: getStore({name: 'memberNotifyList'}) || []
   },
   actions: {
     /**
@@ -33,6 +34,7 @@ const chat = {
         if (state.memberList.length === 1) {
           commit('SET_SHOWIM', false)
           commit('CLEAR_MEMBERLIST')
+          commit('SET_MEMBERC', {})
         } else {
           commit('DELETE_MEMBER', member.id)
 
@@ -121,6 +123,28 @@ const chat = {
       setStore({
         name: 'memberC',
         content: state.memberC,
+        type: 'session'
+      })
+    },
+    SET_MEMBERNOTIFYLIST: (state, h) => {
+      let isAdd = true
+      state.memberNotifyList.forEach((tab, index) => { if (tab.id === h.id) isAdd = false })
+
+      if (isAdd) {
+        state.memberNotifyList.push(h)
+        setStore({
+          name: 'memberNotifyList',
+          content: state.memberNotifyList,
+          type: 'session'
+        })
+      }
+    },
+    DELETE_MEMBERNOTIFYLIST: (state) => {
+      state.memberNotifyList = state.memberNotifyList.slice(1)
+
+      setStore({
+        name: 'memberNotifyList',
+        content: state.memberNotifyList,
         type: 'session'
       })
     }

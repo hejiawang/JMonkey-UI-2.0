@@ -94,7 +94,12 @@ export default {
 
       _t.webSocket.onerror = function (event) { _t.$Message.error('服务器异常, 请联系管理员') }
       _t.webSocket.onopen = function (event) { _t.webSocketOpening = false }
-      _t.webSocket.onclose = function (event) { _t.$Message.error('即时通讯功能已关闭, 请重新登录') }
+
+      _t.webSocket.onclose = function (event) {
+        _t.$Message.error('即时通讯功能已关闭, 请重新登录')
+        _t.webSocketOpening = true
+      }
+
       _t.webSocket.onmessage = function (event) { _t.receiveMessage(JSON.parse(event.data)) }
     },
     /**
@@ -102,17 +107,27 @@ export default {
      * @param msgObject
      */
     receiveMessage (msgObject) {
+      // 如果开着聊天窗口，显示聊天内容
+      // TODO bug 当跟自己聊天时，其他人发来消息是，在跟自己聊天的窗口能收到消息。。。
       if ((msgObject.imType === this.memberC.type) &&
         (msgObject.receiverId === this.memberC.id || msgObject.senderId === this.memberC.id)) {
         this.contentList.push(msgObject)
 
+        // 滚动条到最下方
         this.$nextTick(() => {
           if (this.$refs.testT && this.$refs.testT.$el) {
             this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
           }
         })
-      } else { // todo 消息提醒
+      } else { // 如果聊天窗口处于关闭状态，提示有新消息
+        let o
+        if (msgObject.imType === 'Single') {
+          o = {type: msgObject.imType, id: msgObject.senderId, name: msgObject.senderName, img: msgObject.senderPhoto}
+        } else {
+          o = {type: msgObject.imType, id: msgObject.receiverId, name: msgObject.receiverName, img: msgObject.receiverImg}
+        }
 
+        store.commit('SET_MEMBERNOTIFYLIST', o)
       }
     },
     /**
@@ -120,7 +135,7 @@ export default {
      */
     sendImHandle () {
       if (!this.$CV.isEmpty(this.content)) {
-        this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + this.content)
+        this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + this.memberC.name + '_msg_' + this.memberC.img + '_msg_' + this.content)
       }
       this.content = null
     },
@@ -129,7 +144,7 @@ export default {
      * @param msgContent
      */
     sendImFileHandle (msgContent) {
-      this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + msgContent)
+      this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + this.memberC.name + '_msg_' + this.memberC.img + '_msg_' + msgContent)
     },
     /**
      * 关闭当前的聊天窗口
