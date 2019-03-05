@@ -15,7 +15,7 @@
 
       <Row class="chat-im-textarea">
         <Input v-model.trim="content" type="textarea" :rows="3" ref="chatImContent" :disabled="webSocketOpening"
-               :autofocus="true" placeholder="请输入发送内容 ..." @keyup.enter.native="sendImHandle"/>
+               :autofocus="true" :maxlength="200" placeholder="请输入发送内容 ..." @keyup.enter.native="sendImHandle"/>
       </Row>
 
       <Row class="chat-im-bootom">
@@ -107,28 +107,43 @@ export default {
      * @param msgObject
      */
     receiveMessage (msgObject) {
-      // 如果开着聊天窗口，显示聊天内容
       // TODO bug 当跟自己聊天时，其他人发来消息是，在跟自己聊天的窗口能收到消息。。。
       if ((msgObject.imType === this.memberC.type) &&
         (msgObject.receiverId === this.memberC.id || msgObject.senderId === this.memberC.id)) {
-        this.contentList.push(msgObject)
-
-        // 滚动条到最下方
-        this.$nextTick(() => {
-          if (this.$refs.testT && this.$refs.testT.$el) {
-            this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
-          }
-        })
-      } else { // 如果聊天窗口处于关闭状态，提示有新消息
-        let o
-        if (msgObject.imType === 'Single') {
-          o = {type: msgObject.imType, id: msgObject.senderId, name: msgObject.senderName, img: msgObject.senderPhoto}
-        } else {
-          o = {type: msgObject.imType, id: msgObject.receiverId, name: msgObject.receiverName, img: msgObject.receiverImg}
-        }
-
-        store.commit('SET_MEMBERNOTIFYLIST', o)
+        // 如果开着聊天窗口，显示聊天内容
+        this.receiveMessageContent(msgObject)
+      } else {
+        // 如果聊天窗口处于关闭状态，提示有新消息
+        this.nofityMessage(msgObject)
       }
+    },
+    /**
+     * 接收到消息后显示消息
+     */
+    receiveMessageContent (msgObject) {
+      this.contentList.push(msgObject)
+
+      // 滚动条到最下方
+      this.$nextTick(() => {
+        if (this.$refs.testT && this.$refs.testT.$el) {
+          this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
+        }
+      })
+    },
+    /**
+     * 接收到消息后提醒
+     */
+    nofityMessage (msgObject) {
+      let o, photoPath
+      if (msgObject.imType === 'Single') {
+        photoPath = msgObject.senderPhoto === 'null' ? null : msgObject.senderPhoto
+        o = {type: msgObject.imType, id: msgObject.senderId, name: msgObject.senderName, img: photoPath}
+      } else {
+        photoPath = msgObject.receiverImg === 'null' ? null : msgObject.receiverImg
+        o = {type: msgObject.imType, id: msgObject.receiverId, name: msgObject.receiverName, img: photoPath}
+      }
+
+      store.commit('SET_MEMBERNOTIFYLIST', o)
     },
     /**
      * 发送文字消息
