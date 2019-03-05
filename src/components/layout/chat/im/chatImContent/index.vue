@@ -31,6 +31,7 @@ import { mapGetters } from 'vuex'
 import CChatImContentLeft from '@/components/layout/chat/im/chatImContent/chatImContentLeft'
 import CChatImContentRight from '@/components/layout/chat/im/chatImContent/chatImContentRight'
 import CChatImTools from '@/components/layout/chat/im/chatImContent/chatImTools'
+import { list } from '@/api/message/chatHistory'
 
 export default {
   name: 'CChatImContent',
@@ -66,7 +67,22 @@ export default {
   },
   watch: {
     memberC (val) {
-      this.contentList = []
+      let listQuery = {
+        current: 1,
+        size: 10,
+        type: val.type,
+        senderId: this.userC.id,
+        receiverId: val.id
+      }
+      list(listQuery).then(data => {
+        this.contentList = data.rows
+
+        this.$nextTick(() => {
+          if (this.$refs.testT && this.$refs.testT.$el) {
+            this.$refs.testT.$el.scrollTop = this.$refs.testT.$el.scrollHeight
+          }
+        })
+      })
     }
   },
   created () {
