@@ -94,12 +94,7 @@ export default {
 
       _t.webSocket.onerror = function (event) { _t.$Message.error('服务器异常, 请联系管理员') }
       _t.webSocket.onopen = function (event) { _t.webSocketOpening = false }
-
-      _t.webSocket.onclose = function (event) {
-        _t.$Message.error('即时通讯功能已关闭, 请重新登录')
-        _t.webSocketOpening = true
-      }
-
+      _t.webSocket.onclose = function (event) { _t.webSocketOpening = true }
       _t.webSocket.onmessage = function (event) { _t.receiveMessage(JSON.parse(event.data)) }
     },
     /**
@@ -167,6 +162,11 @@ export default {
     closeMember () {
       store.dispatch('closeChatImMember', this.memberC)
     }
+  },
+  destroyed () {
+    // 注意：一定要关闭webSocket的链接
+    this.webSocket.close()
+    this.webSocket = null
   }
 }
 </script>

@@ -126,6 +126,12 @@ const chat = {
         type: 'session'
       })
     },
+    /**
+     * 添加消息提醒
+     * @param state
+     * @param h
+     * @constructor
+     */
     SET_MEMBERNOTIFYLIST: (state, h) => {
       let isAdd = true
       state.memberNotifyList.forEach((tab, index) => { if (tab.id === h.id) isAdd = false })
@@ -139,9 +145,13 @@ const chat = {
         })
       }
     },
+    /**
+     * 去除消息提醒
+     * @param state
+     * @constructor
+     */
     DELETE_MEMBERNOTIFYLIST: (state) => {
       state.memberNotifyList = state.memberNotifyList.slice(1)
-
       setStore({
         name: 'memberNotifyList',
         content: state.memberNotifyList,
