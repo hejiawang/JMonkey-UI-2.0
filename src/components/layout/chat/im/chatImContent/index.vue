@@ -66,6 +66,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * 当正在对话的人变了的时候, 获取聊天记录
+     */
     memberC (val) {
       let listQuery = {
         current: 1,
@@ -163,6 +166,7 @@ export default {
       if (!this.$CV.isEmpty(this.content)) {
         this.webSocket.send(this.memberC.type + '_msg_' + this.memberC.id + '_msg_' + this.memberC.name + '_msg_' + this.memberC.img + '_msg_' + this.content)
       }
+
       this.content = null
     },
     /**
@@ -179,10 +183,16 @@ export default {
       store.dispatch('closeChatImMember', this.memberC)
     }
   },
+  /**
+   * vue实例销毁的回调函数
+   */
   destroyed () {
     // 注意：一定要关闭webSocket的链接
     this.webSocket.close()
     this.webSocket = null
+
+    // 当websocket关闭后, 关闭聊天窗口
+    store.dispatch('closeChatIm')
   }
 }
 </script>

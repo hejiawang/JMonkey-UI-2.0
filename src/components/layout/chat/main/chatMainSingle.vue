@@ -50,12 +50,20 @@ export default {
         this.loading = false
       })
     },
+    /**
+     * 进行私聊
+     * @param user 要进行对话的用户
+     */
     handleIM (user) {
-      store.commit('SET_SHOWIM', true)
+      if (store.getters.user.id !== user.id) { // 禁止跟自己聊天
+        store.commit('SET_SHOWIM', true)
 
-      let o = {type: 'Single', id: user.id, name: user.realName, img: user.photo}
-      store.commit('SET_MEMBERLIST', o)
-      store.commit('SET_MEMBERC', o)
+        let o = {type: 'Single', id: user.id, name: user.realName, img: user.photo}
+        store.commit('SET_MEMBERLIST', o)
+        store.commit('SET_MEMBERC', o)
+      } else {
+        this.$Message.success('对话人请勿选择自己')
+      }
     }
   }
 }
