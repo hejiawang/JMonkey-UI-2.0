@@ -123,6 +123,7 @@ export default {
      * @param msgObject
      */
     receiveMessage (msgObject) {
+      console.info('receiveMessage')
       // TODO bug 当跟自己聊天时，其他人发来消息是，在跟自己聊天的窗口能收到消息。。。
       if ((msgObject.imType === this.memberC.type) &&
         (msgObject.receiverId === this.memberC.id || msgObject.senderId === this.memberC.id)) {
@@ -189,12 +190,16 @@ export default {
    * vue实例销毁的回调函数
    */
   destroyed () {
-    // 注意：一定要关闭webSocket的链接
-    this.webSocket.close()
-    this.webSocket = null
-
+    console.info('destroyed')
     // 当websocket关闭后, 关闭聊天窗口
     store.dispatch('closeChatIm')
+
+    // 注意：一定要关闭webSocket的链接
+    if (this.webSocket) {
+      console.info(this.webSocket)
+      this.webSocket.close()
+      this.webSocket = null
+    }
   }
 }
 </script>

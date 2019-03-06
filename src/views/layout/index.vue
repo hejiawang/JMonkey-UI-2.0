@@ -78,7 +78,7 @@ export default {
       let systemInfo = null
       for (var i = 0; i < store.getters.systemList.length; i++) {
         let s = store.getters.systemList[i]
-        if (s.isAuth) {
+        if (s.isAuth === 'Yes') {
           systemInfo = s
           break
         }
