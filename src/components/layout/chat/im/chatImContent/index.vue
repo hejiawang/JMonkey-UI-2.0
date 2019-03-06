@@ -123,7 +123,6 @@ export default {
      * @param msgObject
      */
     receiveMessage (msgObject) {
-      console.info('receiveMessage')
       // TODO bug 当跟自己聊天时，其他人发来消息是，在跟自己聊天的窗口能收到消息。。。
       if ((msgObject.imType === this.memberC.type) &&
         (msgObject.receiverId === this.memberC.id || msgObject.senderId === this.memberC.id)) {
@@ -190,16 +189,18 @@ export default {
    * vue实例销毁的回调函数
    */
   destroyed () {
-    console.info('destroyed')
     // 当websocket关闭后, 关闭聊天窗口
     store.dispatch('closeChatIm')
 
+    /*
+    * 这个if很重要，如果没有这个if，会出现bug : WebSocket is closed before the connection is established.
+    * 导致原因： 由引导页进入一个全屏模块时，要在index页面中跳转，
+    *   而index页面会包含聊天组件，在链接websocket时，可能还没有连上就要跳转下一个页面了，而这时调用websocket.close，
+    *   就会触发webSocket.onerror事件
+    * */
     // 注意：一定要关闭webSocket的链接
-    if (this.webSocket) {
-      console.info(this.webSocket)
-      this.webSocket.close()
-      this.webSocket = null
-    }
+    if (!this.webSocketOpening) this.webSocket.close()
+    this.webSocket = null
   }
 }
 </script>
