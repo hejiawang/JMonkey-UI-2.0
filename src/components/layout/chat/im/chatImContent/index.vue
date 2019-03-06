@@ -27,19 +27,20 @@
 </template>
 <script>
 import store from '@/store'
-import { mapGetters } from 'vuex'
 import CChatImContentLeft from '@/components/layout/chat/im/chatImContent/chatImContentLeft'
 import CChatImContentRight from '@/components/layout/chat/im/chatImContent/chatImContentRight'
 import CChatImTools from '@/components/layout/chat/im/chatImContent/chatImTools'
 import { list } from '@/api/message/chatHistory'
 
+/**
+ * 聊天内容
+ */
 export default {
   name: 'CChatImContent',
   components: {
     CChatImContentLeft, CChatImContentRight, CChatImTools
   },
   computed: {
-    ...mapGetters(['website']),
     /**
      * 当前聊天的人
      */
@@ -68,6 +69,7 @@ export default {
   watch: {
     /**
      * 当正在对话的人变了的时候, 获取聊天记录
+     * TODO bug： 刷新页面后没有显示历史聊天记录（暂不修改）
      */
     memberC (val) {
       let listQuery = {
