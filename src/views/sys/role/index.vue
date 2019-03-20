@@ -89,7 +89,7 @@ export default {
           key: 'action',
           align: 'center',
           fixed: 'right',
-          width: 350,
+          width: 400,
           render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
@@ -119,7 +119,12 @@ export default {
         h('Button', {
           props: { type: 'success', ghost: true },
           on: { click: () => { this.authHandle(params.row) } }
-        }, '权限')
+        }, '访问权限')
+      )
+      hContent.push(
+        h('Button', {
+          props: { type: 'info', ghost: true }
+        }, '数据规则')
       )
       return h('div', hContent)
     },
