@@ -23,7 +23,7 @@
         <CPage v-model="listQuery" @on-list="initList" ref="dataScopePage"/>
       </Col>
       <Col span="16" class="dataScope-right">
-
+        <CDataScopRule :dataScope="dataScopeC"/>
       </Col>
     </Row>
 
@@ -32,12 +32,13 @@
 </template>
 <script>
 import CDataScopForm from '@/views/sys/dataScope/form'
+import CDataScopRule from '@/views/sys/dataScopeRule'
 import { list, del } from '@/api/sys/dataScope'
 
 export default {
   name: 'SysDataScope',
   components: {
-    CDataScopForm
+    CDataScopForm, CDataScopRule
   },
   data () {
     return {
@@ -166,7 +167,7 @@ export default {
         }
       }
       .dataScope-right {
-
+        height: 100%;
       }
     }
   }

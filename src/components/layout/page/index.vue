@@ -1,7 +1,7 @@
 <template>
   <Page :total="pageQuery.total" :current="pageQuery.current" :page-size="pageQuery.size"
         @on-change="changeCurrent" @on-page-size-change="changePageSize" :page-size-opts="sizeOpts"
-        show-sizer show-elevator show-total />
+        show-sizer show-elevator show-total style="font-size: 14px;"/>
 </template>
 <script>
 /**
