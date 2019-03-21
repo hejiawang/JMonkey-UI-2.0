@@ -6,8 +6,7 @@
     <Row v-else class="app-sys-dataScope-rule-main">
       <Row style="height: 60px;" :gutter="32">
         <Col span="21"><Alert show-icon>数据规则： {{dataScope.name}}</Alert></Col>
-        <Col span="3"><Button type="primary" ghost>新增</Button></Col>
-
+        <Col span="3"><Button type="primary" ghost @click="raiseHandle">新增</Button></Col>
       </Row>
       <Row>
         <Table :height="tableHeight" border :columns="tableColumns" :data="tableData" :loading="listLoading" stripe />
@@ -15,16 +14,27 @@
       <Row>
         <CPage v-model="listQuery" @on-list="initList" ref="dataScopeRulePage"/>
       </Row>
+
+      <CDataScopRuleForm v-model="showForm" :type="formType" :dataScopeId="dataScope.id"
+                         :dataScopeRule="dataScopeRuleC" @refresh="initList"/>
     </Row>
   </Card>
 </template>
 <script>
 import store from '@/store'
+import CDataScopRuleForm from '@/views/sys/dataScopeRule/form'
+import { list, del } from '@/api/sys/dataScopeRule'
 
 export default {
   name: 'SysDataScopeRule',
+  components: {
+    CDataScopRuleForm
+  },
   props: {
     dataScope: {type: Object, default: null, required: false}
+  },
+  watch: {
+    dataScope (val) { this.initList() }
   },
   computed: {
     /**
@@ -43,18 +53,23 @@ export default {
         current: 1,
         size: 10,
         total: 0
-      }
+      },
+      showForm: false,
+      formType: '',
+      dataScopeRuleC: null
     }
   },
   created () {
     this.initTableColumns()
-    this.initList()
   },
   methods: {
+    /**
+     * initTableColumns
+     */
     initTableColumns () {
       this.tableColumns = [
-        {title: '规则名称', key: 'name', tooltip: true, width: 250},
-        {title: '控制语句', key: 'sql_segment', tooltip: true},
+        {title: '规则定义', key: 'name', tooltip: true, width: 250},
+        {title: '控制语句', key: 'sqlSegment', tooltip: true},
         {
           title: '操作',
           key: 'action',
@@ -65,6 +80,9 @@ export default {
         }
       ]
     },
+    /**
+     * bindTableEvent
+     */
     bindTableEvent (h, params) {
       let hContent = []
       hContent.push(h('Button', {
@@ -80,9 +98,46 @@ export default {
 
       return h('div', hContent)
     },
-    initList () {},
-    modifyHandle (rule) {},
-    deleteHandle (rule) {}
+    /**
+     * initList
+     */
+    initList () {
+      this.listLoading = true
+      this.listQuery.scopeId = this.dataScope.id
+      list(this.listQuery).then(data => {
+        this.tableData = data.rows
+        this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
+
+        this.listLoading = false
+      })
+    },
+    /**
+     * raiseHandle
+     */
+    raiseHandle () {
+      this.dataScopeRuleC = null; this.formType = 'raise'; this.showForm = true
+    },
+    /**
+     * modifyHandle
+     */
+    modifyHandle (rule) {
+      this.dataScopeRuleC = rule; this.formType = 'modify'; this.showForm = true
+    },
+    /**
+     * deleteHandle
+     * @param rule
+     */
+    deleteHandle (rule) {
+      this.$CDelete({
+        'content': '<p>名称为 <span style="color: #f60">' + rule.name + '</span> 的规则定义将被删除</p><p>是否继续？</p>',
+        'confirm': () => {
+          del(rule.id).then(() => {
+            this.initList()
+            this.$Message.success('删除成功')
+          })
+        }
+      })
+    }
   }
 }
 </script>
