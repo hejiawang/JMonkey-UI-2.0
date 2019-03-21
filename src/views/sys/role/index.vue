@@ -31,12 +31,14 @@
 
     <CRoleForm v-model="showForm" :type="formType" :roleId="currentRoleId" @refresh="restSearch"/>
     <CRoleAuthorize v-model="showAuthorize" :role="authRole"/>
+    <CRoleData v-model="showData" :role="authRole"/>
   </Layout>
 </template>
 <script>
 import store from '@/store'
 import CRoleForm from '@/views/sys/role/form'
 import CRoleAuthorize from '@/views/sys/role/authorize'
+import CRoleData from '@/views/sys/role/data'
 import { list, del } from '@/api/sys/role'
 
 /**
@@ -45,7 +47,7 @@ import { list, del } from '@/api/sys/role'
 export default {
   name: 'SysRole',
   components: {
-    CRoleForm, CRoleAuthorize
+    CRoleForm, CRoleAuthorize, CRoleData
   },
   computed: {
     roleTableHeight () {
@@ -68,7 +70,8 @@ export default {
       showForm: false,
       currentRoleId: '',
       showAuthorize: false,
-      authRole: null
+      authRole: null,
+      showData: false
     }
   },
   created () {
@@ -123,7 +126,8 @@ export default {
       )
       hContent.push(
         h('Button', {
-          props: { type: 'info', ghost: true }
+          props: { type: 'info', ghost: true },
+          on: { click: () => { this.dataHandle(params.row) } }
         }, '数据规则')
       )
       return h('div', hContent)
@@ -189,6 +193,9 @@ export default {
      */
     authHandle (row) {
       this.authRole = row; this.showAuthorize = true
+    },
+    dataHandle (row) {
+      this.authRole = row; this.showData = true
     }
   }
 }

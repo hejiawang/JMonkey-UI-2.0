@@ -13,6 +13,16 @@ export const list = (query) => {
 }
 
 /**
+ * 获取数据规则信息
+ */
+export const listDto = () => {
+  return request({
+    url: '/sys/data/scope/listDto',
+    method: 'get'
+  })
+}
+
+/**
  * 保存数据规则
  * @param obj
  */
