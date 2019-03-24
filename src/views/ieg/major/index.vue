@@ -15,36 +15,69 @@
             <TabPane label="专科" icon="md-crop" name="Z"/>
           </Tabs>
         </Row>
-
+        <Tree :data="treeDate" ref="magorTree" @on-select-change="selectMagor"/>
       </Col>
       <Col span="18">
-
       </Col>
 
-      <CIegMajorForm v-model="showForm" :type="formType" />
+      <CIegMajorForm v-model="showForm" :type="formType" @refresh="initMajorList"/>
     </Row>
   </Layout>
 </template>
 <script>
 import CIegMajorForm from '@/views/ieg/major/form'
+import { tree } from '@/api/ieg/major'
+import { converKey } from '@/utils/common'
 
 export default {
   name: 'IegMajor',
   components: {
     CIegMajorForm
   },
+  computed: {
+    /**
+     * 转换tree控件展示的title
+     * @returns {*}
+     */
+    treeDate () {
+      let tmpTreeData = Array.isArray(this.magorTreeDate) ? this.magorTreeDate : [this.magorTreeDate]
+      return converKey(tmpTreeData)
+    }
+  },
   data () {
     return {
       showForm: false,
-      formType: ''
+      formType: '',
+      selectDegree: 'B',
+      magorTreeDate: []
     }
   },
+  created () {
+    this.initMajorList()
+  },
   methods: {
+    /**
+     * 初始化专业树信息
+     */
+    initMajorList () {
+      tree({degreeType: this.selectDegree}).then(data => {
+        this.magorTreeDate = data.result
+      })
+    },
+    /**
+     * 选择学历层次
+     * @param tabName 学历层次标识
+     */
     selectDegreeHandle (tabName) {
-      console.info(tabName)
+      this.selectDegree = tabName
+
+      this.initMajorList()
     },
     raiseHandle () {
       this.formType = 'raise'; this.showForm = true
+    },
+    selectMagor (row) {
+      console.info(row)
     }
   }
 }

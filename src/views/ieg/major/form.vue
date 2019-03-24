@@ -126,6 +126,8 @@
   </Modal>
 </template>
 <script>
+import { save, modify } from '@/api/ieg/major'
+
 export default {
   name: 'IegMajor_Form',
   props: {
@@ -171,14 +173,73 @@ export default {
         ratioAssessDifficulty: 5
       },
       majorRules: {
-
+        name: { required: true, message: '请输入专业名称', trigger: 'blur' },
+        code: { required: true, message: '请输入专业编码', trigger: 'blur' }
       }
     }
   },
   methods: {
     ok () {
+      this.$refs.majorForm.validate((valid) => {
+        if (valid) {
+          this[this.type]()
+        } else {
+          this.loading = false
+          this.$nextTick(() => { this.loading = true })
+        }
+      })
+    },
+    /**
+     * 新增专业信息
+     */
+    raise () {
+      save(this.majorForm).then(data => {
+        if (data.isSuccess) this.callBack('新增成功')
+      })
+    },
+    /**
+     * 修改专业信息
+     */
+    modify () {
+      modify(this.majorForm).then(data => {
+        if (data.isSuccess) this.callBack('修改成功')
+      })
+    },
+    /**
+     * 操作后
+     */
+    callBack (msg) {
+      this.$Message.success(msg)
+      this.cancel()
+
+      this.$emit('refresh', '')
     },
     cancel () {
+      this.$refs.majorForm.resetFields()
+
+      this.majorForm = {
+        parentId: null,
+        degreeType: 'B',
+        levelType: 'One',
+        name: null,
+        code: null,
+        sort: 1,
+        describe: null,
+        workDirection: null,
+        course: null,
+        studentScope: null,
+        ratioSexMan: 50,
+        ratioSexWoman: 50,
+        ratioCourseArts: 50,
+        ratioCourseSci: 50,
+        ratioAssessWhole: 5,
+        ratioAssessWork: 5,
+        ratioAssessStudy: 5,
+        ratioAssessShool: 5,
+        ratioAssessDifficulty: 5
+      }
+
+      this.isShow = false
     },
     visibleChange (isOpen) {
     }

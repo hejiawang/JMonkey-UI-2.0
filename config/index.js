@@ -40,6 +40,13 @@ module.exports = {
           '^/ms': '/ms'
         }
       },
+      '/ieg': {
+        target: baseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ieg': '/ieg'
+        }
+      },
       '/poserver.zz': {
         target: baseUrl,
         changeOrigin: true,
