@@ -16,6 +16,11 @@ export default {
     text: String,
     subtext: String
   },
+  watch: {
+    value (val) {
+      this.resize()
+    }
+  },
   data () {
     return {
       dom: null

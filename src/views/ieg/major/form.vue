@@ -126,13 +126,14 @@
   </Modal>
 </template>
 <script>
-import { save, modify } from '@/api/ieg/major'
+import { save, modify, findDto } from '@/api/ieg/major'
 
 export default {
   name: 'IegMajor_Form',
   props: {
     value: {type: Boolean, default: false, required: true},
-    type: {type: String, default: 'raise', required: true}
+    type: {type: String, default: 'raise', required: true},
+    majorId: {type: String, default: '', required: true}
   },
   watch: {
     value (val) { this.isShow = val },
@@ -241,7 +242,16 @@ export default {
 
       this.isShow = false
     },
+    /**
+     * visibleChange
+     * @param isOpen true is open
+     */
     visibleChange (isOpen) {
+      if (isOpen && this.type === 'modify' && !this.$CV.isEmpty(this.majorId)) {
+        findDto(this.majorId).then(data => {
+          this.majorForm = data.result
+        })
+      }
     }
   }
 }

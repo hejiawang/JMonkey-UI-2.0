@@ -40,9 +40,20 @@ export const modify = (obj) => {
  * 获取专业信息
  * @param id 专业id
  */
-export const find = (id) => {
+export const findDto = (id) => {
   return request({
-    url: '/ieg/major/find/' + id,
+    url: '/ieg/major/findDto/' + id,
     method: 'get'
+  })
+}
+
+/**
+ * 删除专业信息
+ * @param id 专业id
+ */
+export const del = (id) => {
+  return request({
+    url: '/ieg/major/delete/' + id,
+    method: 'delete'
   })
 }

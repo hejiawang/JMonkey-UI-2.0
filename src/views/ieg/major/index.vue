@@ -1,12 +1,12 @@
 <template>
   <Layout v-layoutIn>
     <Row :gutter="32" class="ieg-major-main">
-      <Col span="6">
+      <Col span="6" class="ieg-major-h">
         <Row class="ieg-major-button">
           <ButtonGroup >
             <Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle"> 新增 </Button>
-            <Button type="warning" icon="ios-brush-outline"> 修改 </Button>
-            <Button type="error" icon="ios-trash-outline"> 删除 </Button>
+            <Button type="warning" icon="ios-brush-outline" @click="modifyHandle"> 修改 </Button>
+            <Button type="error" icon="ios-trash-outline" @click="deleteHandle"> 删除 </Button>
           </ButtonGroup>
         </Row>
         <Row class="ieg-major-degree">
@@ -15,24 +15,28 @@
             <TabPane label="专科" icon="md-crop" name="Z"/>
           </Tabs>
         </Row>
-        <Tree :data="treeDate" ref="magorTree" @on-select-change="selectMagor"/>
+        <Row class="ieg-major-tree">
+          <Tree :data="treeDate" ref="magorTree" @on-select-change="selectMagor"/>
+        </Row>
       </Col>
-      <Col span="18">
+      <Col span="18" class="ieg-major-h">
+        <CIegMajorView :majorId="majorIdC"/>
       </Col>
 
-      <CIegMajorForm v-model="showForm" :type="formType" @refresh="initMajorList"/>
+      <CIegMajorForm v-model="showForm" :type="formType" :majorId="majorIdC" @refresh="initMajorList"/>
     </Row>
   </Layout>
 </template>
 <script>
 import CIegMajorForm from '@/views/ieg/major/form'
-import { tree } from '@/api/ieg/major'
+import CIegMajorView from '@/views/ieg/major/view'
+import { tree, del } from '@/api/ieg/major'
 import { converKey } from '@/utils/common'
 
 export default {
   name: 'IegMajor',
   components: {
-    CIegMajorForm
+    CIegMajorForm, CIegMajorView
   },
   computed: {
     /**
@@ -49,7 +53,8 @@ export default {
       showForm: false,
       formType: '',
       selectDegree: 'B',
-      magorTreeDate: []
+      magorTreeDate: [],
+      majorIdC: ''
     }
   },
   created () {
@@ -73,11 +78,49 @@ export default {
 
       this.initMajorList()
     },
+    /**
+     * 新增专业信息
+     */
     raiseHandle () {
       this.formType = 'raise'; this.showForm = true
     },
+    /**
+     * 修改专业信息
+     */
+    modifyHandle () {
+      if (this.$CV.isEmpty(this.majorIdC)) {
+        this.$Message.error('请选择专业信息')
+        return
+      }
+
+      this.formType = 'modify'; this.showForm = true
+    },
+    /**
+     * 删除专业信息
+     */
+    deleteHandle () {
+      if (this.$CV.isEmpty(this.majorIdC)) {
+        this.$Message.error('请选择专业信息')
+        return
+      }
+
+      this.$CDelete({
+        'content': '<p>该专业将被删除, 是否继续？</p>',
+        'confirm': () => {
+          del(this.majorIdC).then(() => {
+            this.initMajorList()
+            this.$Message.success('删除成功')
+          })
+        }
+      })
+    },
+    /**
+     * 选择专业
+     * @param row
+     */
     selectMagor (row) {
-      console.info(row)
+      if (this.$CV.isEmpty(row)) this.majorIdC = ''
+      else this.majorIdC = row[0].id
     }
   }
 }
@@ -85,6 +128,9 @@ export default {
 <style lang="scss">
   .ieg-major-main{
     height: 100%;
+    .ieg-major-h {
+      height: 100%;
+    }
     .ieg-major-button{
       height: 60px;
     }
@@ -97,6 +143,10 @@ export default {
         width: 17px;
         height: 17px;
       }
+    }
+    .ieg-major-tree {
+      height: calc(100% - 120px);
+      overflow-y: auto;
     }
   }
 </style>

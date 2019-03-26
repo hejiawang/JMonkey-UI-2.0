@@ -1,5 +1,5 @@
 <template>
-  <div ref="dom" class="charts chart-pie" />
+  <div ref="dom" class="charts chart-circle" />
 </template>
 
 <script>
@@ -10,11 +10,13 @@ import { onEvent, offEvent } from '@/utils/common'
 echarts.registerTheme('tdTheme', tdTheme)
 
 export default {
-  name: 'ChartPie',
+  name: 'ChartRadar',
   props: {
     value: Array,
+    indicator: Array,
     text: String,
-    subtext: String
+    subtext: String,
+    hint: String
   },
   watch: {
     value (val) {
@@ -40,36 +42,30 @@ export default {
       this.dom.resize()
     },
     init () {
-      let legend = this.value.map(_ => _.name)
-
       let option = {
         title: {
           text: this.text,
-          subtext: this.subtext,
-          x: 'center'
+          subtext: this.subtext
         },
         tooltip: {
-          trigger: 'item',
-          formatter: '{b} : {c} ({d}%)'
+          trigger: 'item'
         },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
-          data: legend
-        },
+        polar: [
+          {
+            indicator: this.indicator
+          }
+        ],
+        calculable: true,
         series: [
           {
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: this.value,
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            name: this.text,
+            type: 'radar',
+            data: [
+              {
+                value: this.value,
+                name: this.hint
               }
-            }
+            ]
           }
         ]
       }
