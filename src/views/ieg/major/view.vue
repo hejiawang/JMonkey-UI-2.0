@@ -37,19 +37,19 @@
 
     <Row style="margin-bottom: 20px;"> <Alert show-icon>统 计 信 息 </Alert> </Row>
     <Row>
-      <Row v-if="majorForm.studentScope">
-        <span>学生规模: </span>
-        <span>{{majorForm.studentScope}}</span>
-      </Row>
-      <Row :gutter="32">
-        <Col span="8">
-          <ChartCircle :value="sexData" text="" style="height: 280px;" ref="majorSexChart"/>
+      <Row :gutter="10">
+        <Col span="7">
+          <ChartCircle :value="sexData" text="" style="height: 200px;" ref="majorSexChart"/>
         </Col>
-        <Col span="8">
-          <ChartCircle :value="courseData" text="" style="height: 280px;" ref="majorCourseChart"/>
+        <Col span="7">
+          <ChartCircle :value="courseData" text="" style="height: 200px;" ref="majorCourseChart"/>
         </Col>
-        <Col span="8">
-          <ChartRadar :value="assessData" :indicator="indicator" hint="专业满意度评价" style="height: 280px;" ref="majorAssessChart"/>
+        <Col span="7">
+          <ChartRadar :value="assessData" :indicator="indicator" hint="专业满意度评价" style="height: 200px;" ref="majorAssessChart"/>
+        </Col>
+        <Col span="3" v-if="majorForm.studentScope">
+          <p><Icon type="ios-contacts" />学生规模: </p>
+          <p>{{majorForm.studentScope}}</p>
         </Col>
       </Row>
     </Row>
