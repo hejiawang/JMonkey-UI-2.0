@@ -1,6 +1,18 @@
 import request from '@/utils/request'
 
 /**
+ * 分页查询信息
+ * @param query query
+ */
+export const list = (query) => {
+  return request({
+    url: '/ieg/school/list',
+    method: 'get',
+    params: query
+  })
+}
+
+/**
  * 保存院校信息
  * @param obj 院校信息
  */

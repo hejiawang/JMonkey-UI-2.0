@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "animate.css": "^3.7.0",
+    "area-data": "^5.0.6",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "countup.js": "^1.9.3",
