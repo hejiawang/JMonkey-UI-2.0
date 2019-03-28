@@ -179,3 +179,29 @@ html, body{
 .ql-container{
   font-size: 17px !important;
 }
+
+.al-selector {
+  .ivu-row {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+  .ivu-col {
+    padding-left: 0px !important;
+    padding-right: 10px !important;
+  }
+  .ivu-select-single  {
+    .ivu-select-selection{
+      height: 36px;
+    }
+    .ivu-select-selected-value {
+      height: 36px;
+      line-height: 36px;
+      font-size: 14px;
+    }
+    .ivu-select-placeholder{
+      height: 36px;
+      line-height: 36px;
+      font-size: 14px;
+    }
+  }
+}

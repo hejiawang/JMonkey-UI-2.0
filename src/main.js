@@ -15,6 +15,7 @@ import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
+import iviewArea from 'iview-area'
 
 import layoutIn from '@/directive/layoutIn'
 import CPage from '@/components/layout/page'
@@ -36,6 +37,7 @@ Vue.use(CConfirm)
 Vue.use(CViladate)
 Vue.use(VOrgTree)
 Vue.use(preview)
+Vue.use(iviewArea)
 Vue.component('CPage', CPage)
 Vue.directive('layoutIn', layoutIn)
 
