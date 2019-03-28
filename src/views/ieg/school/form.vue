@@ -1,6 +1,6 @@
 <template>
   <Layout v-layoutIn class="ieg-school-form">
-    <Form ref="schoolForm" :model="schoolForm" :label-width="90">
+    <Form ref="schoolForm" :model="schoolForm" :rules="schoolRules" :label-width="90">
       <Row> <Alert show-icon>基 本 信 息</Alert> </Row>
       <Row :gutter="32">
         <Col span="4">
@@ -29,7 +29,7 @@
           <Row :gutter="10">
             <Col span="14">
               <FormItem label="院校地址" prop="area">
-                <al-selector v-model="area" level="2" class="al-selector" />
+                <al-selector v-model="area" level="2" data-type="code" class="al-selector" />
               </FormItem>
             </Col>
             <Col span="10">
@@ -58,14 +58,17 @@
             </Col>
           </Row>
           <Row :gutter="32">
-            <Col span="8">
+            <Col span="6">
               <FormItem label="归属类型" prop="attachType">
                 <CDictSelect v-model="schoolForm.attachType" dict="ieg-school-attach-type"/>
               </FormItem>
             </Col>
-            <Col span="16">
-              <FormItem label="归属信息" prop="attachInfo">
+            <Col span="6">
                 <Input type="text" v-model.trim="schoolForm.attachInfo" :maxlength="50" clearable />
+            </Col>
+            <Col span="12">
+              <FormItem label="院校特性" prop="features">
+                <CDictSelect v-model="schoolForm.features" type="radio" :multiple="true" dict="ieg-school-features-type"/>
               </FormItem>
             </Col>
           </Row>
@@ -98,39 +101,37 @@
           </FormItem>
         </Col>
       </Row>
-      <Row :gutter="32">
-        <Col span="20" offset="4">
-          <FormItem label="院校特性" prop="features">
-            <CDictSelect v-model="schoolForm.features" type="radio" multiple="true" dict="ieg-school-features-type"/>
-          </FormItem>
-        </Col>
-      </Row>
 
       <Row> <Alert show-icon>详 细 信 息</Alert> </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 学校简介</Divider>
-        <CEditor v-model="schoolForm.describe" imgAction="/ieg/school/detail/file" :imgData="{content: 'describe'}" />
+        <CEditor v-model="schoolForm.detail.describe" imgRef="describe"
+                 imgAction="/ieg/school/detail/file" :imgData="{content: 'describe'}" />
       </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 学院简介</Divider>
-        <CEditor v-model="schoolForm.faculty" imgAction="/ieg/school/detail/file" :imgData="{content: 'faculty'}"/>
+        <CEditor v-model="schoolForm.detail.faculty" imgRef="faculty"
+                 imgAction="/ieg/school/detail/file" :imgData="{content: 'faculty'}"/>
       </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 食宿条件</Divider>
-        <CEditor v-model="schoolForm.life" imgAction="/ieg/school/detail/file" :imgData="{content: 'life'}"/>
+        <CEditor v-model="schoolForm.detail.life" imgRef="life"
+                 imgAction="/ieg/school/detail/file" :imgData="{content: 'life'}"/>
       </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 当地气候饮食情况</Divider>
-        <CEditor v-model="schoolForm.environment" imgAction="/ieg/school/detail/file" :imgData="{content: 'environment'}"/>
+        <CEditor v-model="schoolForm.detail.environment" imgRef="environment"
+                 imgAction="/ieg/school/detail/file" :imgData="{content: 'environment'}"/>
       </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 奖学金设置</Divider>
-        <CEditor v-model="schoolForm.scholarship" imgAction="/ieg/school/detail/file" :imgData="{content: 'scholarship'}"/>
+        <CEditor v-model="schoolForm.detail.scholarship" imgRef="scholarship"
+                 imgAction="/ieg/school/detail/file" :imgData="{content: 'scholarship'}"/>
       </Row>
     </Form>
     <Row :gutter="120">
       <Col offset="8" span="4"><Button long type="info" @click="goBack">取 消</Button></Col>
-      <Col span="4"><Button long type="success" >确 定</Button></Col>
+      <Col span="4"><Button long type="success" @click="submitHandle" :loading="loading">确 定</Button></Col>
     </Row>
   </Layout>
 </template>
@@ -138,19 +139,38 @@
 import CDictSelect from '@/components/sys/dict/select'
 import CUploadImg from '@/components/layout/uploadImg'
 import CEditor from '@/components/layout/editor'
+import { save } from '@/api/ieg/school'
 
 export default {
   name: 'IegSchoolForm',
   components: {
     CDictSelect, CUploadImg, CEditor
   },
-  computed: {
-    area () {
-      return [this.schoolForm.areaProvince, this.schoolForm.areaCity, this.schoolForm.areaArea]
+  watch: {
+    area (val) {
+      if (this.area.length >= 1) this.schoolForm.areaProvince = this.area[0]
+      if (this.area.length >= 2) this.schoolForm.areaCity = this.area[1]
+      if (this.area.length >= 3) this.schoolForm.areaArea = this.area[2]
     }
   },
   data () {
+    /**
+     * 校验院校地址是否为空
+     * @param rule
+     * @param value
+     * @param callback
+     */
+    const validateArea = (rule, value, callback) => {
+      if (this.area.length < 3) {
+        callback(new Error('请输入院校地址'))
+      } else {
+        callback()
+      }
+    }
+
     return {
+      loading: false,
+      area: [],
       schoolForm: {
         logo: null,
         name: null,
@@ -160,6 +180,7 @@ export default {
         areaCity: null,
         areaArea: null,
         areaDetail: null,
+        sort: 1,
         majorType: null,
         degreeType: 'B',
         attachType: null,
@@ -170,21 +191,51 @@ export default {
         ratioSatisfyEdu: 5,
         ratioSatisfyWork: 5,
         features: [],
-        describe: '',
-        faculty: '',
-        life: '',
-        environment: '',
-        scholarship: ''
+        detail: {
+          describe: '',
+          faculty: '',
+          life: '',
+          environment: '',
+          scholarship: ''
+        }
+      },
+      schoolRules: {
+        name: { required: true, message: '请输入院校名称', trigger: 'blur' },
+        area: { required: true, validator: validateArea, trigger: 'change' },
+        majorType: { required: true, message: '请选择院校类型', trigger: 'change' },
+        degreeType: { required: true, message: '请选择学历层次', trigger: 'change' },
+        attachType: { required: true, message: '请选择归属类型', trigger: 'change' }
       }
     }
   },
   created () {
   },
   methods: {
+    /**
+     * 放回列表页
+     */
     goBack () {
       this.$CSure({
         'content': '放弃本次编辑内容？',
         'confirm': () => { this.$router.replace({path: '/ieg/school'}) }
+      })
+    },
+    /**
+     * 确定事件
+     */
+    submitHandle () {
+      this.loading = true
+      this.$refs.schoolForm.validate((valid) => {
+        if (valid) {
+          save(this.schoolForm).then(data => {
+            if (data.isSuccess) {
+              this.$Message.success('新增成功')
+              this.$router.replace({path: '/ieg/school'})
+            }
+          })
+        } else {
+          this.loading = false
+        }
       })
     }
   }

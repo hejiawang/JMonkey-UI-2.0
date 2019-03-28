@@ -2,7 +2,7 @@
   <Row class="message-publish-form-editor">
     <Upload
       style="height: 0px;"
-      class="content-image"
+      :class="'content-image-' + imgRef"
       :action="imgAction"
       :data="imgData"
       :headers="headersObj"
@@ -55,20 +55,10 @@ export default {
      */
     headersObj () {
       return { Authorization: 'Bearer ' + getToken() }
-    }
-  },
-  props: {
-    value: {required: true},
-    imgAction: {required: true},
-    imgData: {required: false}
-  },
-  watch: {
-    value (val) { this.editorContent = val },
-    editorContent (val) { this.$emit('input', val) }
-  },
-  data () {
-    return {
-      editorOption: {
+    },
+    editorOption () {
+      let _t = this
+      return {
         placeholder: '',
         theme: 'snow', // or 'bubble'
         modules: {
@@ -76,13 +66,27 @@ export default {
             container: toolbarOptions,
             handlers: {
               'image': function (value) {
-                // 上传图片
-                if (value) document.querySelector('.content-image input').click()
+                let s = '.content-image-' + _t.imgRef + ' input'
+                if (value) document.querySelector(s).click()
               }
             }
           }
         }
-      },
+      }
+    }
+  },
+  props: {
+    value: {required: true},
+    imgAction: {required: true},
+    imgData: {required: false},
+    imgRef: {type: String, default: 'img', required: false} // 防止一个页面多余该组件时,Upload的class重复
+  },
+  watch: {
+    value (val) { this.editorContent = val },
+    editorContent (val) { this.$emit('input', val) }
+  },
+  data () {
+    return {
       editorContent: ''
     }
   },
