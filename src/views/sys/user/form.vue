@@ -3,7 +3,7 @@
     <Form ref="userForm" :model="userForm" :rules="userRules" :label-width="90" class="userForm">
       <Row  :gutter="32">
         <Col span="12">
-          <CUploadPhoto v-model="userForm.photo"/>
+          <CUploadImg v-model="userForm.photo" title="上传用户头像" action="/sys/user/uploadPhoto"/>
         </Col>
         <Col span="12">
           <FormItem label="用户名称" prop="username">
@@ -54,12 +54,12 @@
 <script>
 import CDept from '@/components/sys/dept'
 import CRole from '@/components/sys/role'
-import CUploadPhoto from '@/views/sys/user/UploadPhoto'
+import CUploadImg from '@/components/layout/uploadImg'
 import { checkUsername, save, modify } from '@/api/sys/user'
 
 export default {
   name: 'SysUser_Form',
-  components: { CDept, CRole, CUploadPhoto },
+  components: { CDept, CRole, CUploadImg },
   props: {
     value: {type: Boolean, default: false, required: true},
     userInfo: {type: Object, default: null, required: false},
