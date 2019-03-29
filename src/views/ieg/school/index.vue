@@ -14,7 +14,7 @@
       <Button type="info" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
               @click="enrollHandle">录取信息</Button>
       <Button icon="md-help" :disabled="currentSchoolIndex === null"
-              @click="problemHandle">问题信息</Button>
+              @click="problemHandle">常见问题</Button>
     </Row>
     <Row>
       <RadioGroup v-model="currentSchoolIndex" vertical style="width: 100%;">
@@ -154,18 +154,6 @@ export default {
       this.currentSchoolIndex = index
     },
     /**
-     * 新增院校信息
-     */
-    raiseHandle () {
-      this.$router.replace({path: '/ieg/school/form'})
-    },
-    /**
-     * 修改院校信息
-     */
-    modifyHandle () {
-      this.$router.replace({path: '/ieg/school/form', query: {schoolId: this.currentSchool.id}})
-    },
-    /**
      * 删除院校信息
      */
     deleteHandle () {
@@ -180,6 +168,18 @@ export default {
           })
         }
       })
+    },
+    /**
+     * 新增院校信息
+     */
+    raiseHandle () {
+      this.$router.replace({path: '/ieg/school/form'})
+    },
+    /**
+     * 修改院校信息
+     */
+    modifyHandle () {
+      this.$router.replace({path: '/ieg/school/form', query: {schoolId: this.currentSchool.id}})
     },
     /**
      * 学院信息
@@ -198,7 +198,9 @@ export default {
     /**
      * 考生对学校的常见问题以及回答
      */
-    problemHandle () {}
+    problemHandle () {
+      this.$router.replace({path: '/ieg/schoolProblem', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+    }
   }
 }
 </script>
