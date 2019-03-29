@@ -280,7 +280,7 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
     .ieg-school-form-detail-row {
-      height: 300px;
+      height: 500px;
     }
   }
 </style>

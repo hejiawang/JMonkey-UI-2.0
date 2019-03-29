@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel"
+  <Modal v-model="isShow" :title="title" :loading="loading" @on-ok="ok" @on-cancel="cancel" :mask-closable="false"
          @on-visible-change="visibleChange" width="1050">
     <Form ref="schoolProblemForm" :model="schoolProblemForm" :rules="schoolProblemRules" :label-width="90">
       <FormItem label="问题描述" prop="problem">

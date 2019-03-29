@@ -194,7 +194,9 @@ export default {
     /**
      * 学校历年录取信息
      */
-    enrollHandle () {},
+    enrollHandle () {
+      this.$router.replace({path: '/ieg/schoolEnrollRecord', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+    },
     /**
      * 考生对学校的常见问题以及回答
      */

@@ -1,5 +1,5 @@
 <template>
-  <Row class="message-publish-form-editor">
+  <Row class="app-layout-editor">
     <Upload
       style="height: 0px;"
       :class="'content-image-' + imgRef"
@@ -126,7 +126,7 @@ export default {
 }
 </script>
 <style lang="scss">
-  .message-publish-form-editor{
+  .app-layout-editor{
     height: calc(100% - 130px);
     .quill-editor{
       height: 100%;
