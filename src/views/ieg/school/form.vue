@@ -139,7 +139,7 @@
 import CDictSelect from '@/components/sys/dict/select'
 import CUploadImg from '@/components/layout/uploadImg'
 import CEditor from '@/components/layout/editor'
-import { save } from '@/api/ieg/school'
+import { save, modify, findDto } from '@/api/ieg/school'
 
 export default {
   name: 'IegSchoolForm',
@@ -209,8 +209,23 @@ export default {
     }
   },
   created () {
+    this.initSchool()
   },
   methods: {
+    /**
+     * 如果是修改操作，获取院校信息
+     */
+    initSchool () {
+      if (!this.$CV.isEmpty(this.$route.query.schoolId)) {
+        findDto(this.$route.query.schoolId).then(data => {
+          this.schoolForm = data.result
+
+          if (!this.$CV.isEmpty(this.schoolForm.areaProvince)) this.area.push(this.schoolForm.areaProvince)
+          if (!this.$CV.isEmpty(this.schoolForm.areaCity)) this.area.push(this.schoolForm.areaCity)
+          if (!this.$CV.isEmpty(this.schoolForm.areaArea)) this.area.push(this.schoolForm.areaArea)
+        })
+      }
+    },
     /**
      * 放回列表页
      */
@@ -227,14 +242,32 @@ export default {
       this.loading = true
       this.$refs.schoolForm.validate((valid) => {
         if (valid) {
-          save(this.schoolForm).then(data => {
-            if (data.isSuccess) {
-              this.$Message.success('新增成功')
-              this.$router.replace({path: '/ieg/school'})
-            }
-          })
+          if (this.$CV.isEmpty(this.$route.query.schoolId)) this.raiseHandle()
+          else this.modifyHandle()
         } else {
           this.loading = false
+        }
+      })
+    },
+    /**
+     * 新增院校信息
+     */
+    raiseHandle () {
+      save(this.schoolForm).then(data => {
+        if (data.isSuccess) {
+          this.$Message.success('新增成功')
+          this.$router.replace({path: '/ieg/school'})
+        }
+      })
+    },
+    /**
+     * 修改院校信息
+     */
+    modifyHandle () {
+      modify(this.schoolForm).then(data => {
+        if (data.isSuccess) {
+          this.$Message.success('修改成功')
+          this.$router.replace({path: '/ieg/school'})
         }
       })
     }

@@ -1,13 +1,20 @@
 <template>
   <Layout v-layoutIn>
     <Row style="height: 60px;">
-      <Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle">新增学院</Button>
-      <Button type="warning" icon="ios-brush-outline">修改学院</Button>
-      <Button type="error" icon="ios-trash-outline">删除学院</Button>
-      <Button type="success" icon="ios-at-outline">学院信息</Button>
-      <Button type="primary" icon="logo-designernews">专业信息</Button>
-      <Button type="info" icon="ios-menu-outline">录取信息</Button>
-      <Button icon="md-help">问题信息</Button>
+      <Button type="primary" icon="ios-add-circle-outline"
+              @click="raiseHandle">新增学院</Button>
+      <Button type="warning" icon="ios-brush-outline" :disabled="currentSchoolIndex === null"
+              @click="modifyHandle">修改学院</Button>
+      <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null"
+              @click="deleteHandle">删除学院</Button>
+      <Button type="success" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
+              @click="facultyHandle">院系信息</Button>
+      <Button type="primary" icon="logo-designernews" :disabled="currentSchoolIndex === null"
+              @click="majorHandle">专业信息</Button>
+      <Button type="info" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
+              @click="enrollHandle">录取信息</Button>
+      <Button icon="md-help" :disabled="currentSchoolIndex === null"
+              @click="problemHandle">问题信息</Button>
     </Row>
     <Row>
       <RadioGroup v-model="currentSchoolIndex" vertical style="width: 100%;">
@@ -23,7 +30,7 @@
 <script>
 import store from '@/store'
 import pca from 'area-data/pca'
-import { list } from '@/api/ieg/school'
+import { list, del } from '@/api/ieg/school'
 
 export default {
   name: 'IegSchool',
@@ -33,6 +40,12 @@ export default {
      */
     schoolTableHeight () {
       return store.getters.windowHeight - 280
+    },
+    /**
+     * 当前选中的院校信息
+     */
+    currentSchool () {
+      return this.$CV.isEmpty(this.currentSchoolIndex) ? null : this.schoolTableData[this.currentSchoolIndex]
     }
   },
   data () {
@@ -122,12 +135,16 @@ export default {
      * init school table list data
      */
     initList () {
+      this.currentSchoolIndex = null
+
       this.listLoading = true
       list(this.listQuery).then(data => {
         this.schoolTableData = data.rows
         this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
 
         this.listLoading = false
+
+        if (this.schoolTableData.length > 0) this.currentSchoolIndex = 0
       })
     },
     /**
@@ -141,7 +158,47 @@ export default {
      */
     raiseHandle () {
       this.$router.replace({path: '/ieg/school/form'})
-    }
+    },
+    /**
+     * 修改院校信息
+     */
+    modifyHandle () {
+      this.$router.replace({path: '/ieg/school/form', query: {schoolId: this.currentSchool.id}})
+    },
+    /**
+     * 删除院校信息
+     */
+    deleteHandle () {
+      this.$CDelete({
+        'content': '<p>名称为 <span style="color: #f60">' + this.currentSchool.name + '</span> 的院校将被删除</p><p>是否继续？</p>',
+        'confirm': () => {
+          del(this.currentSchool.id).then((data) => {
+            this.initList()
+
+            if (data.result) this.$Message.success('删除成功')
+            else this.$Message.error('删除失败')
+          })
+        }
+      })
+    },
+    /**
+     * 学院信息
+     */
+    facultyHandle () {
+      this.$router.replace({path: '/ieg/faculty', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+    },
+    /**
+     * 专业信息
+     */
+    majorHandle () {},
+    /**
+     * 学校历年录取信息
+     */
+    enrollHandle () {},
+    /**
+     * 考生对学校的常见问题以及回答
+     */
+    problemHandle () {}
   }
 }
 </script>

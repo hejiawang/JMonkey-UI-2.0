@@ -42,8 +42,7 @@ export default {
      * 当前选中的任务信息
      */
     currentTask () {
-      if (!this.$CV.isEmpty(this.currentTaskIndex)) return this.taskTableData[this.currentTaskIndex]
-      else return null
+      return this.$CV.isEmpty(this.currentTaskIndex) ? null : this.taskTableData[this.currentTaskIndex]
     }
   },
   data () {

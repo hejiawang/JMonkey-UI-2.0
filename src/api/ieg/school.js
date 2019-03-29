@@ -46,3 +46,14 @@ export const del = (id) => {
     method: 'delete'
   })
 }
+
+/**
+ * 获取院校Dto信息
+ * @param id 院校id
+ */
+export const findDto = (id) => {
+  return request({
+    url: '/ieg/school/findDto/' + id,
+    method: 'get'
+  })
+}
