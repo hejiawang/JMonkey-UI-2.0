@@ -160,6 +160,14 @@ export default {
     fCourseSci () { return this.majorForm.ratioCourseSci }
   },
   data () {
+    const validateParent = (rule, value, callback) => {
+      if (this.majorForm.levelType !== 'One' && this.$CV.isEmpty(value)) {
+        callback(new Error('请选择上级专业'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       loading: true,
       isShow: false,
@@ -186,7 +194,8 @@ export default {
       },
       majorRules: {
         name: { required: true, message: '请输入专业名称', trigger: 'blur' },
-        code: { required: true, message: '请输入专业编码', trigger: 'blur' }
+        code: { required: true, message: '请输入专业编码', trigger: 'blur' },
+        parentId: { required: false, validator: validateParent, trigger: 'blur' }
       }
     }
   },

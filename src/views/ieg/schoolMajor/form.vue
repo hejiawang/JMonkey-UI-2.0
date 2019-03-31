@@ -59,6 +59,14 @@
               </FormItem>
             </Col>
           </Row>
+          <Row>
+            <Col span="24">
+              <FormItem label="专业特性" prop="features">
+                <CDictSelect v-model="schoolMajorForm.features" type="radio"
+                             :multiple="true" dict="ieg-school-major-features-type"/>
+              </FormItem>
+            </Col>
+          </Row>
           <Row :gutter="32">
             <Col span="6">
               <FormItem label="男生比例" prop="ratioSexMan">
@@ -134,7 +142,7 @@
           </Row>
         </TabPane>
         <TabPane label="专业介绍" icon="ios-grid" name="major_detail">
-          <Row style="height: 450px">
+          <Row style="height: 530px">
             <CEditor v-model="schoolMajorForm.describe" imgRef="major_detail"
                      imgAction="/ieg/school/major/file" :imgData="{schoolId: schoolId}"/>
           </Row>
@@ -148,11 +156,12 @@ import { save, modify } from '@/api/ieg/schoolMajor'
 import CEditor from '@/components/layout/editor'
 import CIegFacultySelect from '@/views/ieg/faculty/select'
 import CIegMajorSelect from '@/views/ieg/major/selectMajor'
+import CDictSelect from '@/components/sys/dict/select'
 
 export default {
   name: 'IegSchoolMajor_Form',
   components: {
-    CEditor, CIegFacultySelect, CIegMajorSelect
+    CEditor, CIegFacultySelect, CIegMajorSelect, CDictSelect
   },
   props: {
     value: {type: Boolean, default: false, required: true},
@@ -206,9 +215,11 @@ export default {
         ratioAssessDifficulty: 5,
         describe: null,
         workDirection: null,
-        course: null
+        course: null,
+        features: []
       },
       schoolMajorRules: {
+        majorName: { required: true, message: '请输入专业名称', trigger: 'blur' }
       }
     }
   },
@@ -300,7 +311,8 @@ export default {
         ratioAssessDifficulty: 5,
         describe: null,
         workDirection: null,
-        course: null
+        course: null,
+        features: []
       }
 
       this.isShow = false
