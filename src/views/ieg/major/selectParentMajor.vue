@@ -4,12 +4,6 @@
            readonly :disabled="disabled"/>
 
     <Modal v-model="isShow" :title="title" @on-visible-change="visibleChange" footer-hide class="app-layout-major">
-      <Row class="app-layout-major-degree">
-        <Tabs @on-click="selectDegreeHandle">
-          <TabPane label="本科" icon="ios-cube-outline" name="B"/>
-          <TabPane label="专科" icon="md-crop" name="Z"/>
-        </Tabs>
-      </Row>
       <Row class="app-layout-major-tree">
         <Tree :data="treeDate" ref="magorTree" @on-select-change="selectMagor"/>
       </Row>
@@ -26,7 +20,8 @@ export default {
     value: {type: String, default: null, required: false},
     title: {type: String, default: '请选择专业', required: false},
     disabled: {type: Boolean, default: false, required: false},
-    level: {type: String, default: 'One', required: false}
+    level: {type: String, default: 'One', required: false},
+    degreeType: {type: String, default: 'B', required: false}
   },
   watch: {
     value (val) {
@@ -55,7 +50,6 @@ export default {
       majorId: null,
       majorName: null,
       isShow: false,
-      selectDegree: 'B',
       magorTreeDate: []
     }
   },
@@ -66,14 +60,19 @@ export default {
     showMajorTree () {
       this.isShow = true
     },
-    clearMajor () {},
+    /**
+     * 清除选择的专业
+     */
+    clearMajor () {
+      this.majorId = null; this.majorName = null
+    },
     /**
      * init major tree data
      * @param isOpen true
      */
     visibleChange (isOpen) {
       if (isOpen) {
-        tree({degreeType: this.selectDegree}).then(data => {
+        tree({degreeType: this.degreeType}).then(data => {
           this.magorTreeDate = data.result
         })
       }
@@ -83,8 +82,6 @@ export default {
      * @param tabName 专业类型名称
      */
     selectDegreeHandle (tabName) {
-      this.selectDegree = tabName
-
       tree({degreeType: this.selectDegree}).then(data => {
         this.magorTreeDate = data.result
       })

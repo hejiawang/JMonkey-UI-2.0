@@ -6,7 +6,7 @@
       <Row  :gutter="32">
         <Col span="12">
           <FormItem label="学历层次" prop="degreeType">
-            <RadioGroup v-model="majorForm.degreeType" >
+            <RadioGroup v-model="majorForm.degreeType" @on-change="selectDegreeType" >
               <Radio label="B">本科</Radio>
               <Radio label="Z">专科</Radio>
             </RadioGroup>
@@ -37,7 +37,8 @@
       <Row  :gutter="32">
         <Col span="12">
           <FormItem label="上级专业" prop="parentId">
-            <CIegSPMajor v-model="majorForm.parentId" :disabled="majorForm.levelType === 'One'" :level="majorForm.levelType"/>
+            <CIegSPMajor v-model="majorForm.parentId" :degreeType="majorForm.degreeType"
+                         :disabled="majorForm.levelType === 'One'" :level="majorForm.levelType"/>
           </FormItem>
         </Col>
         <Col span="12">
@@ -186,6 +187,9 @@ export default {
      * 变更专业层级分类
      */
     selectLevelType (o) {
+      this.majorForm.parentId = null
+    },
+    selectDegreeType (o) {
       this.majorForm.parentId = null
     },
     ok () {
