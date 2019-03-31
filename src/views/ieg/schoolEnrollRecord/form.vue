@@ -65,6 +65,7 @@
 <script>
 import { save, modify } from '@/api/ieg/schoolEnrollRecord'
 import CEditor from '@/components/layout/editor'
+import moment from 'moment'
 
 export default {
   name: 'IegSchoolEnrollRecord_Form',
@@ -110,7 +111,13 @@ export default {
       }
     }
   },
+  created () {
+    this.buildNowYear()
+  },
   methods: {
+    buildNowYear () {
+      this.recordForm.year = parseInt(moment(new Date()).format('YYYY'))
+    },
     /**
      * ok handle
      */

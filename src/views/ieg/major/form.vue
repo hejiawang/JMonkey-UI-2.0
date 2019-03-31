@@ -6,7 +6,7 @@
       <Row  :gutter="32">
         <Col span="12">
           <FormItem label="学历层次" prop="degreeType">
-            <RadioGroup v-model="majorForm.degreeType">
+            <RadioGroup v-model="majorForm.degreeType" >
               <Radio label="B">本科</Radio>
               <Radio label="Z">专科</Radio>
             </RadioGroup>
@@ -14,7 +14,7 @@
         </Col>
         <Col span="12">
           <FormItem label="层级分类" prop="levelType">
-            <RadioGroup v-model="majorForm.levelType">
+            <RadioGroup v-model="majorForm.levelType" @on-change="selectLevelType">
               <Radio label="One">门类</Radio>
               <Radio label="Two">学科</Radio>
               <Radio label="Three">专业</Radio>
@@ -37,7 +37,7 @@
       <Row  :gutter="32">
         <Col span="12">
           <FormItem label="上级专业" prop="parentId">
-            <Input type="text" v-model.trim="majorForm.parentId" :maxlength="50" clearable />
+            <CIegSPMajor v-model="majorForm.parentId" :disabled="majorForm.levelType === 'One'" :level="majorForm.levelType"/>
           </FormItem>
         </Col>
         <Col span="12">
@@ -127,9 +127,11 @@
 </template>
 <script>
 import { save, modify, findDto } from '@/api/ieg/major'
+import CIegSPMajor from '@/views/ieg/major/selectParentMajor'
 
 export default {
   name: 'IegMajor_Form',
+  components: { CIegSPMajor },
   props: {
     value: {type: Boolean, default: false, required: true},
     type: {type: String, default: 'raise', required: true},
@@ -180,6 +182,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * 变更专业层级分类
+     */
+    selectLevelType (o) {
+      this.majorForm.parentId = null
+    },
     ok () {
       this.$refs.majorForm.validate((valid) => {
         if (valid) {

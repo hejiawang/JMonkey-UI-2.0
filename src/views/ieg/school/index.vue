@@ -1,20 +1,35 @@
 <template>
   <Layout v-layoutIn>
     <Row style="height: 60px;">
-      <Button type="primary" icon="ios-add-circle-outline"
-              @click="raiseHandle">新增学院</Button>
-      <Button type="warning" icon="ios-brush-outline" :disabled="currentSchoolIndex === null"
-              @click="modifyHandle">修改学院</Button>
-      <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null"
-              @click="deleteHandle">删除学院</Button>
-      <Button type="success" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
-              @click="facultyHandle">院系信息</Button>
-      <Button type="primary" icon="logo-designernews" :disabled="currentSchoolIndex === null"
-              @click="majorHandle">专业信息</Button>
-      <Button type="info" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
-              @click="enrollHandle">录取信息</Button>
-      <Button icon="md-help" :disabled="currentSchoolIndex === null"
-              @click="problemHandle">常见问题</Button>
+      <Col span="16">
+        <Button type="primary" icon="ios-add-circle-outline"
+                @click="raiseHandle">新增学院</Button>
+        <Button type="warning" icon="ios-brush-outline" :disabled="currentSchoolIndex === null"
+                @click="modifyHandle">修改学院</Button>
+        <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null"
+                @click="deleteHandle">删除学院</Button>
+        <Button type="success" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
+                @click="facultyHandle">院系信息</Button>
+        <Button type="primary" icon="logo-designernews" :disabled="currentSchoolIndex === null"
+                @click="majorHandle">专业信息</Button>
+        <Button type="info" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
+                @click="enrollHandle">录取信息</Button>
+        <Button icon="md-help" :disabled="currentSchoolIndex === null"
+                @click="problemHandle">常见问题</Button>
+      </Col>
+      <Col span="8">
+        <Form ref="searchForm" :model="listQuery" :label-width="80" inline style="float: right">
+          <FormItem label="院校名称">
+            <Input type="text" v-model="listQuery.name" />
+          </FormItem>
+          <FormItem :label-width="0">
+            <ButtonGroup>
+              <Button icon="ios-search" @click="search" />
+              <Button icon="ios-trash-outline" @click="restSearch" />
+            </ButtonGroup>
+          </FormItem>
+        </Form>
+      </Col>
     </Row>
     <Row>
       <RadioGroup v-model="currentSchoolIndex" vertical style="width: 100%;">
@@ -52,6 +67,7 @@ export default {
     return {
       listLoading: false,
       listQuery: {
+        name: null,
         current: 1,
         size: 10,
         total: 0
@@ -148,6 +164,22 @@ export default {
       })
     },
     /**
+     * 重置角色列表搜索条件
+     */
+    restSearch () {
+      ['name'].forEach(param => (
+        this.listQuery[param] = null
+      ))
+      this.search()
+    },
+    /**
+     * 角色列表搜索
+     */
+    search () {
+      this.$refs.schoolPage.rest()
+      this.initList()
+    },
+    /**
      * 点击table一行时触发
      */
     clickTable (row, index) {
@@ -179,29 +211,53 @@ export default {
      * 修改院校信息
      */
     modifyHandle () {
-      this.$router.replace({path: '/ieg/school/form', query: {schoolId: this.currentSchool.id}})
+      this.$router.replace(
+        {path: '/ieg/school/form', query: {schoolId: this.currentSchool.id}}
+      )
     },
     /**
      * 学院信息
      */
     facultyHandle () {
-      this.$router.replace({path: '/ieg/faculty', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+      this.$router.replace(
+        {
+          path: '/ieg/faculty',
+          query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
+        }
+      )
     },
     /**
      * 专业信息
      */
-    majorHandle () {},
+    majorHandle () {
+      this.$router.replace(
+        {
+          path: '/ieg/schoolMajor',
+          query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
+        }
+      )
+    },
     /**
      * 学校历年录取信息
      */
     enrollHandle () {
-      this.$router.replace({path: '/ieg/schoolEnrollRecord', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+      this.$router.replace(
+        {
+          path: '/ieg/schoolEnrollRecord',
+          query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
+        }
+      )
     },
     /**
      * 考生对学校的常见问题以及回答
      */
     problemHandle () {
-      this.$router.replace({path: '/ieg/schoolProblem', query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}})
+      this.$router.replace(
+        {
+          path: '/ieg/schoolProblem',
+          query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
+        }
+      )
     }
   }
 }

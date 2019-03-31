@@ -65,6 +65,8 @@ export default {
      * 初始化专业树信息
      */
     initMajorList () {
+      this.majorIdC = ''
+
       tree({degreeType: this.selectDegree}).then(data => {
         this.magorTreeDate = data.result
       })
