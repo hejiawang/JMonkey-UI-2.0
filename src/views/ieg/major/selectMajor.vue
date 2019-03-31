@@ -3,7 +3,7 @@
     <Input type="text" v-model="majorName" icon="ios-close" @on-focus="showMajorTree" @on-click="clearMajor"
            readonly :disabled="disabled"/>
 
-    <Modal v-model="isShow" :title="title" @on-visible-change="visibleChange" footer-hide>
+    <Modal v-model="isShow" title="请选择专业" @on-visible-change="visibleChange" footer-hide>
       <Tree :data="treeDate" ref="magorTree" @on-select-change="selectMagor"/>
     </Modal>
   </Row>
@@ -13,12 +13,10 @@ import { tree, findDto } from '@/api/ieg/major'
 import { converKey } from '@/utils/common'
 
 export default {
-  name: 'CIegMajor',
+  name: 'CIegMajorSelect',
   props: {
     value: {type: String, default: null, required: false},
-    title: {type: String, default: '请选择专业', required: false},
     disabled: {type: Boolean, default: false, required: false},
-    level: {type: String, default: 'One', required: false},
     degreeType: {type: String, default: 'B', required: false}
   },
   watch: {
@@ -80,13 +78,12 @@ export default {
      * @param row
      */
     selectMagor (row) {
-      if (this.$CV.isEmpty(row) || this.level === 'One') return
+      if (this.$CV.isEmpty(row) || row[0].levelType !== 'Three') return
 
-      if ((this.level === 'Two' && row[0].levelType === 'One') ||
-        (this.level === 'Three' && row[0].levelType === 'Two')) {
-        this.majorId = row[0].id; this.majorName = row[0].name
-        this.isShow = false
-      }
+      this.majorId = row[0].id; this.majorName = row[0].name
+      this.$emit('renderMajorName', this.majorName)
+
+      this.isShow = false
     }
   }
 }

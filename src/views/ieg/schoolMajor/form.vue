@@ -14,8 +14,8 @@
               </FormItem>
             </Col>
             <Col span="16">
-              <FormItem label="选择专业" prop="majorId" v-if="schoolMajorForm.recordType === 'Common'">
-                <Input type="text" v-model.trim="schoolMajorForm.majorId" :maxlength="50" clearable />
+              <FormItem label="选择专业" prop="majorName" v-if="schoolMajorForm.recordType === 'Common'">
+                <CIegMajorSelect v-model="schoolMajorForm.majorId" :degreeType="schoolMajorForm.degreeType" @renderMajorName="renderMajorName"/>
               </FormItem>
               <FormItem label="专业名称" prop="majorName" v-if="schoolMajorForm.recordType === 'Other'">
                 <Input type="text" v-model.trim="schoolMajorForm.majorName" :maxlength="50" clearable />
@@ -25,7 +25,7 @@
           <Row :gutter="32">
             <Col span="8">
               <FormItem label="学历层次" prop="degreeType">
-                <RadioGroup v-model="schoolMajorForm.degreeType" >
+                <RadioGroup v-model="schoolMajorForm.degreeType" @on-change="selectDegreeType">
                   <Radio label="B">本科</Radio>
                   <Radio label="Z">专科</Radio>
                 </RadioGroup>
@@ -147,11 +147,12 @@
 import { save, modify } from '@/api/ieg/schoolMajor'
 import CEditor from '@/components/layout/editor'
 import CIegFacultySelect from '@/views/ieg/faculty/select'
+import CIegMajorSelect from '@/views/ieg/major/selectMajor'
 
 export default {
   name: 'IegSchoolMajor_Form',
   components: {
-    CEditor, CIegFacultySelect
+    CEditor, CIegFacultySelect, CIegMajorSelect
   },
   props: {
     value: {type: Boolean, default: false, required: true},
@@ -161,7 +162,11 @@ export default {
   },
   watch: {
     value (val) { this.isShow = val },
-    isShow (val) { this.$emit('input', val) }
+    isShow (val) { this.$emit('input', val) },
+    fSexMan (val) { this.schoolMajorForm.ratioSexWoman = 100 - val },
+    fSexWoman (val) { this.schoolMajorForm.ratioSexMan = 100 - val },
+    fCourseArts (val) { this.schoolMajorForm.ratioCourseSci = 100 - val },
+    fCourseSci (val) { this.schoolMajorForm.ratioCourseArts = 100 - val }
   },
   computed: {
     title () {
@@ -170,7 +175,11 @@ export default {
         'raise': '新增院校专业信息'
       }
       return titleAry[this.type]
-    }
+    },
+    fSexMan () { return this.schoolMajorForm.ratioSexMan },
+    fSexWoman () { return this.schoolMajorForm.ratioSexWoman },
+    fCourseArts () { return this.schoolMajorForm.ratioCourseArts },
+    fCourseSci () { return this.schoolMajorForm.ratioCourseSci }
   },
   data () {
     return {
@@ -179,10 +188,10 @@ export default {
       schoolMajorForm: {
         sort: 1,
         degreeType: 'B',
-        facultyId: null,
+        facultyId: '',
         recordType: 'Common',
-        majorId: null,
-        majorName: null,
+        majorId: '',
+        majorName: '',
         ratioSexMan: 50,
         ratioSexWoman: 50,
         ratioCourseArts: 50,
@@ -204,8 +213,25 @@ export default {
     }
   },
   methods: {
+    /**
+     * selectRecordType
+     */
     selectRecordType (o) {
       this.schoolMajorForm.majorId = null; this.schoolMajorForm.majorName = null
+    },
+    /**
+     * selectDegreeType
+     */
+    selectDegreeType (o) {
+      if (this.schoolMajorForm.recordType === 'Common') {
+        this.schoolMajorForm.majorId = null; this.schoolMajorForm.majorName = null
+      }
+    },
+    /**
+     * renderMajorName
+     */
+    renderMajorName (o) {
+      this.schoolMajorForm.majorName = o
     },
     /**
      * ok handle
@@ -256,10 +282,10 @@ export default {
       this.schoolMajorForm = {
         sort: 1,
         degreeType: 'B',
-        facultyId: null,
+        facultyId: '',
         recordType: 'Common',
-        majorId: null,
-        majorName: null,
+        majorId: '',
+        majorName: '',
         ratioSexMan: 50,
         ratioSexWoman: 50,
         ratioCourseArts: 50,

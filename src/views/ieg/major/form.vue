@@ -140,7 +140,11 @@ export default {
   },
   watch: {
     value (val) { this.isShow = val },
-    isShow (val) { this.$emit('input', val) }
+    isShow (val) { this.$emit('input', val) },
+    fSexMan (val) { this.majorForm.ratioSexWoman = 100 - val },
+    fSexWoman (val) { this.majorForm.ratioSexMan = 100 - val },
+    fCourseArts (val) { this.majorForm.ratioCourseSci = 100 - val },
+    fCourseSci (val) { this.majorForm.ratioCourseArts = 100 - val }
   },
   computed: {
     title () {
@@ -149,7 +153,11 @@ export default {
         'raise': '新增专业信息'
       }
       return titleAry[this.type]
-    }
+    },
+    fSexMan () { return this.majorForm.ratioSexMan },
+    fSexWoman () { return this.majorForm.ratioSexWoman },
+    fCourseArts () { return this.majorForm.ratioCourseArts },
+    fCourseSci () { return this.majorForm.ratioCourseSci }
   },
   data () {
     return {
@@ -189,6 +197,9 @@ export default {
     selectLevelType (o) {
       this.majorForm.parentId = null
     },
+    /**
+     * selectDegreeType
+     */
     selectDegreeType (o) {
       this.majorForm.parentId = null
     },
