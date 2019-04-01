@@ -95,6 +95,11 @@ export default {
         return
       }
 
+      if (this.majorIdC.indexOf('other') !== -1) {
+        this.$Message.error('该专业不可修改')
+        return
+      }
+
       this.formType = 'modify'; this.showForm = true
     },
     /**
@@ -103,6 +108,11 @@ export default {
     deleteHandle () {
       if (this.$CV.isEmpty(this.majorIdC)) {
         this.$Message.error('请选择专业信息')
+        return
+      }
+
+      if (this.majorIdC.indexOf('other') !== -1) {
+        this.$Message.error('该专业不可删除')
         return
       }
 

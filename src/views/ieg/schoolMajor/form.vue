@@ -59,7 +59,7 @@
               </FormItem>
             </Col>
           </Row>
-          <Row>
+          <Row :gutter="32">
             <Col span="24">
               <FormItem label="专业特性" prop="features">
                 <CDictSelect v-model="schoolMajorForm.features" type="radio"
@@ -251,6 +251,8 @@ export default {
       this.$refs.schoolMajorForm.validate((valid) => {
         if (valid) {
           this.schoolMajorForm.schoolId = this.schoolId
+          if (this.schoolMajorForm.recordType === 'Other') this.schoolMajorForm.majorId = 'other_three'
+
           this[this.type]()
         } else {
           this.loading = false
