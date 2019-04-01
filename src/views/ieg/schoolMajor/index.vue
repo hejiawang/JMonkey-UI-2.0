@@ -20,7 +20,7 @@
     </Row>
 
     <CIegSchoolMajorForm v-model="showForm" :type="formType" :schoolId="schoolId"
-                          :major="currentMajor" @refresh="initList"/>
+                          :major="currentMajor" @refresh="initMajorOne"/>
   </Layout>
 </template>
 <script>
@@ -242,7 +242,19 @@ export default {
     /**
      * 历年录取信息
      */
-    enrollHandle (row) {}
+    enrollHandle (row) {
+      this.$router.replace(
+        {
+          path: '/ieg/schoolMajorEnrollRecord',
+          query: {
+            schoolId: this.schoolId,
+            schoolName: this.schoolName,
+            majorId: row.id,
+            majorName: row.majorName
+          }
+        }
+      )
+    }
   }
 }
 </script>
