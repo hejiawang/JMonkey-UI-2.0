@@ -226,7 +226,19 @@ export default {
     /**
      * 常见问题
      */
-    problemHandle (row) {},
+    problemHandle (row) {
+      this.$router.replace(
+        {
+          path: '/ieg/schoolMajorProblem',
+          query: {
+            schoolId: this.schoolId,
+            schoolName: this.schoolName,
+            majorId: row.id,
+            majorName: row.majorName
+          }
+        }
+      )
+    },
     /**
      * 历年录取信息
      */
