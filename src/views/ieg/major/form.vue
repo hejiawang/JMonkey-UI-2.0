@@ -52,7 +52,7 @@
       <FormItem label="专业简介" prop="describe">
         <Input type="textarea" v-model.trim="majorForm.describe" :maxlength="500" clearable />
       </FormItem>
-      <FormItem label="从业方向" prop="workDirection">
+      <FormItem label="就业方向" prop="workDirection">
         <Input type="textarea" v-model.trim="majorForm.workDirection" :maxlength="500" clearable />
       </FormItem>
       <FormItem label="专业课程" prop="course">

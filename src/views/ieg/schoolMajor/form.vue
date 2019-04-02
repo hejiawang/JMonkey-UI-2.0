@@ -128,7 +128,7 @@
           </Row>
           <Row :gutter="32">
             <Col span="24">
-              <FormItem label="从业方向" prop="workDirection">
+              <FormItem label="就业方向" prop="workDirection">
                 <Input type="textarea" v-model.trim="schoolMajorForm.workDirection" :maxlength="500" clearable />
               </FormItem>
             </Col>

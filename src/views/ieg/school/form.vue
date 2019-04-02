@@ -119,11 +119,6 @@
                  imgAction="/ieg/school/detail/file" :imgData="{content: 'life'}"/>
       </Row>
       <Row class="ieg-school-form-detail-row">
-        <Divider><Icon type="ios-information-circle-outline" size="16"/> 当地气候饮食情况</Divider>
-        <CEditor v-model="schoolForm.detail.environment" imgRef="environment"
-                 imgAction="/ieg/school/detail/file" :imgData="{content: 'environment'}"/>
-      </Row>
-      <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 奖学金设置</Divider>
         <CEditor v-model="schoolForm.detail.scholarship" imgRef="scholarship"
                  imgAction="/ieg/school/detail/file" :imgData="{content: 'scholarship'}"/>
@@ -195,7 +190,6 @@ export default {
           describe: '',
           faculty: '',
           life: '',
-          environment: '',
           scholarship: ''
         }
       },
