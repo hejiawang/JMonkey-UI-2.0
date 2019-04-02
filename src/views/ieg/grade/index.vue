@@ -3,7 +3,7 @@
     <Row style="height: 60px;">
       <Col span="16">
         <Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle">新增</Button>
-        <Button type="success" icon="ios-at-outline" @click="importHandle">导入</Button>
+        <Button type="success" icon="ios-filing" @click="importHandle">导入</Button>
       </Col>
       <Col span="8">
         <Form ref="searchForm" :model="listQuery" :label-width="80" inline style="float: right">
@@ -28,10 +28,12 @@
     </Row>
 
     <CIegGradeForm v-model="showForm" :type="formType" :grade="currenGrade" @refresh="initList"/>
+    <CIegGradeImport v-model="showImport" @refresh="initList"/>
   </Layout>
 </template>
 <script>
 import CIegGradeForm from '@/views/ieg/grade/form'
+import CIegGradeImport from '@/views/ieg/grade/import'
 import moment from 'moment'
 import { list, del } from '@/api/ieg/grade'
 import store from '@/store'
@@ -39,7 +41,7 @@ import store from '@/store'
 export default {
   name: 'IegGrade',
   components: {
-    CIegGradeForm
+    CIegGradeForm, CIegGradeImport
   },
   computed: {
     /**
@@ -51,6 +53,7 @@ export default {
   },
   data () {
     return {
+      showImport: false,
       showForm: false,
       formType: '',
       currenGrade: null,
@@ -173,7 +176,7 @@ export default {
      * 导入
      */
     importHandle () {
-
+      this.showImport = true
     }
   }
 }
