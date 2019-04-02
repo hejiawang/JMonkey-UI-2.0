@@ -3,7 +3,8 @@
     <Row style="height: 60px;">
       <Col span="16">
         <Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle">新增</Button>
-        <Button type="success" icon="ios-filing" @click="importHandle">导入</Button>
+        <Button type="success" icon="ios-filing" @click="importHandle">批量导入</Button>
+        <Button type="error" icon="ios-trash-outline" @click="deleteAllHandle">批量删除</Button>
       </Col>
       <Col span="8">
         <Form ref="searchForm" :model="listQuery" :label-width="80" inline style="float: right">
@@ -20,22 +21,21 @@
       </Col>
     </Row>
     <Row>
-      <Table :height="tableHeight" border :columns="tableColumns"
-             :data="tableData" :loading="listLoading" stripe @on-row-click="clickTable"/>
+      <Table :height="tableHeight" border :columns="tableColumns" :data="tableData" :loading="listLoading" stripe/>
     </Row>
     <Row>
       <CPage v-model="listQuery" @on-list="initList" ref="gradePage"/>
     </Row>
 
     <CIegGradeForm v-model="showForm" :type="formType" :grade="currenGrade" @refresh="initList"/>
-    <CIegGradeImport v-model="showImport" @refresh="initList"/>
+    <CIegGradeImport v-model="showImport" @refresh="initImportList"/>
   </Layout>
 </template>
 <script>
 import CIegGradeForm from '@/views/ieg/grade/form'
 import CIegGradeImport from '@/views/ieg/grade/import'
 import moment from 'moment'
-import { list, del } from '@/api/ieg/grade'
+import { list, del, delByYearAndType } from '@/api/ieg/grade'
 import store from '@/store'
 
 export default {
@@ -62,6 +62,10 @@ export default {
         type: 'L',
         size: 10,
         total: 0
+      },
+      gradeType: {
+        L: '理科',
+        W: '文科'
       },
       tableColumns: [],
       tableData: [],
@@ -131,6 +135,13 @@ export default {
       })
     },
     /**
+     * 批量插入后刷新页面
+     */
+    initImportList (o) {
+      this.listQuery.year = o.year; this.listQuery.type = o.type
+      this.initList()
+    },
+    /**
      * 选择文理类型
      * @param o
      */
@@ -173,10 +184,26 @@ export default {
       })
     },
     /**
-     * 导入
+     * 批量导入
      */
     importHandle () {
       this.showImport = true
+    },
+    /**
+     * 批量删除
+     */
+    deleteAllHandle () {
+      this.$CDelete({
+        'content': '<p> <span style="color: #f60">' + this.listQuery.year + '年' + this.gradeType[this.listQuery.type] + '</span>的一分一段表将被清空</p><p>是否继续？</p>',
+        'confirm': () => {
+          delByYearAndType(this.listQuery).then(data => {
+            this.initList()
+
+            if (data.result) this.$Message.success('删除成功')
+            else this.$Message.error('删除失败')
+          })
+        }
+      })
     }
   }
 }

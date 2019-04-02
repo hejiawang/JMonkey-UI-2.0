@@ -46,3 +46,27 @@ export const del = (id) => {
     method: 'delete'
   })
 }
+
+/**
+ * 批量删除
+ * @param query 删除条件
+ */
+export const delByYearAndType = (query) => {
+  return request({
+    url: '/ieg/grade/delByYearAndType',
+    method: 'get',
+    params: query
+  })
+}
+
+/**
+ * 批量导入
+ * @param obj
+ */
+export const importGrade = (obj) => {
+  return request({
+    url: '/ieg/grade/importGrade',
+    method: 'post',
+    data: obj
+  })
+}

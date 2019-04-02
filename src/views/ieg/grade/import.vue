@@ -1,15 +1,60 @@
 <template>
-  <Modal v-model="isShow" title="批量导入一分一段表" :loading="loading" @on-ok="ok" @on-cancel="cancel" width="500" >
-    1
+  <Modal v-model="isShow" title="批量导入一分一段表" width="500" >
+    <Form ref="gradeForm" :model="gradeForm" :rules="gradeRules"  :label-width="50">
+      <FormItem label="年份" prop="year">
+        <InputNumber :max="10000" :min="1" v-model="gradeForm.year" style="width: 100%"/>
+      </FormItem>
+      <FormItem label="类型" prop="type">
+        <RadioGroup v-model="gradeForm.type" >
+          <Radio label="L">理科</Radio>
+          <Radio label="W">文科</Radio>
+        </RadioGroup>
+      </FormItem>
+      <FormItem :label-width="0" prop="filePath">
+        <Upload
+          type="drag"
+          action="/ieg/grade/file"
+          :headers="headersObj"
+          :max-size="20480"
+          :format="['xlsx']"
+          :default-file-list="filePath"
+          :on-success="handleSuccess"
+          :on-format-error="handleFormatError"
+          :on-exceeded-size="handleMaxSize"
+          :on-remove="handleRemove">
+          <div style="padding: 20px 0">
+            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <p>点 击 或 拖 拽 上 传 附 件 </p>
+          </div>
+        </Upload>
+      </FormItem>
+    </Form>
+
+    <div slot="footer">
+      <Button type="text" @click="cancel">取消</Button>
+      <Button type="info" :loading="downloadDemoLoading" @click="downloadDemo">模板下载</Button>
+      <Button type="primary" :loading="loading" @click="ok">批量上传</Button>
+    </div>
   </Modal>
 </template>
 <script>
 import moment from 'moment'
+import excel from '@/utils/excel'
+import { getToken } from '@/utils/auth'
+import { importGrade } from '@/api/ieg/grade'
 
 export default {
   name: 'IegGrade_Import',
   props: {
     value: {type: Boolean, default: false, required: true}
+  },
+  computed: {
+    /**
+     * token
+     */
+    headersObj () {
+      return { Authorization: 'Bearer ' + getToken() }
+    }
   },
   watch: {
     value (val) { this.isShow = val },
@@ -17,8 +62,23 @@ export default {
   },
   data () {
     return {
-      loading: true,
-      isShow: false
+      downloadDemoLoading: false,
+      loading: false,
+      isShow: false,
+      gradeForm: {
+        year: 2000,
+        type: 'L',
+        filePath: ''
+      },
+      gradeRules: {
+        filePath: {required: true, message: '请上传文件', trigger: 'change'}
+      },
+      filePath: [],
+      downloadDemoData: [
+        {score: 652, number: 5, sort: 1},
+        {score: 651, number: 3, sort: 6},
+        {score: 650, number: 15, sort: 9}
+      ]
     }
   },
   created () {
@@ -28,19 +88,96 @@ export default {
     buildNowYear () {
       this.gradeForm.year = parseInt(moment(new Date()).format('YYYY'))
     },
+    /**
+     * handleMaxSize
+     * @param file
+     */
+    handleMaxSize (file) {
+      this.$Message.error('请上传20M以内的消息附件')
+    },
+    /**
+     * 格式错误
+     * @param file
+     */
+    handleFormatError (file) {
+      this.$Message.error('请上传xlsx格式的文件')
+    },
+    /**
+     * handleSuccess
+     * @param data
+     * @param file
+     */
+    handleSuccess (data, file) {
+      if (data.isSuccess) {
+        this.filePath = [{name: file.name, path: data.result}]
+        this.gradeForm.filePath = data.result
+      }
+    },
+    /**
+     * handleRemove
+     * @param file
+     * @param fileList
+     */
+    handleRemove (file, fileList) {
+      this.filePath = []
+      this.gradeForm.filePath = ''
+    },
+    /**
+     * submit
+     */
     ok () {
+      this.loading = true
       this.$refs.gradeForm.validate((valid) => {
         if (valid) {
+          this.submit()
         } else {
           this.loading = false
-          this.$nextTick(() => { this.loading = true })
+        }
+      })
+    },
+    /**
+     * submit
+     */
+    submit () {
+      importGrade(this.gradeForm).then(data => {
+        console.info(data)
+        if (data.result) {
+          this.$Message.success('批量上传成功')
+          this.$emit('refresh', this.gradeForm)
+
+          this.cancel()
+        } else {
+          this.$Message.success('批量上传失败, 请检查文档格式是否与模板一致')
         }
       })
     },
     cancel () {
+      this.gradeForm = {
+        year: 2000,
+        type: 'L',
+        filePath: ''
+      }
+
       this.buildNowYear()
 
       this.isShow = false
+    },
+    /**
+     * 下载模板
+     */
+    downloadDemo () {
+      this.downloadDemoLoading = true
+
+      const params = {
+        title: ['分数', '人数', '累计'],
+        key: ['score', 'number', 'sort'],
+        data: this.downloadDemoData,
+        autoWidth: true,
+        filename: '一分一段表上传模板下载'
+      }
+      excel.export_array_to_excel(params)
+
+      this.downloadDemoLoading = false
     }
   }
 }
