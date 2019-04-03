@@ -2,8 +2,9 @@
   <Layout v-layoutIn>
     <Row style="height: 60px;">
       <Col span="16">
-        <Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle">新增</Button>
-        <Button type="success" icon="ios-filing" @click="importHandle">批量导入</Button>
+        <!--<Button type="primary" icon="ios-add-circle-outline" @click="raiseHandle">新增</Button>-->
+        <Button type="primary" icon="ios-filing" @click="importHandle">批量导入</Button>
+        <Button type="success" icon="ios-add-circle-outline" @click="checkHandle">批量校验</Button>
         <Button type="error" icon="ios-trash-outline" @click="deleteAllHandle">批量删除</Button>
       </Col>
       <Col span="8">
@@ -28,7 +29,7 @@
     </Row>
 
     <CIegGradeForm v-model="showForm" :type="formType" :grade="currenGrade" @refresh="initList"/>
-    <CIegGradeImport v-model="showImport" @refresh="initImportList"/>
+    <CIegGradeImport v-model="showImport" :type="importType" @refresh="initImportList"/>
   </Layout>
 </template>
 <script>
@@ -53,6 +54,7 @@ export default {
   },
   data () {
     return {
+      importType: 'submit',
       showImport: false,
       showForm: false,
       formType: '',
@@ -69,7 +71,15 @@ export default {
       },
       tableColumns: [],
       tableData: [],
-      listLoading: false
+      listLoading: false,
+      tagColor: {
+        No: 'warning',
+        Yes: 'success'
+      },
+      tagName: {
+        No: '未校验',
+        Yes: '已校验'
+      }
     }
   },
   created () {
@@ -93,13 +103,21 @@ export default {
         {title: '人数', key: 'number', tooltip: true},
         {title: '累计', key: 'sort', tooltip: true},
         {
+          title: '状态',
+          key: 'state',
+          tooltip: true,
+          render: (h, params) => {
+            return h('Tag', { props: { color: this.tagColor[params.row.state] } }, this.tagName[params.row.state])
+          }
+        }
+        /* {
           title: '操作',
           key: 'action',
           align: 'center',
           fixed: 'right',
           width: 200,
           render: (h, params) => { return this.bindEvent(h, params) }
-        }
+        } */
       ]
     },
     /**
@@ -187,7 +205,13 @@ export default {
      * 批量导入
      */
     importHandle () {
-      this.showImport = true
+      this.showImport = true; this.importType = 'submit'
+    },
+    /**
+     * 批量校验
+     */
+    checkHandle () {
+      this.showImport = true; this.importType = 'check'
     },
     /**
      * 批量删除

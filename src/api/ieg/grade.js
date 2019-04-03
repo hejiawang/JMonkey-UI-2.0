@@ -70,3 +70,27 @@ export const importGrade = (obj) => {
     data: obj
   })
 }
+
+/**
+ * 校验一分一段表是否正确
+ * @param obj obj
+ */
+export const checkGrade = (obj) => {
+  return request({
+    url: '/ieg/grade/checkGrade',
+    method: 'post',
+    data: obj
+  })
+}
+
+/**
+ * 校验是否存在
+ * @param obj obj
+ */
+export const checkExist = (obj) => {
+  return request({
+    url: '/ieg/grade/checkExist',
+    method: 'post',
+    data: obj
+  })
+}

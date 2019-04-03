@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="isShow" title="批量导入一分一段表" width="500" >
+  <Modal v-model="isShow" :title="title" width="500" >
     <Form ref="gradeForm" :model="gradeForm" :rules="gradeRules"  :label-width="50">
       <FormItem label="年份" prop="year">
         <InputNumber :max="10000" :min="1" v-model="gradeForm.year" style="width: 100%"/>
@@ -41,12 +41,13 @@
 import moment from 'moment'
 import excel from '@/utils/excel'
 import { getToken } from '@/utils/auth'
-import { importGrade } from '@/api/ieg/grade'
+import { importGrade, checkGrade, checkExist } from '@/api/ieg/grade'
 
 export default {
   name: 'IegGrade_Import',
   props: {
-    value: {type: Boolean, default: false, required: true}
+    value: {type: Boolean, default: false, required: true},
+    type: {type: String, default: 'submit', required: true}
   },
   computed: {
     /**
@@ -54,6 +55,17 @@ export default {
      */
     headersObj () {
       return { Authorization: 'Bearer ' + getToken() }
+    },
+    /**
+     * title
+     * @returns {*}
+     */
+    title () {
+      let titleAry = {
+        'submit': '批量导入一分一段表',
+        'check': '批量校验一分一段表'
+      }
+      return titleAry[this.type]
     }
   },
   watch: {
@@ -61,6 +73,27 @@ export default {
     isShow (val) { this.$emit('input', val) }
   },
   data () {
+    /**
+     * 校验是否存在
+     * @param rule
+     * @param value
+     * @param callback
+     */
+    const validExist = (rule, value, callback) => {
+      if (this.$CV.isEmpty(value)) {
+        callback(new Error('请上传一分一段表Excel文件'))
+      } else {
+        if (this.type === 'submit') {
+          checkExist(this.gradeForm).then(data => {
+            if (data.result) callback(new Error(this.gradeForm.year + '' + this.gradeType[this.gradeForm.type] + '的一分一段表已存在, 请先批量删除'))
+            else callback()
+          })
+        } else {
+          callback()
+        }
+      }
+    }
+
     return {
       downloadDemoLoading: false,
       loading: false,
@@ -71,7 +104,11 @@ export default {
         filePath: ''
       },
       gradeRules: {
-        filePath: {required: true, message: '请上传文件', trigger: 'change'}
+        filePath: {required: true, validator: validExist, trigger: 'change'}
+      },
+      gradeType: {
+        L: '理科',
+        W: '文科'
       },
       filePath: [],
       downloadDemoData: [
@@ -129,7 +166,7 @@ export default {
       this.loading = true
       this.$refs.gradeForm.validate((valid) => {
         if (valid) {
-          this.submit()
+          this[this.type]()
         } else {
           this.loading = false
         }
@@ -140,18 +177,38 @@ export default {
      */
     submit () {
       importGrade(this.gradeForm).then(data => {
-        console.info(data)
         if (data.result) {
           this.$Message.success('批量上传成功')
           this.$emit('refresh', this.gradeForm)
 
           this.cancel()
         } else {
+          this.loading = false
           this.$Message.success('批量上传失败, 请检查文档格式是否与模板一致')
         }
       })
     },
+    /**
+     * 校验
+     */
+    check () {
+      checkGrade(this.gradeForm).then(data => {
+        if (data.result) {
+          this.$Message.success('批量校验成功')
+          this.$emit('refresh', this.gradeForm)
+
+          this.cancel()
+        } else {
+          this.loading = false
+          this.$Message.success('批量校验失败, 请检查一分一段表数据是否正确')
+        }
+      })
+    },
+    /**
+     * 关闭modal
+     */
     cancel () {
+      this.$refs.gradeForm.resetFields()
       this.gradeForm = {
         year: 2000,
         type: 'L',
@@ -159,7 +216,9 @@ export default {
       }
 
       this.buildNowYear()
+      this.filePath = []
 
+      this.loading = false
       this.isShow = false
     },
     /**
