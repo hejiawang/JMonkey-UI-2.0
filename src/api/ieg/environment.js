@@ -54,3 +54,14 @@ export const findByAreaCity = (areaCity) => {
     method: 'get'
   })
 }
+
+/**
+ * delete
+ * @param id
+ */
+export const del = (id) => {
+  return request({
+    url: '/ieg/environment/delete/' + id,
+    method: 'delete'
+  })
+}

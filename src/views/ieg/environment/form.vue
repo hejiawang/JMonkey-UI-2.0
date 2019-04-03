@@ -141,7 +141,10 @@ export default {
      * @param isOpen true
      */
     visibleChange (isOpen) {
-      if (isOpen && this.type === 'modify') this.environmentForm = Object.assign({}, this.environment)
+      if (isOpen && this.type === 'modify') {
+        this.environmentForm = Object.assign({}, this.environment)
+        this.area = [this.environmentForm.areaProvince, this.environmentForm.areaCity]
+      }
     }
   }
 }
