@@ -1,12 +1,17 @@
 <template>
-  <Drawer :title="drawerTitle" width="500" v-model="isShow"
+  <Drawer :title="drawerTitle" width="800" v-model="isShow"
           @on-visible-change="showDrawer" class="ieg-enroll-info">
-    1
+    <CIegEnrollInfoForm :enroll="enroll" />
   </Drawer>
 </template>
 <script>
+import CIegEnrollInfoForm from '@/views/ieg/enrollInfo/form'
+
 export default {
   name: 'IegEnrollInfo',
+  components: {
+    CIegEnrollInfoForm
+  },
   watch: {
     value (val) { this.isShow = val },
     isShow (val) { this.$emit('input', val) }

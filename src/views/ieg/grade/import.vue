@@ -16,7 +16,7 @@
           action="/ieg/grade/file"
           :headers="headersObj"
           :max-size="20480"
-          :format="['xlsx']"
+          :format="['xlsx', 'xls']"
           :default-file-list="filePath"
           :on-success="handleSuccess"
           :on-format-error="handleFormatError"
