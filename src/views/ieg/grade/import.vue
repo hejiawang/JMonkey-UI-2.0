@@ -193,14 +193,14 @@ export default {
      */
     check () {
       checkGrade(this.gradeForm).then(data => {
-        if (data.result) {
-          this.$Message.success('批量校验成功')
+        this.$Message.success(data.message)
+
+        if (data.isSuccess) {
           this.$emit('refresh', this.gradeForm)
 
           this.cancel()
         } else {
           this.loading = false
-          this.$Message.success('批量校验失败, 请检查一分一段表数据是否正确')
         }
       })
     },

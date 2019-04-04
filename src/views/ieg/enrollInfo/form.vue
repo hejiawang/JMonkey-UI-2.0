@@ -19,13 +19,15 @@
       </Upload>
     </Row>
     <Row :gutter="32">
-      <Col span="12"><Button type="info" :loading="downloadDemoLoading" long>模 板 下 载</Button></Col>
-      <Col span="12"><Button type="primary" :loading="loading" long>上 传 文 件</Button></Col>
+      <Col span="12"><Button type="info" :loading="downloadDemoLoading" long @click="downloadDemo">模 板 下 载</Button></Col>
+      <Col span="12"><Button type="primary" :loading="loading" long @click="ok">上 传 文 件</Button></Col>
     </Row>
   </Row>
 </template>
 <script>
 import { getToken } from '@/utils/auth'
+import excel from '@/utils/excel'
+import { importInfo } from '@/api/ieg/enrollInfo'
 
 export default {
   name: 'IegEnrollInfo_Import',
@@ -44,7 +46,12 @@ export default {
     return {
       downloadDemoLoading: false,
       loading: false,
-      filePath: []
+      filePath: [],
+      downloadDemoData: [
+        {submitCode: '0001', schoolName: '安徽财经大学', score: 587.106147132},
+        {submitCode: '0002', schoolName: '安徽大学', score: 587.109129134},
+        {submitCode: '0005', schoolName: '安徽工业大学', score: 540.096120128}
+      ]
     }
   },
   methods: {
@@ -79,6 +86,42 @@ export default {
      */
     handleRemove (file, fileList) {
       this.filePath = []
+    },
+    /**
+     * 下载模板
+     */
+    downloadDemo () {
+      this.downloadDemoLoading = true
+
+      const params = {
+        title: ['院校代号', '院校名称', '最低投档分数'],
+        key: ['submitCode', 'schoolName', 'score'],
+        data: this.downloadDemoData,
+        autoWidth: true,
+        filename: '投档线模板下载'
+      }
+      excel.export_array_to_excel(params)
+
+      this.downloadDemoLoading = false
+    },
+    ok () {
+      if (this.$CV.isEmpty(this.filePath)) {
+        this.$Message.error('请上传格式正确的Excel文件')
+        return
+      }
+
+      this.loading = true
+      importInfo({enrollId: this.enroll.id, filePath: this.filePath[0].path}).then(data => {
+        if (data.result) {
+          this.$Message.success('批量上传成功')
+          // this.$emit('refresh', this.gradeForm)
+
+          this.cancel()
+        } else {
+          this.loading = false
+          this.$Message.success('批量上传失败, 请检查文档格式是否与模板一致')
+        }
+      })
     }
   }
 }
