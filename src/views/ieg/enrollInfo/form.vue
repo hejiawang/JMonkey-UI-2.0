@@ -114,7 +114,7 @@ export default {
       importInfo({enrollId: this.enroll.id, filePath: this.filePath[0].path}).then(data => {
         if (data.result) {
           this.$Message.success('批量上传成功')
-          // this.$emit('refresh', this.gradeForm)
+          this.$emit('refresh', '')
 
           this.cancel()
         } else {

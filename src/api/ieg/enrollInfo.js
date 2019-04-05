@@ -11,3 +11,26 @@ export const importInfo = (obj) => {
     data: obj
   })
 }
+
+/**
+ * list
+ * @param query
+ */
+export const list = (query) => {
+  return request({
+    url: '/ieg/enroll/info/list',
+    method: 'get',
+    params: query
+  })
+}
+
+/**
+ * 清空投档分数线信息
+ * @param enrollId enrollId
+ */
+export const delByEnroll = (enrollId) => {
+  return request({
+    url: '/ieg/enroll/info/delByEnroll/' + enrollId,
+    method: 'delete'
+  })
+}
