@@ -8,6 +8,8 @@
                 @click="modifyHandle">修改学院</Button>
         <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null"
                 @click="deleteHandle">删除学院</Button>
+        <Button type="info" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
+                @click="submitHandle">投档单位</Button>
         <Button type="success" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
                 @click="facultyHandle">院系信息</Button>
         <Button type="primary" icon="logo-designernews" :disabled="currentSchoolIndex === null"
@@ -222,6 +224,17 @@ export default {
       this.$router.replace(
         {
           path: '/ieg/faculty',
+          query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
+        }
+      )
+    },
+    /**
+     * 投档单位信息
+     */
+    submitHandle () {
+      this.$router.replace(
+        {
+          path: '/ieg/schoolSubmit',
           query: {schoolId: this.currentSchool.id, schoolName: this.currentSchool.name}
         }
       )
