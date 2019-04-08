@@ -137,24 +137,24 @@ export default {
           on: { click: () => { this.deleteHandle(params.row) } }
         }, '删除')
       )
-      hContent.push(
+      /* hContent.push(
         h('Button', {
           props: { type: 'primary', ghost: true },
           on: { click: () => { this.viewHandle(params.row) } }
         }, '查看')
-      )
+      ) */
       hContent.push(
         h('Button', {
           props: { type: 'success', ghost: true },
           on: { click: () => { this.problemHandle(params.row) } }
         }, '常见问题')
       )
-      hContent.push(
+      /* hContent.push(
         h('Button', {
           props: { type: 'info', ghost: true },
           on: { click: () => { this.enrollHandle(params.row) } }
         }, '录取信息')
-      )
+      ) */
       return h('div', hContent)
     },
     /**
@@ -202,7 +202,9 @@ export default {
     /**
      * 修改
      */
-    modifyHandle (row) {},
+    modifyHandle (row) {
+      this.currentMajor = row; this.formType = 'modify'; this.showForm = true
+    },
     /**
      * 删除
      */

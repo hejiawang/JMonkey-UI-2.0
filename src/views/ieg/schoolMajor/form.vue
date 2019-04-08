@@ -32,13 +32,33 @@
               </FormItem>
             </Col>
             <Col span="8">
+              <FormItem label="专业编码" prop="code">
+                <Input type="text" v-model.trim="schoolMajorForm.code" :maxlength="50" clearable />
+              </FormItem>
+            </Col>
+            <Col span="8">
+              <FormItem label="投档单位" prop="submitId">
+                <CIegSubmitSelect v-model="schoolMajorForm.submitId" :schoolId="schoolId"/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row :gutter="32">
+            <Col span="8">
+              <FormItem label="学历层次" prop="degreeType">
+                <RadioGroup v-model="schoolMajorForm.courseType">
+                  <Radio label="W">文科</Radio>
+                  <Radio label="L">理科</Radio>
+                </RadioGroup>
+              </FormItem>
+            </Col>
+            <Col span="8">
               <FormItem label="所属院系" prop="facultyId">
                 <CIegFacultySelect v-model="schoolMajorForm.facultyId" :schoolId="schoolId"/>
               </FormItem>
             </Col>
             <Col span="8">
               <FormItem label="校内排行" prop="sort">
-                <InputNumber :max="1000" :min="1" v-model="schoolMajorForm.sort" style="width: 100%"/>
+                <InputNumber :max="1000" :min="1" v-model="schoolMajorForm.sort" style="width: 100%;"/>
               </FormItem>
             </Col>
           </Row>
@@ -156,12 +176,13 @@ import { save, modify } from '@/api/ieg/schoolMajor'
 import CEditor from '@/components/layout/editor'
 import CIegFacultySelect from '@/views/ieg/faculty/select'
 import CIegMajorSelect from '@/views/ieg/major/selectMajor'
+import CIegSubmitSelect from '@/views/ieg/schoolSubmit/select'
 import CDictSelect from '@/components/sys/dict/select'
 
 export default {
   name: 'IegSchoolMajor_Form',
   components: {
-    CEditor, CIegFacultySelect, CIegMajorSelect, CDictSelect
+    CEditor, CIegFacultySelect, CIegMajorSelect, CDictSelect, CIegSubmitSelect
   },
   props: {
     value: {type: Boolean, default: false, required: true},
@@ -198,7 +219,10 @@ export default {
         sort: 1,
         degreeType: 'B',
         facultyId: '',
+        submitId: '',
         recordType: 'Common',
+        courseType: 'W',
+        code: null,
         majorId: '',
         majorName: '',
         ratioSexMan: 50,
@@ -296,7 +320,10 @@ export default {
         sort: 1,
         degreeType: 'B',
         facultyId: '',
+        submitId: '',
         recordType: 'Common',
+        courseType: 'W',
+        code: null,
         majorId: '',
         majorName: '',
         ratioSexMan: 50,

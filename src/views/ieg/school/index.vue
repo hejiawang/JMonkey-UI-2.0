@@ -106,6 +106,7 @@ export default {
           }
         },
         {title: '院校名称', key: 'name', tooltip: true},
+        {title: '院校编码', key: 'code', tooltip: true, width: 120},
         {
           title: '所在地',
           key: 'areaProvince',

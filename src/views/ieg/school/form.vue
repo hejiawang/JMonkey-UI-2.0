@@ -14,10 +14,8 @@
               </FormItem>
             </Col>
             <Col span="8">
-              <FormItem label="院校网址" prop="website">
-                <Input type="text" v-model.trim="schoolForm.website" :maxlength="50" clearable >
-                  <span slot="prepend">http://</span>
-                </Input>
+              <FormItem label="院校编码" prop="code">
+                <Input type="text" v-model.trim="schoolForm.code" :maxlength="50" clearable />
               </FormItem>
             </Col>
             <Col span="8">
@@ -27,13 +25,20 @@
             </Col>
           </Row>
           <Row :gutter="10">
-            <Col span="14">
+            <Col span="10">
               <FormItem label="院校地址" prop="area">
                 <al-selector v-model="area" level="2" data-type="code" class="al-selector" />
               </FormItem>
             </Col>
-            <Col span="10">
+            <Col span="6">
               <Input type="text" v-model.trim="schoolForm.areaDetail" :maxlength="50" clearable />
+            </Col>
+            <Col span="8">
+              <FormItem label="院校网址" prop="website">
+                <Input type="text" v-model.trim="schoolForm.website" :maxlength="50" clearable >
+                  <span slot="prepend">http://</span>
+                </Input>
+              </FormItem>
             </Col>
           </Row>
           <Row :gutter="32">
@@ -169,6 +174,7 @@ export default {
       schoolForm: {
         logo: null,
         name: null,
+        code: null,
         website: null,
         phone: null,
         areaProvince: null,
@@ -195,6 +201,7 @@ export default {
       },
       schoolRules: {
         name: { required: true, message: '请输入院校名称', trigger: 'blur' },
+        code: { required: true, message: '请输入院校编码', trigger: 'blur' },
         area: { required: true, validator: validateArea, trigger: 'change' },
         majorType: { required: true, message: '请选择院校类型', trigger: 'change' },
         degreeType: { required: true, message: '请选择学历层次', trigger: 'change' },
