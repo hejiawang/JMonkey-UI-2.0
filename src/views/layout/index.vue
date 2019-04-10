@@ -1,5 +1,7 @@
 <template>
   <Layout>
+    <Spin size="large" fix v-if="loading" class="app-layout-spin"/>
+
     <CHeader />
     <Layout>
       <Sider hide-trigger class="app-layout-sider">
@@ -41,6 +43,11 @@ export default {
      */
     onEvent(window, 'resize', this.setWindowHeight)
   },
+  data () {
+    return {
+      loading: true
+    }
+  },
   methods: {
     /**
      * 将当前窗口高度保存至store
@@ -52,7 +59,17 @@ export default {
      * 显示home中的页面
      */
     initIndex () {
-      this.$router.replace(store.getters.currentMenu)
+      if (store.getters.currentMenu !== '/') {
+        this.$router.replace(store.getters.currentMenu)
+
+        // 处理登录后直接到全屏页时效果问题
+        let sHome = null
+        store.getters.menuList.forEach(menu => {
+          if (menu.isIndex === 'Yes') sHome = menu
+        })
+
+        if (sHome && sHome.showType !== 'Screen') this.loading = false
+      }
     },
     initRouter () {
       rebuildRouter()
@@ -89,3 +106,9 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .app-layout-spin {
+    z-index: 99999;
+    background-color: rgba(255,255,255, 1);
+  }
+</style>
