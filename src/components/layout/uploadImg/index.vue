@@ -125,7 +125,7 @@ export default {
     }
   }
 
-  .userForm-upload:hover .userForm-upload-cover{
+  .app-upload-img:hover .upload-cover{
     display: block;
   }
 </style>
