@@ -5,30 +5,9 @@
       <Tabs value="major_info">
         <TabPane label="基本信息" icon="ios-cube-outline" name="major_info">
           <Row :gutter="32">
-            <Col span="8">
-              <FormItem label="定义类型" prop="recordType">
-                <RadioGroup v-model="schoolMajorForm.recordType" @on-change="selectRecordType">
-                  <Radio label="Common">通用专业</Radio>
-                  <Radio label="Other">其他专业</Radio>
-                </RadioGroup>
-              </FormItem>
-            </Col>
             <Col span="16">
-              <FormItem label="选择专业" prop="majorName" v-if="schoolMajorForm.recordType === 'Common'">
-                <CIegMajorSelect v-model="schoolMajorForm.majorId" :degreeType="schoolMajorForm.degreeType" @renderMajorName="renderMajorName"/>
-              </FormItem>
-              <FormItem label="专业名称" prop="majorName" v-if="schoolMajorForm.recordType === 'Other'">
-                <Input type="text" v-model.trim="schoolMajorForm.majorName" :maxlength="50" clearable />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="8">
-              <FormItem label="学历层次" prop="degreeType">
-                <RadioGroup v-model="schoolMajorForm.degreeType" @on-change="selectDegreeType">
-                  <Radio label="B">本科</Radio>
-                  <Radio label="Z">专科</Radio>
-                </RadioGroup>
+              <FormItem label="专业名称" prop="name" >
+                <Input type="text" v-model.trim="schoolMajorForm.name" :maxlength="50" clearable />
               </FormItem>
             </Col>
             <Col span="8">
@@ -36,19 +15,32 @@
                 <Input type="text" v-model.trim="schoolMajorForm.code" :maxlength="50" clearable />
               </FormItem>
             </Col>
-            <Col span="8">
-              <FormItem label="投档单位" prop="submitId">
-                <CIegSubmitSelect v-model="schoolMajorForm.submitId" :schoolId="schoolId"/>
-              </FormItem>
-            </Col>
           </Row>
           <Row :gutter="32">
             <Col span="8">
               <FormItem label="学历层次" prop="degreeType">
+                <RadioGroup v-model="schoolMajorForm.degreeType">
+                  <Radio label="B">本科</Radio>
+                  <Radio label="Z">专科</Radio>
+                </RadioGroup>
+              </FormItem>
+            </Col>
+            <Col span="8">
+              <FormItem label="学科类型" prop="degreeType">
                 <RadioGroup v-model="schoolMajorForm.courseType">
                   <Radio label="W">文科</Radio>
                   <Radio label="L">理科</Radio>
+                  <Radio label="A">文科/理科</Radio>
                 </RadioGroup>
+              </FormItem>
+            </Col>
+            <Col span="8">
+            </Col>
+          </Row>
+          <Row :gutter="32">
+            <Col span="8">
+              <FormItem label="投档单位" prop="submitId">
+                <CIegSubmitSelect v-model="schoolMajorForm.submitId" :schoolId="schoolId"/>
               </FormItem>
             </Col>
             <Col span="8">
@@ -175,14 +167,13 @@
 import { save, modify } from '@/api/ieg/schoolMajor'
 import CEditor from '@/components/layout/editor'
 import CIegFacultySelect from '@/views/ieg/faculty/select'
-import CIegMajorSelect from '@/views/ieg/major/selectMajor'
 import CIegSubmitSelect from '@/views/ieg/schoolSubmit/select'
 import CDictSelect from '@/components/sys/dict/select'
 
 export default {
   name: 'IegSchoolMajor_Form',
   components: {
-    CEditor, CIegFacultySelect, CIegMajorSelect, CDictSelect, CIegSubmitSelect
+    CEditor, CIegFacultySelect, CDictSelect, CIegSubmitSelect
   },
   props: {
     value: {type: Boolean, default: false, required: true},
@@ -220,11 +211,9 @@ export default {
         degreeType: 'B',
         facultyId: '',
         submitId: '',
-        recordType: 'Common',
         courseType: 'W',
         code: null,
-        majorId: '',
-        majorName: '',
+        name: '',
         ratioSexMan: 50,
         ratioSexWoman: 50,
         ratioCourseArts: 50,
@@ -243,31 +232,13 @@ export default {
         features: []
       },
       schoolMajorRules: {
-        majorName: { required: true, message: '请输入专业名称', trigger: 'blur' }
+        name: { required: true, message: '请输入专业名称', trigger: 'blur' },
+        code: { required: true, message: '请输入专业编码', trigger: 'blur' },
+        submitId: { required: true, message: '请选择投档单位', trigger: 'change' }
       }
     }
   },
   methods: {
-    /**
-     * selectRecordType
-     */
-    selectRecordType (o) {
-      this.schoolMajorForm.majorId = null; this.schoolMajorForm.majorName = null
-    },
-    /**
-     * selectDegreeType
-     */
-    selectDegreeType (o) {
-      if (this.schoolMajorForm.recordType === 'Common') {
-        this.schoolMajorForm.majorId = null; this.schoolMajorForm.majorName = null
-      }
-    },
-    /**
-     * renderMajorName
-     */
-    renderMajorName (o) {
-      this.schoolMajorForm.majorName = o
-    },
     /**
      * ok handle
      */
@@ -321,11 +292,9 @@ export default {
         degreeType: 'B',
         facultyId: '',
         submitId: '',
-        recordType: 'Common',
         courseType: 'W',
         code: null,
-        majorId: '',
-        majorName: '',
+        name: '',
         ratioSexMan: 50,
         ratioSexWoman: 50,
         ratioCourseArts: 50,
@@ -351,6 +320,9 @@ export default {
      * @param isOpen true
      */
     visibleChange (isOpen) {
+      if (isOpen && this.type === 'modify') {
+        this.schoolMajorForm = Object.assign({}, this.major)
+      }
     }
   }
 }

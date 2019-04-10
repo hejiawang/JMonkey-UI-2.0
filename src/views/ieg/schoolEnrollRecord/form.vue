@@ -25,34 +25,34 @@
             <Row :gutter="32" style="margin-top: 20px;">
               <Col span="8">
                 <FormItem label="全国录取人数" prop="allNumber">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.allNumber" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.allNumber" style="width: 100%"/>
                 </FormItem>
               </Col>
               <Col span="8">
                 <FormItem label="全国最低分数" prop="allScoreMin">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.allScoreMin" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.allScoreMin" style="width: 100%"/>
                 </FormItem>
               </Col>
               <Col span="8">
                 <FormItem label="全国最高分数" prop="allScoreMax">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.allScoreMax" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.allScoreMax" style="width: 100%"/>
                 </FormItem>
               </Col>
             </Row>
             <Row :gutter="32" style="margin-top: 20px;">
               <Col span="8">
                 <FormItem label="当地录取人数" prop="localNumber">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.localNumber" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.localNumber" style="width: 100%"/>
                 </FormItem>
               </Col>
               <Col span="8">
                 <FormItem label="当地最低分数" prop="localScoreMin">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.localScoreMin" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.localScoreMin" style="width: 100%"/>
                 </FormItem>
               </Col>
               <Col span="8">
                 <FormItem label="当地最高分数" prop="localScoreMax">
-                  <InputNumber :max="10000" :min="1" v-model="recordForm.localScoreMax" style="width: 100%"/>
+                  <InputNumber :max="10000" :min="0" v-model="recordForm.localScoreMax" style="width: 100%"/>
                 </FormItem>
               </Col>
             </Row>
@@ -99,12 +99,12 @@ export default {
         year: 2000,
         enrollInfo: '',
         enrollRule: '',
-        allScoreMin: 1,
-        allScoreMax: 750,
-        allNumber: 1,
-        localScoreMin: 1,
-        localScoreMax: 750,
-        localNumber: 1
+        allScoreMin: null,
+        allScoreMax: null,
+        allNumber: null,
+        localScoreMin: null,
+        localScoreMax: null,
+        localNumber: null
       },
       recordRules: {
         year: { required: true, type: 'date', message: '请选择招生录取年份', trigger: 'change' }

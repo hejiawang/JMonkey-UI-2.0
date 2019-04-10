@@ -37,20 +37,6 @@ export const modify = (obj) => {
 }
 
 /**
- * 获取院校中有哪些专业门类
- * @param schoolId 院校id
- */
-export const findMajorOneBySchool = (schoolId) => {
-  return request({
-    url: '/ieg/school/major/findMajorOneBySchool',
-    method: 'get',
-    params: {
-      schoolId: schoolId
-    }
-  })
-}
-
-/**
  * 删除院校专业信息
  * @param id 院校专业id
  */

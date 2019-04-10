@@ -7,10 +7,10 @@
     </Row>
     <Row :gutter="32" class="ieg-school-major-event">
       <Col span="24">
-        <span style="margin-right: 20px;">专业门类: </span>
-        <template v-for="m in majorOneList">
-          <Button v-if="m.id === currentMajorOneId" type="info" ghost :key="m.id" @click="selectMajorOneHandle(m.id)">{{m.name}}</Button>
-          <Button v-else type="text" :key="m.id" @click="selectMajorOneHandle(m.id)">{{m.name}}</Button>
+        <span style="margin-right: 20px;">投档单位: </span>
+        <template v-for="m in submitList">
+          <Button v-if="m.id === currentSubmitId" type="info" ghost :key="m.id" @click="selectSubmitHandle(m.id)">{{m.code}}</Button>
+          <Button v-else type="text" :key="m.id" @click="selectSubmitHandle(m.id)">{{m.code}}</Button>
         </template>
       </Col>
     </Row>
@@ -20,13 +20,14 @@
     </Row>
 
     <CIegSchoolMajorForm v-model="showForm" :type="formType" :schoolId="schoolId"
-                          :major="currentMajor" @refresh="initMajorOne"/>
+                          :major="currentMajor" @refresh="initSubmitList"/>
   </Layout>
 </template>
 <script>
 import CIegSchoolMajorForm from '@/views/ieg/schoolMajor/form'
-import { findMajorOneBySchool, list, del } from '@/api/ieg/schoolMajor'
+import { list, del } from '@/api/ieg/schoolMajor'
 import store from '@/store'
+import { list as submitList } from '@/api/ieg/schoolSubmit'
 
 export default {
   name: 'IegSchoolMajor',
@@ -60,8 +61,8 @@ export default {
       showForm: false,
       formType: '',
       currentMajor: null,
-      majorOneList: [],
-      currentMajorOneId: null,
+      submitList: [],
+      currentSubmitId: null,
       schoolMajorList: [],
       schoolMajorColumns: [],
       listLoading: false,
@@ -69,11 +70,16 @@ export default {
         B: '本科',
         Z: '专科',
         A: '全部'
+      },
+      courseType: {
+        W: '文科',
+        L: '理科',
+        A: '文科/理科'
       }
     }
   },
   created () {
-    this.initMajorOne()
+    this.initSubmitList()
     this.initTableColumns()
   },
   methods: {
@@ -82,18 +88,24 @@ export default {
      */
     initTableColumns () {
       this.schoolMajorColumns = [
-        {title: '专业名称', key: 'majorName', tooltip: true, width: 200},
+        {title: '专业名称', key: 'name', tooltip: true},
+        {title: '专业编码', key: 'code', tooltip: true},
         {
           title: '学历层次',
           key: 'degreeType',
-          width: 120,
           tooltip: true,
           render: (h, params) => { return h('span', this.degreeType[params.row.degreeType]) }
         },
-        {title: '校内排名', key: 'sort', width: 120, tooltip: true},
-        {title: '学费(元)', key: 'money', width: 120, tooltip: true},
-        {title: '学制(年)', key: 'studyLength', width: 120, tooltip: true},
-        {title: '归属院系', key: 'facultyName', width: 200, tooltip: true},
+        {
+          title: '学科类型',
+          key: 'courseType',
+          tooltip: true,
+          render: (h, params) => { return h('span', this.courseType[params.row.courseType]) }
+        },
+        {title: '校内排名', key: 'sort', tooltip: true},
+        {title: '学费(元)', key: 'money', tooltip: true},
+        {title: '学制(年)', key: 'studyLength', tooltip: true},
+        {title: '归属院系', key: 'facultyName', tooltip: true},
         {
           title: '专业特性',
           key: 'features',
@@ -114,7 +126,7 @@ export default {
           key: 'action',
           align: 'center',
           fixed: 'right',
-          width: 450,
+          width: 300,
           render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
@@ -160,20 +172,22 @@ export default {
     /**
      * 初始化院校所有的专业门类
      */
-    initMajorOne () {
-      findMajorOneBySchool(this.schoolId).then(data => {
-        this.majorOneList = data.result
-        if (this.majorOneList.length > 0) this.currentMajorOneId = this.majorOneList[0].id
+    initSubmitList () {
+      submitList({schoolId: this.schoolId}).then(data => {
+        this.submitList = data.result
+        if (this.submitList.length > 0) {
+          this.currentSubmitId = this.submitList[0].id
 
-        this.initList()
+          this.initList()
+        }
       })
     },
     /**
      * 选择专业门类
      * @param majorOneId
      */
-    selectMajorOneHandle (majorOneId) {
-      this.currentMajorOneId = majorOneId
+    selectSubmitHandle (sId) {
+      this.currentSubmitId = sId
       this.initList()
     },
     /**
@@ -181,7 +195,7 @@ export default {
      */
     initList () {
       this.listLoading = true
-      list({schoolId: this.schoolId, majorOneId: this.currentMajorOneId}).then(data => {
+      list({schoolId: this.schoolId, submitId: this.currentSubmitId}).then(data => {
         this.schoolMajorList = data.result
 
         this.listLoading = false
@@ -213,7 +227,7 @@ export default {
         'content': '<p>名称为 <span style="color: #f60">' + row.majorName + '</span> 的专业将被删除</p><p>是否继续？</p>',
         'confirm': () => {
           del(row.id).then((data) => {
-            this.initMajorOne()
+            this.initSubmitList()
 
             if (data.result) this.$Message.success('删除成功')
             else this.$Message.error('删除失败')

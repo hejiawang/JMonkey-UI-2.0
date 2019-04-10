@@ -110,7 +110,6 @@ export default {
         {
           title: '所在地',
           key: 'areaProvince',
-          width: 120,
           render: (h, params) => { return h('span', pca['86'][params.row.areaProvince]) }
         },
         {title: '院校排名', key: 'sort', width: 120, tooltip: true},
