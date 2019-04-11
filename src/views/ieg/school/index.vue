@@ -2,11 +2,11 @@
   <Layout v-layoutIn>
     <Row style="height: 60px;">
       <Col span="16">
-        <Button type="primary" icon="ios-add-circle-outline"
+        <Button type="primary" icon="ios-add-circle-outline" v-if="ieg_school_raise"
                 @click="raiseHandle">新增学院</Button>
         <Button type="warning" icon="ios-brush-outline" :disabled="currentSchoolIndex === null"
                 @click="modifyHandle">修改学院</Button>
-        <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null"
+        <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null" v-if="ieg_school_delete"
                 @click="deleteHandle">删除学院</Button>
         <Button type="info" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
                 @click="submitHandle">投档单位</Button>
@@ -48,10 +48,12 @@
 import store from '@/store'
 import pca from 'area-data/pca'
 import { list, del } from '@/api/ieg/school'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'IegSchool',
   computed: {
+    ...mapGetters(['permissions']),
     /**
      * 列表高度
      */
@@ -87,8 +89,13 @@ export default {
   created () {
     this.initTableColumns()
     this.initList()
+    this.initPermissions()
   },
   methods: {
+    initPermissions () {
+      this.ieg_school_delete = this.permissions['ieg_school_delete']
+      this.ieg_school_raise = this.permissions['ieg_school_raise']
+    },
     /**
      * init school table columns
      */
@@ -156,6 +163,7 @@ export default {
       this.currentSchoolIndex = null
 
       this.listLoading = true
+      this.listQuery.userId = store.getters.user.id
       list(this.listQuery).then(data => {
         this.schoolTableData = data.rows
         this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
