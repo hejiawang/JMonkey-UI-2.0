@@ -71,6 +71,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * init table coluimns
+     */
     initTableColumns () {
       this.schoolTableColumns = [
         {
@@ -88,22 +91,34 @@ export default {
         {title: '院校编码', key: 'code', tooltip: true, width: 120}
       ]
     },
+    /**
+     * 初始化院校table
+     */
     initList () {
       list(this.listQuery).then(data => {
         this.schoolTableData = data.rows
         this.listQuery = Object.assign({}, this.listQuery, {total: data.total})
       })
     },
+    /**
+     * 重置检索条件
+     */
     restSearch () {
       ['name'].forEach(param => (
         this.listQuery[param] = null
       ))
       this.search()
     },
+    /**
+     * 检索院校
+     */
     search () {
       this.$refs.schoolPage.rest()
       this.initList()
     },
+    /**
+     * 为用户授权
+     */
     handleAuth () {
       auth(this.user.id, this.schoolAuths).then(data => {
         if (data.isSuccess) {
@@ -112,6 +127,10 @@ export default {
         }
       })
     },
+    /**
+     * 获取用户授权信息
+     * @param isOpen
+     */
     showDrawer (isOpen) {
       if (isOpen) {
         this.schoolAuths = []
