@@ -5,9 +5,14 @@
       <Tabs value="major_info">
         <TabPane label="基本信息" icon="ios-cube-outline" name="major_info">
           <Row :gutter="32">
-            <Col span="16">
+            <Col span="8">
               <FormItem label="专业名称" prop="name" >
                 <Input type="text" v-model.trim="schoolMajorForm.name" :maxlength="50" clearable />
+              </FormItem>
+            </Col>
+            <Col span="8">
+              <FormItem label="归属学科" prop="majorTwoId" >
+                <CIegSPMajor v-model="schoolMajorForm.majorTwoId" :degreeType="schoolMajorForm.degreeType" level="Three"/>
               </FormItem>
             </Col>
             <Col span="8">
@@ -19,7 +24,7 @@
           <Row :gutter="32">
             <Col span="8">
               <FormItem label="学历层次" prop="degreeType">
-                <RadioGroup v-model="schoolMajorForm.degreeType">
+                <RadioGroup v-model="schoolMajorForm.degreeType" @on-change="selectDegreeType">
                   <Radio label="B">本科</Radio>
                   <Radio label="Z">专科</Radio>
                 </RadioGroup>
@@ -126,11 +131,12 @@ import CEditor from '@/components/layout/editor'
 import CIegFacultySelect from '@/views/ieg/faculty/select'
 import CIegSubmitSelect from '@/views/ieg/schoolSubmit/select'
 import CDictSelect from '@/components/sys/dict/select'
+import CIegSPMajor from '@/views/ieg/major/selectParentMajor'
 
 export default {
   name: 'IegSchoolMajor_Form',
   components: {
-    CEditor, CIegFacultySelect, CDictSelect, CIegSubmitSelect
+    CEditor, CIegFacultySelect, CDictSelect, CIegSubmitSelect, CIegSPMajor
   },
   props: {
     value: {type: Boolean, default: false, required: true},
@@ -164,6 +170,7 @@ export default {
       loading: true,
       isShow: false,
       schoolMajorForm: {
+        majorTwoId: '',
         sort: 1,
         degreeType: 'B',
         facultyId: '',
@@ -196,6 +203,9 @@ export default {
     }
   },
   methods: {
+    selectDegreeType (o) {
+      this.schoolMajorForm.majorTwoId = null
+    },
     /**
      * ok handle
      */
@@ -245,6 +255,7 @@ export default {
       this.$refs.schoolMajorForm.resetFields()
 
       this.schoolMajorForm = {
+        majorTwoId: '',
         sort: 1,
         degreeType: 'B',
         facultyId: '',
