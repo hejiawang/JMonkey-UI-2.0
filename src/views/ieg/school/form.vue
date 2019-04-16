@@ -108,6 +108,23 @@
       </Row>
 
       <Row> <Alert show-icon>详 细 信 息</Alert> </Row>
+      <Row class="ieg-school-form-detail-img">
+        <Divider><Icon type="ios-information-circle-outline" size="16"/> 学校图片</Divider>
+        <Row :gutter="32">
+          <Col span="6">
+            <CUploadImg v-model="schoolForm.detail.img1Path" title="上传学校图片" action="/ieg/school/logo"/>
+          </Col>
+          <Col span="6">
+            <CUploadImg v-model="schoolForm.detail.img2Path" title="上传学校图片" action="/ieg/school/logo"/>
+          </Col>
+          <Col span="6">
+            <CUploadImg v-model="schoolForm.detail.img3Path" title="上传学校图片" action="/ieg/school/logo"/>
+          </Col>
+          <Col span="6">
+            <CUploadImg v-model="schoolForm.detail.img4Path" title="上传学校图片" action="/ieg/school/logo"/>
+          </Col>
+        </Row>
+      </Row>
       <Row class="ieg-school-form-detail-row">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 学校简介</Divider>
         <CEditor v-model="schoolForm.detail.describe" imgRef="describe"
@@ -124,7 +141,7 @@
                  imgAction="/ieg/school/detail/file" :imgData="{content: 'life'}"/>
       </Row>
       <Row class="ieg-school-form-detail-row">
-        <Divider><Icon type="ios-information-circle-outline" size="16"/> 奖学金设置</Divider>
+        <Divider><Icon type="ios-information-circle-outline" size="16"/> 奖学金设置及推免名额 </Divider>
         <CEditor v-model="schoolForm.detail.scholarship" imgRef="scholarship"
                  imgAction="/ieg/school/detail/file" :imgData="{content: 'scholarship'}"/>
       </Row>
@@ -196,7 +213,11 @@ export default {
           describe: '',
           faculty: '',
           life: '',
-          scholarship: ''
+          scholarship: '',
+          img1Path: '',
+          img2Path: '',
+          img3Path: '',
+          img4Path: ''
         }
       },
       schoolRules: {

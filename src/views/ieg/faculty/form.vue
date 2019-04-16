@@ -16,7 +16,7 @@
           </FormItem>
         </Col>
       </Row>
-      <Row :gutter="32">
+      <!-- <Row :gutter="32">
         <Col span="12">
           <FormItem label="联系方式" prop="phone">
             <Input type="text" v-model.trim="facultyForm.phone" :maxlength="50" clearable />
@@ -27,7 +27,7 @@
             <InputNumber :max="10000" :min="1" v-model="facultyForm.sort" style="width: 100%"/>
           </FormItem>
         </Col>
-      </Row>
+      </Row> -->
       <Row style="height: 500px;">
         <Divider><Icon type="ios-information-circle-outline" size="16"/> 院系详细信息 </Divider>
         <CEditor v-model="facultyForm.describe" imgRef="faculty-handle"

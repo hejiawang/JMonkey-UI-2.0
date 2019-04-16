@@ -35,6 +35,9 @@
               </FormItem>
             </Col>
             <Col span="8">
+              <FormItem label="专业学费" prop="money">
+                <InputNumber :max="100000" :min="0" v-model="schoolMajorForm.money" style="width: 100%"/>
+              </FormItem>
             </Col>
           </Row>
           <Row :gutter="32">
@@ -49,25 +52,8 @@
               </FormItem>
             </Col>
             <Col span="8">
-              <FormItem label="校内排行" prop="sort">
-                <InputNumber :max="1000" :min="1" v-model="schoolMajorForm.sort" style="width: 100%;"/>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="8">
-              <FormItem label="专业学费" prop="money">
-                <InputNumber :max="100000" :min="0" v-model="schoolMajorForm.money" style="width: 100%"/>
-              </FormItem>
-            </Col>
-            <Col span="8">
               <FormItem label="专业学制" prop="studyLength">
                 <InputNumber :max="100000" :min="0" v-model="schoolMajorForm.studyLength" style="width: 100%"/>
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem label="学生规模" prop="studentScope">
-                <Input type="text" v-model.trim="schoolMajorForm.studentScope" :maxlength="50" clearable />
               </FormItem>
             </Col>
           </Row>
@@ -110,35 +96,6 @@
             </Col>
           </Row>
           <Row :gutter="32">
-            <Col span="6">
-              <FormItem label="综合评价" prop="ratioAssessWhole">
-                <Rate allow-half v-model="schoolMajorForm.ratioAssessWhole"/>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="6">
-              <FormItem label="就业评价" prop="ratioAssessWork">
-                <Rate allow-half v-model="schoolMajorForm.ratioAssessWork"/>
-              </FormItem>
-            </Col>
-            <Col span="6">
-              <FormItem label="教学评价" prop="ratioAssessStudy">
-                <Rate allow-half v-model="schoolMajorForm.ratioAssessStudy"/>
-              </FormItem>
-            </Col>
-            <Col span="6">
-              <FormItem label="办学评价" prop="ratioAssessShool">
-                <Rate allow-half v-model="schoolMajorForm.ratioAssessShool"/>
-              </FormItem>
-            </Col>
-            <Col span="6">
-              <FormItem label="难易评价" prop="ratioAssessDifficulty">
-                <Rate allow-half v-model="schoolMajorForm.ratioAssessDifficulty"/>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
             <Col span="24">
               <FormItem label="就业方向" prop="workDirection">
                 <Input type="textarea" v-model.trim="schoolMajorForm.workDirection" :maxlength="500" clearable />
@@ -147,14 +104,14 @@
           </Row>
           <Row :gutter="32">
             <Col span="24">
-              <FormItem label="专业课程" prop="course">
+              <FormItem label="主要课程" prop="course">
                 <Input type="textarea" v-model.trim="schoolMajorForm.course" :maxlength="500" clearable />
               </FormItem>
             </Col>
           </Row>
         </TabPane>
         <TabPane label="专业介绍" icon="ios-grid" name="major_detail">
-          <Row style="height: 530px">
+          <Row style="height: 400px">
             <CEditor v-model="schoolMajorForm.describe" imgRef="major_detail"
                      imgAction="/ieg/school/major/file" :imgData="{schoolId: schoolId}"/>
           </Row>

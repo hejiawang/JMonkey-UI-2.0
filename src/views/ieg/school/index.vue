@@ -8,13 +8,13 @@
                 @click="modifyHandle">修改学院</Button>
         <Button type="error" icon="ios-trash-outline" :disabled="currentSchoolIndex === null" v-if="ieg_school_delete"
                 @click="deleteHandle">删除学院</Button>
-        <Button type="info" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
-                @click="submitHandle">投档单位</Button>
         <Button type="success" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
                 @click="facultyHandle">院系信息</Button>
         <Button type="primary" icon="logo-designernews" :disabled="currentSchoolIndex === null"
                 @click="majorHandle">专业信息</Button>
-        <Button type="info" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
+        <Button type="info" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
+                @click="submitHandle">投档单位</Button>
+        <Button type="warning" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
                 @click="enrollHandle">录取信息</Button>
         <Button icon="md-help" :disabled="currentSchoolIndex === null"
                 @click="problemHandle">常见问题</Button>

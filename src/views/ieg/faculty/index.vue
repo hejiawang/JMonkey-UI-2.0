@@ -28,22 +28,22 @@
             <span><Icon type="md-reorder" size="17"/> 院系名称： {{currentFaculty.name}} </span>
             <Divider type="vertical" />
           </Col>
-          <Col span="6" v-if="currentFaculty && currentFaculty.sort">
+          <!-- <Col span="6" v-if="currentFaculty && currentFaculty.sort">
             <span><Icon type="ios-pulse" size="17"/> 院系排名： {{currentFaculty.sort}} </span>
             <Divider type="vertical" />
-          </Col>
+          </Col> -->
           <Col span="6" v-if="currentFaculty && currentFaculty.website">
             <span><Icon type="logo-linkedin" size="17"/> 院系网址： {{currentFaculty.website}} </span>
             <Divider type="vertical" />
           </Col>
-          <Col span="6" v-if="currentFaculty && currentFaculty.phone">
+          <!-- <Col span="6" v-if="currentFaculty && currentFaculty.phone">
             <span><Icon type="md-call" size="17"/> 联系方式： {{currentFaculty.phone}} </span>
-          </Col>
+          </Col> -->
         </Row>
-        <Row v-if="currentFaculty && currentFaculty.phone">
+        <Row v-if="currentFaculty && currentFaculty.describe">
           <Divider><Icon type="ios-information-circle-outline" size="16"/> 院系详细信息 </Divider>
         </Row>
-        <Row class="describe-body ql-container ql-snow" v-if="currentFaculty && currentFaculty.phone">
+        <Row class="describe-body ql-container ql-snow" v-if="currentFaculty && currentFaculty.describe">
           <Row class="ql-editor" v-html="currentFaculty.describe" />
         </Row>
       </Col>

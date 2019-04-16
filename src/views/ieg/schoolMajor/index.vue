@@ -126,7 +126,7 @@ export default {
           key: 'action',
           align: 'center',
           fixed: 'right',
-          width: 300,
+          width: 400,
           render: (h, params) => { return this.bindEvent(h, params) }
         }
       ]
@@ -161,12 +161,12 @@ export default {
           on: { click: () => { this.problemHandle(params.row) } }
         }, '常见问题')
       )
-      /* hContent.push(
+      hContent.push(
         h('Button', {
           props: { type: 'info', ghost: true },
           on: { click: () => { this.enrollHandle(params.row) } }
         }, '录取信息')
-      ) */
+      )
       return h('div', hContent)
     },
     /**
