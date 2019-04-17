@@ -48,9 +48,9 @@ export default {
       loading: false,
       filePath: [],
       downloadDemoData: [
-        {submitCode: '0001', schoolName: '安徽财经大学', score: 587.106147132},
-        {submitCode: '0002', schoolName: '安徽大学', score: 587.109129134},
-        {submitCode: '0005', schoolName: '安徽工业大学', score: 540.096120128}
+        {schoolCode: '0001', schoolName: '安徽财经大学', submitCode: '0002', number: '5', scoreMin: 587.106147132, scoreMax: 587.106147132},
+        {schoolCode: '0002', schoolName: '安徽大学', submitCode: '0002', number: '5', scoreMin: 587.109129134, scoreMax: 587.106147132},
+        {schoolCode: '0005', schoolName: '安徽工业大学', submitCode: '0002', number: '5', scoreMin: 540.096120128, scoreMax: 587.106147132}
       ]
     }
   },
@@ -94,8 +94,8 @@ export default {
       this.downloadDemoLoading = true
 
       const params = {
-        title: ['院校代号', '院校名称', '最低投档分数'],
-        key: ['submitCode', 'schoolName', 'score'],
+        title: ['院校代号', '院校名称', '投档单位', '投档人数', '最低分数', '最高分数'],
+        key: ['schoolCode', 'schoolName', 'submitCode', 'number', 'scoreMin', 'scoreMax'],
         data: this.downloadDemoData,
         autoWidth: true,
         filename: '投档线模板下载'

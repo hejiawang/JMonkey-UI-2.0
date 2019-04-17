@@ -1,5 +1,5 @@
 <template>
-  <Drawer :title="drawerTitle" width="800" v-model="isShow"
+  <Drawer :title="drawerTitle" width="1200" v-model="isShow"
           @on-visible-change="showDrawer" class="ieg-enroll-info">
     <CIegEnrollInfoForm :enroll="enroll" @refresh="initList" v-if="tableData.length === 0"/>
 
@@ -80,9 +80,12 @@ export default {
      */
     initTableColumns () {
       this.tableColumns = [
-        {title: '院校代号', key: 'submitCode', tooltip: true},
+        {title: '院校代号', key: 'schoolCode', tooltip: true, width: 120},
         {title: '院校名称', key: 'schoolName', tooltip: true},
-        {title: '最低投档分数', key: 'score', tooltip: true}
+        {title: '投档单位', key: 'submitCode', tooltip: true, width: 120},
+        {title: '投档人数', key: 'number', tooltip: true, width: 120},
+        {title: '最低投档分数', key: 'scoreMin', tooltip: true},
+        {title: '最高投档分数', key: 'scoreMax', tooltip: true}
       ]
     },
     /**
