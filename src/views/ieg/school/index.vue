@@ -14,8 +14,8 @@
                 @click="majorHandle">专业信息</Button>
         <Button type="info" icon="ios-at-outline" :disabled="currentSchoolIndex === null"
                 @click="submitHandle">投档单位</Button>
-        <Button type="warning" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
-                @click="enrollHandle">录取信息</Button>
+        <!-- <Button type="warning" icon="ios-menu-outline" :disabled="currentSchoolIndex === null"
+                @click="enrollHandle">录取信息</Button> -->
         <Button icon="md-help" :disabled="currentSchoolIndex === null"
                 @click="problemHandle">常见问题</Button>
       </Col>
