@@ -60,7 +60,8 @@ export default {
       currentRecord: null,
       enrollTableColumns: [],
       enrollTableData: [],
-      listLoading: false
+      listLoading: false,
+      courseType: { W: '文科', L: '理科' }
     }
   },
   created () {
@@ -71,6 +72,14 @@ export default {
     initTableColumns () {
       this.enrollTableColumns = [
         {title: '录取年份', key: 'year', tooltip: true},
+        {
+          title: '学科类型',
+          key: 'type',
+          tooltip: true,
+          render: (h, params) => {
+            return h('Tag', { props: { color: 'green' } }, this.courseType[params.row.type])
+          }
+        },
         {title: '计划招收人数', key: 'planNumber', tooltip: true},
         {title: '实际招收人数', key: 'realNumber', tooltip: true},
         {title: '最低分', key: 'scoreMin', tooltip: true},

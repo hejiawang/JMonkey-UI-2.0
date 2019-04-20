@@ -5,6 +5,12 @@
       <FormItem label="录取年份" prop="year">
         <InputNumber :max="10000" :min="1" v-model="recordForm.year" style="width: 100%"/>
       </FormItem>
+      <FormItem label="类型" prop="type">
+        <RadioGroup v-model="recordForm.type" >
+          <Radio label="L">理科</Radio>
+          <Radio label="W">文科</Radio>
+        </RadioGroup>
+      </FormItem>
       <FormItem label="计划人数" prop="planNumber">
         <InputNumber :max="10000" :min="0" v-model="recordForm.planNumber" style="width: 100%"/>
       </FormItem>
@@ -54,7 +60,8 @@ export default {
         scoreMin: null,
         scoreMax: null,
         planNumber: null,
-        realNumber: null
+        realNumber: null,
+        type: 'L'
       },
       recordRules: {
         year: { required: true, type: 'date', message: '请选择招生录取年份', trigger: 'change' }
@@ -119,7 +126,8 @@ export default {
         scoreMin: null,
         scoreMax: null,
         planNumber: null,
-        realNumber: null
+        realNumber: null,
+        type: 'L'
       }
 
       this.isShow = false
